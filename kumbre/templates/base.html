@@ -9,6 +9,8 @@
     <title>La Kumbre</title>
     <link rel="stylesheet" href="{% static 'styles/style.css' %}">
     <link rel="shortcut icon" href="{% static 'img/icino.png' %}" type="image/x-icon">
+    <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet" />
 </head>
 <body>
     <header>
@@ -40,7 +42,7 @@
         </ul>
         <div class="user-options">
             {% if user.is_authenticated %}
-                <a href="{% url 'cerrar_sesion' %}" class="cerrar-sesion"><img src="{% static 'img/exit.png' %}"></a>
+                <a href="{% url 'logout' %}" class="cerrar-sesion"> <i class="ri-logout-box-line"></i></a>
             {% else %}
                 <a href="{% url 'iniciar_sesion' %}" class="iniciar-sesion"><img src="{% static 'img/iniciar.png' %}"></a>
             {% endif %}

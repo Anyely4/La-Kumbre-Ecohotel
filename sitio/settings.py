@@ -26,7 +26,9 @@ SECRET_KEY = 'django-insecure-ds$*10(b#scz@+jbq#ot7oea*a=fb*@)vhf11b5r+(*4%27_hr
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
+LOGIN_URL = 'iniciar_sesion'
+LOGIN_REDIRECT_URL = 'cabañas'
+LOGOUT_REDIRECT_URL = 'inicio'
 
 # Application definition
 import os
