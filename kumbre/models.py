@@ -1,8 +1,6 @@
 from django.db import models
-import uuid
 from django.contrib.auth.models import User
-from django.utils import timezone
-from django.utils.timezone import now
+
 
 class Sugerencia(models.Model):
     CATEGORIAS = [
@@ -19,13 +17,16 @@ class Sugerencia(models.Model):
     def __str__(self):
         return f"{self.nombre} - {self.categoria}"
     
-
 class Usuario(models.Model):
-    nombre = models.CharField(max_length=100)
+    usuario = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
     telefono = models.CharField(max_length=15)
-    correo = models.EmailField(unique=True, null=True, blank=True)
-    contraseña = models.CharField(max_length=128, default="defaultpassword")
-    activation_token = models.CharField(max_length=64, unique=True, default=uuid.uuid4().hex)  # Genera un token único
+
+# class Usuario(models.Model):
+#     nombre = models.CharField(max_length=100)
+#     telefono = models.CharField(max_length=15)
+#     correo = models.EmailField(unique=True, null=True, blank=True)
+#     contraseña = models.CharField(max_length=128, default="defaultpassword")
+#     activation_token = models.CharField(max_length=64, unique=True, default=uuid.uuid4().hex)  # Genera un token único
 
 
 
@@ -57,4 +58,4 @@ class Reserva(models.Model):
         unique_together = ("cabana", "fecha_reserva")
 
     def __str__(self):
-        return f"Reserva de {self.usuario.nombre} - {self.cabana.nombre} - {self.fecha_reserva}"
+        return f"Reserva de {self.cabana.nombre} - {self.fecha_reserva}"

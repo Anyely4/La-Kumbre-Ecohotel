@@ -98,81 +98,113 @@ def caba_wush(request):
 def gracias(request):
     return render(request, 'gracias.html')
 
+from .forms import FormularioRegistro
 
 def registro(request):
     if request.method == "POST":
-        nombre = request.POST["nombre"]
-        correo = request.POST.get("correo", "")
-        telefono = request.POST["telefono"]
-        contraseña = request.POST.get("contraseña", "")
-        confirmar_contraseña = request.POST.get("confirmar_contraseña", "") 
+        form = FormularioRegistro(request.POST)
+        if form.is_valid():
+            user = form.save()
+            messages.success(request, "Registro exitoso, Por favor inicia sesión")
+            return redirect('iniciar_sesion')
+        else:
+            for field in form.errors:
+                for error in form[field].errors:
+                    messages.error(request, f"{field}: {error}")
+    return render(request, 'registro.html', {'register_mode': True})
 
-
-        print("Contraseña ingresada:", contraseña)
-        print("Confirmar contraseña ingresada:", confirmar_contraseña)
-
-
-        if contraseña != confirmar_contraseña:
-            messages.error(request, "Las contraseñas no coinciden.")
-            return redirect("registro")
-
-        usuario = Usuario.objects.create(
-            nombre=nombre,
-            correo=correo,
-            telefono=telefono,
-            contraseña=make_password(contraseña) # Idealmente debes encriptar la contraseña
-        )
-        usuario.save()
-        
-
-        return redirect("iniciar_sesion") 
-
-        # Enviar correo de activación
-        subject = "Activa tu cuenta"
-        activation_link = f"http://127.0.0.1:8000/activar/{usuario.activation_token}/"
-        message = f"Hola {nombre},\n\nHaz clic en el siguiente enlace para activar tu cuenta:\n{activation_link}"
-        
-        send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [correo])
-        
-        messages.success(request, "Registro exitoso. Revisa tu correo para activar tu cuenta.")
-        return redirect("inicio")  
-
-    return render(request, "registro.html")
-
-
-def activar_cuenta(request, token):
-    try:
-        usuario = Usuario.objects.get(activation_token=token)
-        usuario.is_active = True
-        usuario.activation_token = ""  # Limpia el token después de activarlo
-        usuario.save()
-        return redirect("inicio")  # Redirige a la página de inicio después de activar la cuenta
-    except Usuario.DoesNotExist:
-        return HttpResponse("Token inválido o expirado", status=400)
-    
-
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth import login as auth_login, authenticate, logout
 
 def iniciar_sesion(request):
     if request.method == "POST":
-        correo = request.POST.get("correo")
-        contraseña = request.POST.get("contraseña")
-
-        try:
-            usuario = Usuario.objects.get(correo=correo)
-            
-            if check_password(contraseña, usuario.contraseña):
-                request.session["usuario_id"] = usuario.id  # Guardamos el ID del usuario en sesión
-                request.session["correo"] = usuario.correo  # Guardamos el correo en sesión
-                return redirect(reverse("inicio"))
-
-
+        form = AuthenticationForm(request, data=request.POST)
+        if form.is_valid():
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password')
+            user = authenticate(username=username, password=password)
+            if user is not None:
+                auth_login(request, user)
+                return redirect('inicio')
             else:
-                return render(request, "iniciar_sesion.html", {"error": "Contraseña incorrecta."})
+                messages.error(request, "Usuario o contraseña incorrectos")
+        else:
+            messages.error(request, "Usuario o contraseña incorrectos")
+    return render(request, 'iniciar_sesion.html', {'register_mode': False})
 
-        except Usuario.DoesNotExist:
-            return render(request, "iniciar_sesion.html", {"error": "Usuario no encontrado."})
 
-    return render(request, "iniciar_sesion.html")
+# def registro(request):
+#     if request.method == "POST":
+#         nombre = request.POST["nombre"]
+#         correo = request.POST.get("correo", "")
+#         telefono = request.POST["telefono"]
+#         contraseña = request.POST.get("contraseña", "")
+#         confirmar_contraseña = request.POST.get("confirmar_contraseña", "") 
+
+
+#         print("Contraseña ingresada:", contraseña)
+#         print("Confirmar contraseña ingresada:", confirmar_contraseña)
+
+
+#         if contraseña != confirmar_contraseña:
+#             messages.error(request, "Las contraseñas no coinciden.")
+#             return redirect("registro")
+
+#         usuario = Usuario.objects.create(
+#             nombre=nombre,
+#             correo=correo,
+#             telefono=telefono,
+#             contraseña=make_password(contraseña) # Idealmente debes encriptar la contraseña
+#         )
+#         usuario.save()
+        
+
+#         return redirect("iniciar_sesion") 
+
+#         # Enviar correo de activación
+#         subject = "Activa tu cuenta"
+#         activation_link = f"http://127.0.0.1:8000/activar/{usuario.activation_token}/"
+#         message = f"Hola {nombre},\n\nHaz clic en el siguiente enlace para activar tu cuenta:\n{activation_link}"
+        
+#         send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [correo])
+        
+#         messages.success(request, "Registro exitoso. Revisa tu correo para activar tu cuenta.")
+#         return redirect("inicio")  
+
+#     return render(request, "registro.html")
+
+
+# def activar_cuenta(request, token):
+#     try:
+#         usuario = Usuario.objects.get(activation_token=token)
+#         usuario.is_active = True
+#         usuario.activation_token = ""  # Limpia el token después de activarlo
+#         usuario.save()
+#         return redirect("inicio")  # Redirige a la página de inicio después de activar la cuenta
+#     except Usuario.DoesNotExist:
+#         return HttpResponse("Token inválido o expirado", status=400)
+    
+
+
+# def iniciar_sesion(request):
+#     if request.method == "POST":
+#         correo = request.POST.get("correo")
+#         contraseña = request.POST.get("contraseña")
+
+#         try:
+#             usuario = Usuario.objects.get(correo=correo)
+            
+#             if check_password(contraseña, usuario.contraseña):
+#                 request.session["usuario_id"] = usuario.id  # Guardamos el ID del usuario en sesión
+#                 request.session["correo"] = usuario.correo  # Guardamos el correo en sesión
+#                 return redirect(reverse("inicio"))
+#             else:
+#                 return render(request, "iniciar_sesion.html", {"error": "Contraseña incorrecta."})
+
+#         except Usuario.DoesNotExist:
+#             return render(request, "iniciar_sesion.html", {"error": "Usuario no encontrado."})
+
+#     return render(request, "iniciar_sesion.html")
 
 
 def logout_perfil(request):
@@ -181,53 +213,48 @@ def logout_perfil(request):
 
 
 def hacer_reserva(request):
-    # primero: hay que mirar si el usuario existe, porque si no pailas
-    usuario_id = request.session.get("usuario_id")
-    if not usuario_id:
-        messages.error(request, "Debes iniciar sesión para hacer una reserva.")
-        return redirect("iniciar_sesion")
-
-    try:
-        usuario = Usuario.objects.get(id=usuario_id)
-    except Usuario.DoesNotExist:
-        messages.error(request, "Usuario no encontrado.")
-        return redirect("iniciar_sesion")
-
     cabanas = Cabana.objects.all()
-    
     reservas = Reserva.objects.values("cabana_id", "fecha_reserva")
     fechas_ocupadas = {}
 
     for reserva in reservas:
         cabana_id = str(reserva["cabana_id"])
         fecha = reserva["fecha_reserva"].strftime("%Y-%m-%d")
-
+        
         if cabana_id not in fechas_ocupadas:
             fechas_ocupadas[cabana_id] = []
         fechas_ocupadas[cabana_id].append(fecha)
 
     if request.method == "POST":
+        if not request.user.is_authenticated:
+            messages.error(request, "Debes iniciar sesión para hacer una reserva.")
+            return redirect("iniciar_sesion")
+
+        try:
+            usuario = Usuario.objects.get(usuario=request.user)
+        except Usuario.DoesNotExist:
+            messages.error(request, "Usuario no encontrado.")
+            return redirect("iniciar_sesion")
+
         cabana_id = request.POST.get("cabana")
         fecha_reserva = request.POST.get("fecha_reserva")
         numero_personas = request.POST.get("numero_personas")
         telefono = request.POST.get("telefono")
         comentarios = request.POST.get("comentarios")
 
-        # miramos si la fecha si es apta para reservar la cabaña que elija el usuario
         if date.fromisoformat(fecha_reserva) < date.today():
             messages.error(request, "No puedes reservar una fecha pasada.")
-            return redirect("reservas") 
+            return redirect("reservas")
 
         try:
             cabana = Cabana.objects.get(id=cabana_id)
         except Cabana.DoesNotExist:
             messages.error(request, "Cabaña no encontrada.")
-            return redirect("reservas")  
+            return redirect("reservas")
 
-        # verificamos si la cabaña ya esta ocupada
         if fecha_reserva in fechas_ocupadas.get(str(cabana_id), []):
             messages.error(request, "Esta cabaña ya está reservada en esa fecha.")
-            return redirect("reservas")  
+            return redirect("reservas")
 
         try:
             reserva = Reserva.objects.create(
@@ -240,11 +267,10 @@ def hacer_reserva(request):
                 estado="pendiente"
             )
             
-            # aqui vamos a manejar la parte de envios de correos al administrador que este 
             send_mail(
                 "Nueva Reserva Solicitada",
                 f"Un usuario ha solicitado una reserva:\n\n"
-                f"Usuario: {usuario.nombre}\n"
+                f"Usuario: {request.user.username}\n"
                 f"Cabaña: {cabana.nombre}\n"
                 f"Fecha: {fecha_reserva}\n"
                 f"Número de Personas: {numero_personas}\n"
@@ -257,17 +283,16 @@ def hacer_reserva(request):
             )
 
             messages.success(request, "Reserva enviada. Espera la confirmación del administrador.")
-            return redirect("reservas") 
+            return redirect("reservas")
         
         except Exception as e:
             messages.error(request, f"Error al crear la reserva: {str(e)}")
-            return redirect("reservas")  
+            return redirect("reservas")
 
     return render(request, "reservas.html", {
-        "cabanas": cabanas, 
+        "cabanas": cabanas,
         "fechas_ocupadas": json.dumps(fechas_ocupadas)
     })
-
 
 def obtener_fechas_ocupadas(request, cabana_id):
     reservas = Reserva.objects.filter(cabana_id=cabana_id, estado="aprobada").values_list("fecha_reserva", flat=True)
