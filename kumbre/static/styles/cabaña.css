@@ -1,0 +1,69 @@
+body{
+    background-image: url('/static/img/dji_fly_20230711_174052_291_1689395541244_photo.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
+    background-attachment: fixed;
+    position: relative;
+}
+body:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Color negro con 50% de opacidad */
+    z-index: -1; 
+}
+.container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Tres columnas de igual tamaño */
+    gap: 20px; /* Espaciado entre las celdas del grid */
+    width: 100%;
+    height: 700px;
+    padding: 20px;
+}
+
+.section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0);
+}
+
+
+.image-box {
+    text-align: center;
+}
+
+.image-box img {
+    width: 250px;
+    height: 250px;
+    border-radius: 10px;
+    box-shadow: 4px 4px 15px rgba(197, 196, 196, 0.308); /* Sombra de la caja */
+}
+
+h1{
+    font-size: 1.5rem;
+    color: white;
+    text-align: center;
+}
+.image-box h2 {
+    margin-top: 5px;
+    color: white;
+}
+.section_middle{
+    margin-top: 20px;
+    color: white;
+}
+@media (max-width: 768px) {
+    .container {
+        grid-template-columns: 1fr; /* En pantallas pequeñas, solo una columna */
+        height: auto;
+    }
+    
+    .section {
+        flex-direction: column;
+    }
+}

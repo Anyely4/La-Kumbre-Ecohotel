@@ -1,0 +1,191 @@
+.frase{
+    background-image: url('/static/img/dji_fly_20230711_174052_291_1689395541244_photo.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
+    background-attachment: fixed;
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    height: 530px;
+}
+
+.frase::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Color negro con 50% de opacidad */
+  z-index: -1; 
+}
+
+.tit h1{
+  color: white;
+  font-size: 2.3em;
+  margin:auto;
+  align-items: center;
+  width: 500px;
+  text-align: center;
+}
+
+
+.fotos {
+  display: flex;
+  justify-content: center; 
+  align-items: center;
+  gap: 20px; 
+  margin: 60px auto 10px auto;
+}
+
+.fotos img {
+  width: 180px; 
+  height: 180px; 
+  border-radius: 20px;
+  box-shadow: 0 6px 30px rgba(215, 224, 91, 0.623);
+}
+.fotos img:hover{
+  width: 190px;
+  height: 190px;
+}
+
+.button-container {
+  text-align: center;
+  margin: 50px auto 140px auto;
+}
+
+.creative-button {
+  background: linear-gradient(45deg, #32CD32, #e9ac5c); 
+  font-family: 'Times New Roman', Times, serif;
+  border: none;
+  border-radius: 50px;
+  padding: 15px 30px;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  position: relative;
+  overflow: hidden;
+  margin: 10px auto auto auto;
+}
+
+.creative-button:hover {
+  background: linear-gradient(45deg, #f3ae53, #32CD32); 
+  transform: scale(1.1);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.582);
+}
+
+
+.creative-button:active {
+  transform: scale(1);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+}
+
+.creative-button::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 200%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.2);
+  transform: skewX(-45deg);
+  transition: all 0.5s ease;
+  pointer-events: none;
+}
+
+.creative-button:hover::before {
+  left: 100%;
+}
+
+
+
+
+
+.nosotros{
+  background-color: rgba(133, 175, 154, 0.281);
+  height: 610px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); 
+  margin: 0px;
+}
+.video{
+  margin: auto;
+  box-shadow: 0 6px 30px rgba(91, 224, 157, 0.623);
+}
+.video video{
+  height: 400px;
+  width: 350px;
+}
+.medio{
+  width: 350px;
+  margin: 30px auto auto auto;
+  height: 470px;
+}
+.medio p{
+  font-family: 'Times New Roman', Times, serif;
+  font-size: large;
+  text-align: justify;
+}
+
+.imagenes{
+  display: flex;
+  width: 300px;
+  height: 500px;
+  margin-top: 100px;
+}
+
+.imagenes img{
+  width: 150px;
+  height: 200px;
+  border-radius: 20px;
+}
+.arri img{
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); 
+
+
+}
+.abajo img{
+  width: 250px;
+  height: 400px;
+}
+
+.b-abajo{
+  background-color: rgba(133, 175, 154, 0.281);
+  height: 200px;
+  margin-top: 0px;
+}
+
+
+.mapa{
+  height: 500px;
+  display: flex;
+}
+.text{
+  width: 80%;
+  background-color: rgb(179, 209, 161);
+}
+.text h1{
+  font-size: 2.5rem;
+  margin: 30px 10px;
+  color: #066344;
+}
+.text p{
+  width: 400px;
+  margin: auto 10px;
+  font-size: 1.3rem;
+  text-align: justify;
+}
+.text img{
+  width: 180px;
+  height: 180px;
+  transition: transform 0.3s ease;
+  margin: 10px 120px; 
+
+}
+.text img:hover{
+  transform: rotate(15deg);
+}

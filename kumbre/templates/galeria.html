@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}CGaleria{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'styles/galeria.css' %}">
+
+<div class="todo">
+    <div class="titulo1">
+        <svg width="500" height="150">
+        <defs>
+            <path id="curve" d="M 50,120 A 220,75 0 0,1 450,120" fill="transparent"/>
+        </defs>
+        <text font-size="35" font-weight="bold" fill="black">
+            <textPath href="#curve" startOffset="50%" text-anchor="middle">
+                Conoce Nuestras Maravillas
+            </textPath>
+        </text>
+        </svg>
+    </div>
+    <br><br><br>
+    <div class="galeria">
+            <div class="imagen-container">
+                <img src="{% static 'img/ca1.png' %}" alt="Imagen " class="imagen">
+                <div class="curva-texto">Spots</div>
+            </div>
+            <div class="imagen-container">
+                <img src="{% static 'img/cabañasgaleria123.jpg' %}" alt="Imagen " class="imagen">
+                <div class="curva-texto">Cabañas</div>
+            </div>
+            <div class="imagen-container">
+                <img src="{% static 'img/carro.png' %}" alt="Imagen " class="imagen">
+                <div class="curva-texto">Carro</div>
+            </div>
+            <div class="imagen-container">
+                <img src="{% static 'img/comida.jpg' %}" alt="Imagen " class="imagen">
+                <div class="curva-texto">Comida</div>
+            </div>
+            <div class="imagen-container">
+                <img src="{% static 'img/fototabi4.jpg' %}" alt="Imagen 2" class="imagen">
+                <div class="curva-texto">Mayas</div>
+            </div>
+            <div class="imagen-container">
+                <img src="{% static 'img/fogata.png' %}" alt="Imagen 2" class="imagen">
+                <div class="curva-texto">Fogata</div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="todo1">
+    <div class="fotoscuatro">
+        <img src="{% static 'img/galeria1.jpg' %}" alt="Imagen 2" class="imagen2">
+        <img src="{% static 'img/wush1111.jpg' %}" alt="Imagen 2" class="imagen2">
+        <img src="{% static 'img/cacafetal.jpg' %}" alt="Imagen 2" class="imagen2">
+        <img src="{% static 'img/galeria7.jpg' %}" alt="Imagen 2" class="imagen2">
+    </div>
+    <div class="grid-container">
+        <img src="{% static 'img/geisha1.jpg' %}" alt="Imagen 2" class="grid-item">
+        <img src="{% static 'img/cabour.jpg' %}" alt="Imagen 2" class="grid-item">
+        <img src="{% static 'img/mayas.jpg' %}" alt="Imagen 2" class="grid-item">
+        <img src="{% static 'img/wush4.jpg' %}" alt="Imagen 2" class="grid-item">
+        <div class="grid-item text-center">"Naturaleza y aventura en un solo lugar."</div>
+        <img src="{% static 'img/111.jpg' %}" alt="Imagen 2" class="grid-item">
+        <img src="{% static 'img/444.jpg' %}" alt="Imagen 2" class="grid-item">
+        <img src="{% static 'img/bourbon111.jpg' %}" alt="Imagen 2" class="grid-item">
+        <img src="{% static 'img/fot5.jpg' %}" alt="Imagen 2" class="grid-item">
+    </div>
+</div>
+
+{% endblock %}

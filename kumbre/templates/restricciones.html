@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}CGaleria{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'styles/restricciones.css' %}">
+
+
+<div class="titulo1">
+    <svg width="500" height="150">
+    <defs>
+        <path id="curve" d="M 50,120 A 220,75 0 0,1 450,120" fill="transparent"/>
+    </defs>
+    <text font-size="35" font-weight="bold" fill="black">
+        <textPath href="#curve" startOffset="50%" text-anchor="middle">
+            Restricciones La Kumbre
+        </textPath>
+    </text>
+    </svg>
+</div>
+
+    <div class="container">
+        <!-- Primera sección -->
+        <div class="section side">
+            <div class="box box1">
+                <p>No se permite el consumo de sustancias ilícitas dentro de las instalaciones.</p>
+            </div>
+            <br>
+            <div class="box box1">
+                <p>Está prohibido hacer fogatas o encender fuegos abiertos fuera de las áreas autorizadas</p>
+            </div>
+        </div>
+
+        <!-- Sección central -->
+        <div class="section middle">
+            <div class="box box1">
+                <p>No se permite el ingreso con armas de fuego o cualquier objeto peligroso.</p>
+            </div>
+        </div>
+
+        <!-- Segunda sección (igual a la primera) -->
+        <div class="section side">
+            <div class="box box1">
+                <p>Se prohíbe la extracción de plantas, piedras o cualquier elemento natural del ecosistema.</p>
+            </div>
+            <br>
+            <div class="box box1">
+                <p>Desecha la basura en los lugares designadosy respeta la separación de residuos.</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+
+{% endblock %}

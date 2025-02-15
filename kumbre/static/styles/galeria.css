@@ -1,0 +1,124 @@
+.titulo1{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: -20px;
+
+}
+
+svg text {
+    fill: #0a6e5a; /* Verde azulado oscuro */
+    display: inline-block;
+    animation: wave 3s infinite linear;
+}
+
+@keyframes wave {
+    0%, 100% { transform: rotate(0deg); }
+    50% { transform: rotate(3deg); }
+}
+
+.todo {
+    background: linear-gradient(to bottom, #c6f1ee60, #337057d8);
+    justify-content: center;
+    align-items: center;
+    min-height: auto;
+    margin: auto;
+    padding: 20px;
+}
+
+.galeria {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 60px;
+    text-align: center;
+    max-width: 100%;
+    width: 100%;
+    margin-bottom: 60px;    
+}
+
+/* Contenedor de cada imagen y texto */
+.imagen-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+}
+
+/* Imágenes circulares */
+.imagen {
+    width: 250px;
+    height: 250px;
+    object-fit: cover;
+    border-radius: 50%; /* Hace las imágenes redondas */
+    border: 2px solid #333;
+}
+.imagen:hover {
+    transform: scale(1.5);
+    cursor: pointer;
+}
+
+.todo1{
+    background: linear-gradient(to bottom, #337057d8, #c6f1ee60);
+}
+.fotoscuatro{
+    display: flex;
+    margin: 0px auto;
+    justify-content: space-around;
+}
+.imagen2{
+    width: 200px;
+    height: 300px;
+    margin-top: 50px;
+    margin-bottom: 60px;
+    border-radius: 20px;
+}
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    justify-content: space-around;
+    max-width: 90%;
+    margin-left: 8%;
+}
+
+.grid-item {
+    width: 100%;
+    border-radius: 15px;
+    height: 300px;
+    width:300px;
+    margin-bottom: 40px;
+}
+
+.text-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.6em;
+    font-weight: bold;
+    text-align: center;
+    padding: 20px;
+}
+
+@media (max-width: 900px) {
+    .grid-container {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+@media (max-width: 600px) {
+    .grid-container {
+        grid-template-columns: 1fr; /* Se convierte en una columna */
+    }
+}
+
+/* RESPONSIVE DESIGN */
+@media (max-width: 800px) {
+    .galeria {
+        grid-template-columns: 1fr; /* Se convierte en una columna */
+    }
+}
+@media (max-width: 567px){
+    svg text {
+        font-size: 1.5em;
+        margin: 10px;
+    }
+}

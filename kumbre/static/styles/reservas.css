@@ -1,0 +1,86 @@
+/* Estilos generales */
+.todo123 {
+    background-color: #f1fcf6;
+    margin: 0;
+    padding: 20px;
+    justify-content: center;
+    align-items: center;
+    height: auto;
+}
+h2 {
+    font-size: 2em;
+    text-align: center;
+    margin-bottom: 20px;
+    color: rgb(0, 95, 95);
+}
+/* Contenedor del formulario */
+form {
+    background-color: rgb(201, 228, 184);
+    padding: 20px;
+    margin-top: 40px;
+    margin-bottom: 40px;
+    margin: 20px auto;
+    border-radius: 8px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    width: 350px;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Estilos de etiquetas */
+label {
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+/* Estilos de los inputs y textarea */
+input, select, textarea {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+/* Estilo especial para el textarea */
+textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+/* Estilos del botón */
+.boton3 {
+    background: #00302d;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 15px;
+}
+
+.boton3:hover {
+    background: #077768;
+}
+
+/* Estilos para los mensajes */
+.nav {
+    list-style: none;
+    padding: 0;
+}
+
+.lis, .mensaje {
+    background-color: #d4edda;
+    color: #155724;
+    padding: 10px;
+    margin-top: 10px;
+    border-radius: 5px;
+    border: 1px solid #c3e6cb;
+}
+.flatpickr-day.disabled {
+    background: #ff4d4d !important; /* Rojo */
+    color: white !important;
+    border-radius: 50%;
+}

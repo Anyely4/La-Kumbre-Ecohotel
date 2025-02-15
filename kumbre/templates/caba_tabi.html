@@ -1,0 +1,115 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Cabañas{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'styles/caba_tabi.css' %}">
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cabaña Tabi</title>
+
+
+    <div class="titulo2">
+        <h1>Bienvenidos a la cabaña Tabi</h1>
+    </div>
+    <div class="container">
+        <div class="box">
+            <img src="{% static 'img/cabatabi.jpg' %}" alt="Imagen 2" class="imagen">
+        </div>
+        <div class="box">
+            <div class="text">
+                <h2></h2>
+                <br>
+                
+                * Esta cabaña es ideal para grupos y familias, con capacidad para hasta 12 personas, ofreciendo comodidad y un ambiente acogedor.
+                <br>
+                <br>
+                * Entre lunes y jueves, la tarifa es de $380.000 (por pareja) y persona adicional $60.000
+                Los días viernes, sábado, domingo y festivos, la tarifa es de $450.000 (por pareja) y persona adicional $80.000.
+                <br>
+                <br>
+                * Al llegar, te recibiremos con dos cafés de bienvenida y una botella de vino de cortesía. Disfruta de dos desayunos incluidos y relájate en nuestra acogedora zona de descanso.
+               </div>
+        </div>
+        <div class="box">
+            <div class="text">
+                <h2>Tu reserva incluye:</h2>
+                <br>
+                * 2 Cafés de bienvenida
+                <br>
+                * 2 Desayunos
+                <br>
+                * Ingreso al mirador
+                <br>
+                * Malla catamarán
+                <br>
+                * Ducha y jacuzzi (para 8 personas)
+                <br>
+                * Wi-Fi
+                <br>
+                * Fogata y malvaviscos
+                <br>
+                * Souvenir
+                <br>
+                * Café al gusto
+                <br>
+                * Parqueadero privado
+                <br>
+                * Parlante bluetooth
+                <br>
+                * Jabón artesanal</div>
+        </div>
+        <div class="box">
+            <img src="{% static 'img/salatabi.jpg' %}" alt="Imagen 2" class="imagen">
+        </div>
+        <div class="box">
+            <img src="{% static 'img/camatabi1.jpg' %}" alt="Imagen 2" class="imagen">
+        </div>
+        <div class="box">
+            <div class="text">
+                <h2>Nuestra cabaña esta equipada con:</h2>
+                <br>
+                * 3 camas de 1.40 m
+                <br>
+                 * 1 cama de 1.60 m
+                 <br>
+                * Nevera
+                <br>
+                * Cafetera
+                <br>
+                * Jacuzzi para 8 personas
+                <br>
+                * Zona de fogata
+                <br>
+                * Malla catamarán
+                <br>
+                * Sofácama»</div>
+        </div>
+    </div>
+
+    <div class="galeria">
+        <div class="imagen-container">
+            <img src="{% static 'img/111.jpg' %}" alt="Imagen 2" class="imagen1">
+        </div>
+        <div class="imagen-container">
+            <img src="{% static 'img/222.jpg' %}" alt="Imagen 2" class="imagen1">
+        </div>
+        <div class="imagen-container">
+            <img src="{% static 'img/333.jpg' %}" alt="Imagen 2" class="imagen1">
+        </div>
+        <div class="imagen-container">
+            <img src="{% static 'img/fototabi4.jpg' %}" alt="Imagen 2" class="imagen1">
+        </div>
+        <div class="imagen-container">
+            <img src="{% static 'img/fototabi7.jpg' %}" alt="Imagen 2" class="imagen1">
+        </div>
+        <div class="imagen-container">
+            <img src="{% static 'img/fototabi5.jpg' %}" alt="Imagen 2" class="imagen1">
+        </div>
+    </div>
+
+{% endblock %}

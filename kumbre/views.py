@@ -1,0 +1,281 @@
+from django.shortcuts import render, redirect
+from django.core.mail import send_mail
+from django.contrib import messages
+from .models import Sugerencia
+from .forms import SugerenciaForm
+from django.contrib.auth.models import User
+from django.contrib.auth import login
+from .models import Usuario
+from django.conf import settings
+from django.http import HttpResponse
+from django.contrib.auth.hashers import make_password, check_password
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import redirect
+from django.http import HttpResponseRedirect
+from django.urls import reverse 
+from .models import Reserva, Cabana
+from datetime import date
+from django.http import JsonResponse
+from .models import Reserva
+import json
+from datetime import datetime
+from django.core.mail import send_mail
+from .forms import ReservaForm
+from django.contrib.auth import logout
+
+def sugerencias(request):
+    if request.method == 'POST':
+        form = SugerenciaForm(request.POST)
+        if form.is_valid():
+            sugerencia = form.save()
+            send_mail(
+                'Nueva Sugerencia Recibida',
+                f"Categoría: {sugerencia.categoria}\n"
+                f"Nombre: {sugerencia.nombre}\n"
+                f"Correo: {sugerencia.correo}\n"
+                f"Sugerencia:\n{sugerencia.sugerencia}",
+                'anyelyo1@gmail.com',  # Correo del remitente
+                ['anyelyho1@gmail.com'],  # Correo del destinatario
+                fail_silently=False,
+            )
+            messages.success(request,"Tu sugerencia ha sido enviada con éxito.")
+            return redirect('sugerencias')  # ✅ Debe ser el nombre de la vista, NO un archivo HTML
+
+    else:
+        form = SugerenciaForm()
+
+    return render(request, 'sugerencias.html', {'form': form})  # ✅ Asegurar el nombre correcto
+
+
+def inicio(request):
+    usuario_id = request.session.get("usuario_id")
+    correo = request.session.get("correo")
+
+    return render(request, "inicio.html", {"correo": correo})
+
+def quienes_somos(request):
+    return render(request, 'quienes_somos.html')
+
+def nosotros(request):
+    return render(request, 'nosotros.html')
+
+def mapa(request):
+    return render(request, 'mapa.html')
+
+def galeria(request):
+    return render(request, 'galeria.html')
+
+def restaurante(request):
+    return render(request, 'restaurante.html')
+
+def atracciones(request):
+    return render(request, 'atracciones.html')
+
+def gastronomia(request):
+    return render(request, 'gastronomia.html')
+
+def restricciones(request):
+    return render(request, 'restricciones.html')
+
+def cabañas(request):
+    return render(request, 'cabañas.html')
+
+def caba_tabi(request):
+    return render(request, 'caba_tabi.html')
+
+def caba_geisha(request):
+    return render(request, 'caba_geisha.html')
+
+def caba_bourbon(request):
+    return render(request, 'caba_bourbon.html')
+
+def caba_cafetal(request):
+    return render(request, 'caba_cafetal.html')
+
+def caba_wush(request):
+    return render(request, 'caba_wush.html')
+
+def gracias(request):
+    return render(request, 'gracias.html')
+
+
+def registro(request):
+    if request.method == "POST":
+        nombre = request.POST["nombre"]
+        correo = request.POST.get("correo", "")
+        telefono = request.POST["telefono"]
+        contraseña = request.POST.get("contraseña", "")
+        confirmar_contraseña = request.POST.get("confirmar_contraseña", "") 
+
+
+        print("Contraseña ingresada:", contraseña)
+        print("Confirmar contraseña ingresada:", confirmar_contraseña)
+
+
+        if contraseña != confirmar_contraseña:
+            messages.error(request, "Las contraseñas no coinciden.")
+            return redirect("registro")
+
+        usuario = Usuario.objects.create(
+            nombre=nombre,
+            correo=correo,
+            telefono=telefono,
+            contraseña=make_password(contraseña) # Idealmente debes encriptar la contraseña
+        )
+        usuario.save()
+        
+
+        return redirect("iniciar_sesion") 
+
+        # Enviar correo de activación
+        subject = "Activa tu cuenta"
+        activation_link = f"http://127.0.0.1:8000/activar/{usuario.activation_token}/"
+        message = f"Hola {nombre},\n\nHaz clic en el siguiente enlace para activar tu cuenta:\n{activation_link}"
+        
+        send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [correo])
+        
+        messages.success(request, "Registro exitoso. Revisa tu correo para activar tu cuenta.")
+        return redirect("inicio")  
+
+    return render(request, "registro.html")
+
+
+def activar_cuenta(request, token):
+    try:
+        usuario = Usuario.objects.get(activation_token=token)
+        usuario.is_active = True
+        usuario.activation_token = ""  # Limpia el token después de activarlo
+        usuario.save()
+        return redirect("inicio")  # Redirige a la página de inicio después de activar la cuenta
+    except Usuario.DoesNotExist:
+        return HttpResponse("Token inválido o expirado", status=400)
+    
+
+
+def iniciar_sesion(request):
+    if request.method == "POST":
+        correo = request.POST.get("correo")
+        contraseña = request.POST.get("contraseña")
+
+        try:
+            usuario = Usuario.objects.get(correo=correo)
+            
+            if check_password(contraseña, usuario.contraseña):
+                request.session["usuario_id"] = usuario.id  # Guardamos el ID del usuario en sesión
+                request.session["correo"] = usuario.correo  # Guardamos el correo en sesión
+                return redirect(reverse("inicio"))
+
+
+            else:
+                return render(request, "iniciar_sesion.html", {"error": "Contraseña incorrecta."})
+
+        except Usuario.DoesNotExist:
+            return render(request, "iniciar_sesion.html", {"error": "Usuario no encontrado."})
+
+    return render(request, "iniciar_sesion.html")
+
+
+def logout_perfil(request):
+    logout(request) # Elimina la sesión del usuario
+    return redirect("inicio") 
+
+
+def hacer_reserva(request):
+    # primero: hay que mirar si el usuario existe, porque si no pailas
+    usuario_id = request.session.get("usuario_id")
+    if not usuario_id:
+        messages.error(request, "Debes iniciar sesión para hacer una reserva.")
+        return redirect("iniciar_sesion")
+
+    try:
+        usuario = Usuario.objects.get(id=usuario_id)
+    except Usuario.DoesNotExist:
+        messages.error(request, "Usuario no encontrado.")
+        return redirect("iniciar_sesion")
+
+    cabanas = Cabana.objects.all()
+    
+    reservas = Reserva.objects.values("cabana_id", "fecha_reserva")
+    fechas_ocupadas = {}
+
+    for reserva in reservas:
+        cabana_id = str(reserva["cabana_id"])
+        fecha = reserva["fecha_reserva"].strftime("%Y-%m-%d")
+
+        if cabana_id not in fechas_ocupadas:
+            fechas_ocupadas[cabana_id] = []
+        fechas_ocupadas[cabana_id].append(fecha)
+
+    if request.method == "POST":
+        cabana_id = request.POST.get("cabana")
+        fecha_reserva = request.POST.get("fecha_reserva")
+        numero_personas = request.POST.get("numero_personas")
+        telefono = request.POST.get("telefono")
+        comentarios = request.POST.get("comentarios")
+
+        # miramos si la fecha si es apta para reservar la cabaña que elija el usuario
+        if date.fromisoformat(fecha_reserva) < date.today():
+            messages.error(request, "No puedes reservar una fecha pasada.")
+            return redirect("reservas") 
+
+        try:
+            cabana = Cabana.objects.get(id=cabana_id)
+        except Cabana.DoesNotExist:
+            messages.error(request, "Cabaña no encontrada.")
+            return redirect("reservas")  
+
+        # verificamos si la cabaña ya esta ocupada
+        if fecha_reserva in fechas_ocupadas.get(str(cabana_id), []):
+            messages.error(request, "Esta cabaña ya está reservada en esa fecha.")
+            return redirect("reservas")  
+
+        try:
+            reserva = Reserva.objects.create(
+                usuario=usuario,
+                cabana=cabana,
+                fecha_reserva=fecha_reserva,
+                numero_personas=numero_personas,
+                telefono=telefono,
+                comentarios=comentarios,
+                estado="pendiente"
+            )
+            
+            # aqui vamos a manejar la parte de envios de correos al administrador que este 
+            send_mail(
+                "Nueva Reserva Solicitada",
+                f"Un usuario ha solicitado una reserva:\n\n"
+                f"Usuario: {usuario.nombre}\n"
+                f"Cabaña: {cabana.nombre}\n"
+                f"Fecha: {fecha_reserva}\n"
+                f"Número de Personas: {numero_personas}\n"
+                f"Teléfono: {telefono}\n"
+                f"Comentarios: {comentarios}\n\n"
+                "Revisa el panel de administración para aprobar o rechazar la reserva.",
+                "anyelyho1@gmail.com",
+                ["anyelyho1@gmail.com"],
+                fail_silently=False,
+            )
+
+            messages.success(request, "Reserva enviada. Espera la confirmación del administrador.")
+            return redirect("reservas") 
+        
+        except Exception as e:
+            messages.error(request, f"Error al crear la reserva: {str(e)}")
+            return redirect("reservas")  
+
+    return render(request, "reservas.html", {
+        "cabanas": cabanas, 
+        "fechas_ocupadas": json.dumps(fechas_ocupadas)
+    })
+
+
+def obtener_fechas_ocupadas(request, cabana_id):
+    reservas = Reserva.objects.filter(cabana_id=cabana_id, estado="aprobada").values_list("fecha_reserva", flat=True)
+    fechas_ocupadas = list(reservas)  # Convertimos a lista
+    return JsonResponse({"fechas_ocupadas": fechas_ocupadas})
+
+
+def fechas_ocupadas(request, cabana_id):
+    reservas = Reserva.objects.filter(cabana_id=cabana_id).values_list("fecha_reserva", flat=True)
+    fechas_ocupadas = [fecha.strftime("%Y-%m-%d") for fecha in reservas]
+    return JsonResponse({"fechas_ocupadas": fechas_ocupadas})

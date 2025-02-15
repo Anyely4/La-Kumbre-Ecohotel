@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Cabañas{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'styles/cabaña.css' %}">
+
+<div class="container">
+    <div class="section">
+        <div class="image-box">
+            <a href="/caba_tabi">
+                <img src="/static/img/cabatabi.jpg" alt="Cabaña Tabi">
+                <h2>Cabaña Tabi</h2>
+            </a>
+        </div>
+        <br><br><br>
+        <div class="image-box">
+            <a href="/caba_bourbon">
+                <img src="/static/img/cabour.jpg" alt="Cabaña Bourbon">
+                <h2>Cabaña Bourbon</h2>
+            </a>
+        </div>
+    </div>
+
+    <div class="section_middle">
+        <h1>Explora un rincón mágico y encantador</h1>
+        <h1>La Kumbre del Huila</h1>
+        <h1>Conoce nuestras Cabañas</h1>
+        <br><br><br>
+        <div class="image-box">
+            <a href="/caba_cafetal">
+                <img src="/static/img/cacafetal.jpg" alt="Cabaña Cafetal">
+                <h2>Cabaña Cafetal</h2>
+            </a>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="image-box">
+            <a href="/caba_geisha">
+                <img src="/static/img/cageishaa.jpg" alt="Cabaña Geisha">
+                <h2>Cabaña Geisha</h2>
+            </a>
+        </div>
+        <br><br><br>
+        <div class="image-box">
+            <a href="/caba_wush">
+                <img src="/static/img/wush1111.jpg" alt="Cabaña Wush">
+                <h2>Cabaña Wush</h2>
+            </a>
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock %}

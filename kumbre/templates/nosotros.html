@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} Nosotros {% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'styles/nosotro.css' %}">
+
+<div class="frase">
+    <div class="tit">
+        <h1>Un hermoso paraíso floral en medio de cafetales, en las montañas de Garzón- Huila </h1>
+    </div>
+    <div class="fotos">
+        <img src="{% static 'img/fot1.jpg' %}" alt="Descripción de la imagen">
+        <img src="{% static 'img/fot5.jpg' %}" alt="Descripción de la imagen">
+        <img src="{% static 'img/fot4.jpg' %}" alt="Descripción de la imagen">
+    </div>
+    
+    <div class="button-container">
+        <a href="#mision">
+            <button class="creative-button">Conocenos</button>
+        </a>
+    </div>
+</div>
+<div class="nosotros">
+
+    <div class="video">
+        <video controls>
+            <source src="{% static 'videos/mi_video.mp4' %}" type="video/mp4">
+            Tu navegador no soporta la reproducción de video.
+        </video>
+    </div>
+    <div class="medio">
+        <h1 id="mision">Misión</h1>
+        <br>
+        <p> 
+            La misión de la Kumbre del Huila es ofrecer una experiencia de hospedaje en armonía con la naturaleza, 
+            implementando prácticas ecoamigables que ayuden a fomentar la conciencia, educando a nuestros huéspedes, 
+            y brindar un servicio excepcional y de calidad.
+        </p>
+        <br><br><br>
+        <h1>Visión</h1>
+        <br>
+        <p>
+            Nuestra visión para el año 2026 es visualizarnos como un referente en el territorio huilense, al liderar en 
+           el gremio hotelero, donde la sostenibilidad y el lujo se combinan en perfecta armonía.
+        </p>
+        <div class="button-container">
+            <a href="#map">
+                <button class="creative-button">Ver mas</button>
+            </a>
+        </div>
+    </div>
+
+    <div class="imagenes">
+        <div class="arri">
+            <img src="{% static 'img/any5.png' %}" alt="Descripción de la imagen">
+            <img src="{% static 'img/any4.png' %}" alt="Descripción de la imagen">
+        </div>
+        <div class="abajo">
+            <img src="{% static 'img/any2.png' %}" alt="Descripción de la imagen">
+        </div>
+    </div>
+</div>
+<div class="mapa">
+    <div id="map" style="height: 500px; width: 100%;">
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d19528.7683833545!2d-75.62048063477714!3d2.142254173163125!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e24df0038594927%3A0xb51037d063378047!2sLa%20Kumbre%20del%20Huila!5e0!3m2!1ses!2sco!4v1736440353157!5m2!1ses!2sco" 
+        width="850" height="600" style="border:0;"></iframe>
+    </div>
+    <div class="text">
+        <h1>Como llegar a nosotros.</h1>
+        <p>Estamos ubicados en la vereda Alto san Isidro en Garzón Huila, a 14 kilometros 
+        del casco urbano del casco urbano del municipio.</p>
+        <br>
+        <p>Disfruta de una experiencia inigualabre y atesora momentos inolvidables,conoce 
+        todas las maravillas que la Kumbre tiene reservadas para ti.</p>
+        <img src="{% static 'img/log1.png' %}" alt="Descripción de la imagen">
+    </div>
+</div>
+{% endblock %}

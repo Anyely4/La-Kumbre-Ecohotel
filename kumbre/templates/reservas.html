@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}CGaleria{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'styles/reservas.css' %}">
+<!-- Flatpickr CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<!-- Flatpickr JS -->
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const fechaInput = document.getElementById("fecha_reserva");
+        const cabañaSelect = document.querySelector("select[name='cabaña']");
+
+        function obtenerFechasOcupadas() {
+            const cabañaId = cabañaSelect.value;
+            if (!cabañaId) return;
+
+            fetch(`/fechas_ocupadas/${cabañaId}/`)
+                .then(response => response.json())
+                .then(data => {
+                    let fechasOcupadas = data.fechas_ocupadas || [];
+
+                    // Bloquear fechas en el calendario
+                    fechaInput.addEventListener("input", function () {
+                        if (fechasOcupadas.includes(this.value)) {
+                            alert("Esta fecha ya está ocupada. Por favor, elige otra.");
+                            this.value = "";
+                        }
+                    });
+                });
+        }
+
+        // Cargar fechas cuando el usuario seleccione una cabaña
+        cabañaSelect.addEventListener("change", obtenerFechasOcupadas);
+    });
+</script>
+
+    
+
+<div class="todo123">
+    <h2>Realizar una Reserva</h2>
+
+<!-- Mostrar mensajes de éxito o error -->
+{% if messages %}
+    <ul class="nav">
+        {% for message in messages %}
+            <li class="lis">{{ message }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
+
+<form method="POST" action="{% url 'reservas' %}">
+    {% csrf_token %}
+    
+    <label for="cabaña">Selecciona una Cabaña:</label>
+    <select name="cabana" id="cabana" class="form-control">
+        <option value="">Selecciona una cabaña</option>
+        {% for cabana in cabanas %}
+            <option value="{{ cabana.id }}">{{ cabana.nombre }}</option>
+        {% endfor %}
+    </select>
+    
+    <label for="fecha_reserva">Fecha de Reserva:</label>
+    <input type="date" id="fecha_reserva" name="fecha_reserva" required>
+    
+    <label for="numero_personas">Número de Personas:</label>
+    <input type="number" name="numero_personas" required>
+    
+    <label for="telefono">Teléfono de Contacto:</label>
+    <input type="text" name="telefono" required>
+    
+    <label for="comentarios">Comentarios Adicionales:</label>
+    <textarea name="comentarios"></textarea>
+    
+    <button class="boton3" type="submit">Reservar</button>
+</form>
+
+{% if messages %}
+    {% for message in messages %}
+        <p class="mensaje" style="color: green;">{{ message }}</p>
+    {% endfor %}
+{% endif %}
+
+</div>
+
+
+
+{% endblock %}

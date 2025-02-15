@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Buzon{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'styles/sugerencias.css' %}">
+
+<h2>¡Gracias por tu sugerencia! 📨</h2>
+    <a href="{% url 'sugerencias' %}">Volver al formulario</a>
+
+    {% endblock %}

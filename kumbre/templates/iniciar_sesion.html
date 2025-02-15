@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}gastronomia{% endblock %}
+ 
+{% block content %}
+<link rel="stylesheet" href="{% static 'styles/iniciar_sesion.css' %}">
+
+
+<div class="todo123">
+    <h2>Iniciar Sesión</h2>
+    <div class="container">
+    
+        {% if error %}
+            <p class="error">{{ error }}</p>
+        {% endif %}
+    
+        <form method="POST">
+            {% csrf_token %}
+            <label for="correo">Correo:</label>
+            <input type="email" id="correo" name="correo" required>
+    
+            <label for="contraseña">Contraseña:</label>
+            <input type="password" id="contraseña" name="contraseña" required>
+    
+            <button class="boton12" type="submit">Iniciar Sesión</button>
+        </form>
+    
+        <p class="register-link">¿Aún no tienes cuenta? <a href="{% url 'registro' %}">Regístrate aquí</a></p>
+    </div>
+</div>
+
+
+{% endblock %}

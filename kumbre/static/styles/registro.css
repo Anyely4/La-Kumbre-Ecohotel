@@ -1,0 +1,75 @@
+/* Estilos generales */
+.todo3 {
+    background-color: #f4f4f4;
+    justify-content: center;
+    align-items: center;
+    height: auto;
+    margin: 0;
+    padding: 20px;
+}
+
+/* Contenedor del formulario */
+form {
+    background-color: rgb(201, 228, 184);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px; 
+    height: 500px;
+    margin: auto;
+}
+
+/* Título */
+h2 {
+    font-size: 2em;
+    text-align: center;
+    margin-bottom: 20px;
+    color: rgb(0, 95, 95);
+}
+
+/* Etiquetas */
+label {
+    display: block;
+    margin-top: 10px;
+}
+
+/* Campos de entrada */
+input {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #365a44;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+/* Botón de enviar */
+.boton2{
+    width: 50%;
+    margin-left: 25%;
+    padding: 12px;
+    background: #00302d;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    margin-top: 15px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.boton2:hover {
+    background: #077768;
+}
+
+/* Responsividad */
+@media (max-width: 500px) {
+    form {
+        padding: 15px;
+    }
+
+    input, .boton2 {
+        font-size: 14px;
+        padding: 8px;
+    }
+}

@@ -1,0 +1,70 @@
+
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Inicio - Turismo{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'styles/style.css' %}">
+
+<section>
+    <!-- Sección de imágenes principales -->
+     <div class="contenedor-carrusel">
+        <div class="carrusel">
+                <div class="fotos">
+                    <img src="{% static 'img/DJI_0123.jpg' %}" alt="Imagen 1">
+                    <img src="{% static 'img/image.png' %}" alt="Imagen 2">
+                    <img src="{% static 'img/dji_fly_20230711_174052_291_1689395541244_photo.jpg' %}" alt="Imagen 3">
+                </div>
+                <div class="fotos">
+                    <img src="{% static 'img/ca2.png' %}" alt="Imagen 1">
+                    <img src="{% static 'img/ca1.png' %}" alt="Imagen 2">
+                    <img src="{% static 'img/ca3.png' %}" alt="Imagen 3">
+                </div>
+        </div>      
+            <div class="controls">
+                <button class="control prev">&#9664;</button>
+                <button class="control next">&#9654;</button>
+            </div>
+    </div>
+
+    <div class="container">
+        <!-- Título de la sección -->
+        <div class="section title">
+            <h1>Conoce todas las maravillas que tiene reservadas para ti.</h1>
+        </div>
+
+        <!-- Sección de Cabañas -->
+        <div class="section">
+            <h2>Cabañas</h2>
+            <a href="{% url 'cabañas' %}" >
+                <img src="{% static 'img/cabañas.jpg' %}" alt="Descripción de las cabañas">
+            </a> 
+        </div>
+
+        <!-- Sección de Restaurante -->
+        <div class="section">
+            <h2>Restaurante</h2>
+            <a href="{% url 'gastronomia' %}">
+                <img src="{% static 'img/comida.jpg' %}" alt="Descripción del restaurante">
+            </a>
+        </div>
+
+        <!-- Sección de Atracciones -->
+        <div class="section">
+            <h2>Galeria</h2>
+            <a href="{% url 'galeria' %}" >
+                <img src="{% static 'img/atracciones.jpg' %}" alt="Descripción de las atracciones">
+            </a> 
+        </div>
+    </div>
+</section>
+<!-- {% if user.is_authenticated %}
+    <p>Bienvenido, {{ user.username }}!</p>
+    <a href="{% url 'cerrar_sesion' %}">Cerrar sesión</a>
+{% else %}
+    <a href="{% url 'iniciar_sesion' %}">Iniciar sesión</a>
+{% endif %} -->
+<script src="{% static 'js/script.js' %}"></script>
+
+
+{% endblock %}

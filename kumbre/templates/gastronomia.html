@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}gastronomia{% endblock %}
+ 
+{% block content %}
+<link rel="stylesheet" href="{% static 'styles/gastronomias.css' %}">
+
+    <div class="container1">
+        <!-- Parte Izquierda -->
+        <div class="left">
+            <div class="rectangulo1"><strong>Ven y descubre la esencia de nuestra cocina. ¡Te esperamos con los brazos abiertos!</strong> </div>
+            <div class="rectangulo2">Si eres amante de la comida tradicional colombiana, aqui tenemos lo que necesitas. Ven y Disfruta de platos típicos preparados con recetas auténticas y los ingredientes más frescos, llevando a tu mesa el verdadero sabor de nuestra tierra lo que tanto te hace feliz a ti y a tu paladar.</div>
+            <img src="{% static 'img/bonito.png' %}" alt="Imagen " class="img-rotar">
+        </div>
+
+        <!-- Parte Derecha -->
+        <div class="right">
+            <div class="grid">
+                <img src="{% static 'img/comida.jpg' %}" alt="Imagen " class="imagen">
+                <img src="{% static 'img/comida2.jpg' %}" alt="Imagen " class="imagen">
+                <img src="{% static 'img/comida3.jpg' %}" alt="Imagen " class="imagen">
+                <img src="{% static 'img/comida4.jpg' %}" alt="Imagen " class="imagen">
+                <img src="{% static 'img/comida5.jpg' %}" alt="Imagen " class="imagen">
+                <img src="{% static 'img/comida6.jpg' %}" alt="Imagen " class="imagen">
+                <img src="{% static 'img/comida11.jpg' %}" alt="Imagen " class="imagen">
+                <img src="{% static 'img/comida12.jpg' %}" alt="Imagen " class="imagen">
+                <img src="{% static 'img/comida13.jpg' %}" alt="Imagen " class="imagen">
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
