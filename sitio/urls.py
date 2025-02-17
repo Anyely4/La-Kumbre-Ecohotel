@@ -32,7 +32,6 @@ urlpatterns = [
     path('restaurante/', views.restaurante, name='restaurante'),
     path('atracciones/', views.atracciones, name='atracciones'),
     path("registro/", views.registro, name="registro"),
-    # path("activar/<str:token>/", views.activar_cuenta, name="activar_cuenta"),
     path('gastronomia/', views.gastronomia, name='gastronomia'),
     path('restricciones/', views.restricciones, name='restricciones'),
     path('cabañas/', views.cabañas, name='cabañas'),

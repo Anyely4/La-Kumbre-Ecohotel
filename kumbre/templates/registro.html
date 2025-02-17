@@ -5,6 +5,7 @@
 {% block content %}
 <link rel="stylesheet" href="{% static 'styles/registro.css' %}">
 <div class="todo3"> 
+
     <h2>Registro de Usuario</h2>
     <form action="{% url 'registro' %}" method="POST">
         {% csrf_token %}
@@ -27,13 +28,7 @@
         <button class="boton2" type="submit">Registrarse</button>
     </form>
 </div>
-{% if messages %}
-    <ul>
-        {% for message in messages %}
-            <li style="color: red;">{{ message }}</li>
-        {% endfor %}
-    </ul>
-{% endif %}
+
 
 
 {% endblock %}

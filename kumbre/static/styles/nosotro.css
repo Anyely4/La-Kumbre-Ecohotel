@@ -22,8 +22,11 @@
 }
 
 .tit h1{
+  display: grid;
   color: white;
-  font-size: 2.3em;
+  height: 85vh;
+  place-items: center;
+  font-size: 3.1em;
   margin:auto;
   align-items: center;
   width: 500px;
@@ -143,6 +146,8 @@
   border-radius: 20px;
 }
 .arri img{
+  width: 350px;
+  height: 420px;
   display: grid;
   grid-template-columns: repeat(2, 1fr); 
 

@@ -42,7 +42,7 @@
         </ul>
         <div class="user-options">
             {% if user.is_authenticated %}
-                <a href="{% url 'logout' %}" class="cerrar-sesion"> <i class="ri-logout-box-line"></i></a>
+                <a href="{% url 'logout' %}" class="cerrar-sesion"> <img src="{% static 'img/exit.png' %}"></a>
             {% else %}
                 <a href="{% url 'iniciar_sesion' %}" class="iniciar-sesion"><img src="{% static 'img/iniciar.png' %}"></a>
             {% endif %}
@@ -104,6 +104,26 @@
         </div>
     </div>
 </footer>
-
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+{% if messages %}
+{% for m in messages %}
+    <script>
+        Swal.fire({
+  title: "Felicitaciones",
+  "text": "{{ m }}",
+  width: 600,
+  padding: "3em",
+  color: "#716add",
+  background: "#fff url(/images/trees.png)",
+  backdrop: `
+    rgba(0,0,123,0.4)
+    url("/images/nyan-cat.gif")
+    left top
+    no-repeat
+  `
+});
+    </script>
+{% endfor %}
+{% endif %}
 </body>
 </html>

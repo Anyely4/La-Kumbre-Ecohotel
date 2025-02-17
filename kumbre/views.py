@@ -39,7 +39,7 @@ def sugerencias(request):
                 fail_silently=False,
             )
             messages.success(request,"Tu sugerencia ha sido enviada con éxito.")
-            return redirect('sugerencias')  # ✅ Debe ser el nombre de la vista, NO un archivo HTML
+            return redirect('sugerencias') 
 
     else:
         form = SugerenciaForm()
@@ -125,86 +125,14 @@ def iniciar_sesion(request):
             user = authenticate(username=username, password=password)
             if user is not None:
                 auth_login(request, user)
+                messages.error(request, "Haz iniciado sesión con exito")
                 return redirect('inicio')
             else:
                 messages.error(request, "Usuario o contraseña incorrectos")
         else:
             messages.error(request, "Usuario o contraseña incorrectos")
     return render(request, 'iniciar_sesion.html', {'register_mode': False})
-
-
-# def registro(request):
-#     if request.method == "POST":
-#         nombre = request.POST["nombre"]
-#         correo = request.POST.get("correo", "")
-#         telefono = request.POST["telefono"]
-#         contraseña = request.POST.get("contraseña", "")
-#         confirmar_contraseña = request.POST.get("confirmar_contraseña", "") 
-
-
-#         print("Contraseña ingresada:", contraseña)
-#         print("Confirmar contraseña ingresada:", confirmar_contraseña)
-
-
-#         if contraseña != confirmar_contraseña:
-#             messages.error(request, "Las contraseñas no coinciden.")
-#             return redirect("registro")
-
-#         usuario = Usuario.objects.create(
-#             nombre=nombre,
-#             correo=correo,
-#             telefono=telefono,
-#             contraseña=make_password(contraseña) # Idealmente debes encriptar la contraseña
-#         )
-#         usuario.save()
-        
-
-#         return redirect("iniciar_sesion") 
-
-#         # Enviar correo de activación
-#         subject = "Activa tu cuenta"
-#         activation_link = f"http://127.0.0.1:8000/activar/{usuario.activation_token}/"
-#         message = f"Hola {nombre},\n\nHaz clic en el siguiente enlace para activar tu cuenta:\n{activation_link}"
-        
-#         send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [correo])
-        
-#         messages.success(request, "Registro exitoso. Revisa tu correo para activar tu cuenta.")
-#         return redirect("inicio")  
-
-#     return render(request, "registro.html")
-
-
-# def activar_cuenta(request, token):
-#     try:
-#         usuario = Usuario.objects.get(activation_token=token)
-#         usuario.is_active = True
-#         usuario.activation_token = ""  # Limpia el token después de activarlo
-#         usuario.save()
-#         return redirect("inicio")  # Redirige a la página de inicio después de activar la cuenta
-#     except Usuario.DoesNotExist:
-#         return HttpResponse("Token inválido o expirado", status=400)
     
-
-
-# def iniciar_sesion(request):
-#     if request.method == "POST":
-#         correo = request.POST.get("correo")
-#         contraseña = request.POST.get("contraseña")
-
-#         try:
-#             usuario = Usuario.objects.get(correo=correo)
-            
-#             if check_password(contraseña, usuario.contraseña):
-#                 request.session["usuario_id"] = usuario.id  # Guardamos el ID del usuario en sesión
-#                 request.session["correo"] = usuario.correo  # Guardamos el correo en sesión
-#                 return redirect(reverse("inicio"))
-#             else:
-#                 return render(request, "iniciar_sesion.html", {"error": "Contraseña incorrecta."})
-
-#         except Usuario.DoesNotExist:
-#             return render(request, "iniciar_sesion.html", {"error": "Usuario no encontrado."})
-
-#     return render(request, "iniciar_sesion.html")
 
 
 def logout_perfil(request):

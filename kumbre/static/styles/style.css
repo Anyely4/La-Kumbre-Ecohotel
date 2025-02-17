@@ -15,6 +15,7 @@ header {
     background: linear-gradient(to bottom, rgb(201, 228, 184), #4fbdbd);
     display: flex;
     height: 80px;
+    position: relative;
     color: rgb(0, 0, 0);
     padding: 10px;
     text-align: center;
@@ -33,6 +34,7 @@ header {
 
 .titulo {
     flex-grow: 100;
+    font-size: 2.8em;
     text-align: left;
     margin: auto 10px;
     color: rgb(10, 63, 56)
@@ -57,7 +59,7 @@ nav {
 }
 
 .menu .links {
-    flex-grow: 1;
+    font-size: 1.25em;
     text-align: center;
 }
 .menu .links a {
@@ -71,6 +73,9 @@ nav {
     position: absolute;
     right: 20px;
     top: 20px; 
+}
+.cerrar_sesion{
+    width: 200px;
 }
 .user-options img {
     width: 30px;
@@ -100,7 +105,7 @@ nav {
     border: none;
     cursor: pointer;
     border-radius: 5px;
-    font-size: 16px;
+    font-size: 1.25em;
 }
 
 .menu123 {
@@ -124,7 +129,7 @@ nav {
 }
 
 .menu123 li:hover {
-    background-color: #f0f0f0;
+    background-color: #a4e6d5;
 }
 
 .contenedor12:hover .menu123 {
@@ -315,8 +320,7 @@ nav {
 
 /* footer */
 body {
-    padding-bottom: 0px;
-   
+    padding-bottom: 0px; 
 }
 footer {
     position: relative;
@@ -326,7 +330,7 @@ footer {
     padding: 10px 20px;
     font-family: Arial, sans-serif;
     bottom: 0;
-    z-index: 1;
+    z-index: 10;
     margin-bottom: 0%;
 }
 .footer-container {

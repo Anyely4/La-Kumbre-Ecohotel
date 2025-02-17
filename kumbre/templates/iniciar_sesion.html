@@ -10,10 +10,6 @@
     <h2>Iniciar Sesión</h2>
     <div class="container">
     
-        {% if error %}
-            <p class="error">{{ error }}</p>
-        {% endif %}
-    
         <form method="POST" action="{% url 'iniciar_sesion' %}">
             {% csrf_token %}
             <label for="correo">Nombre de usuario:</label>

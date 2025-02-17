@@ -1,16 +1,25 @@
 /* Estilos generales */
 .todo3 {
-    background-color: #f4f4f4;
-    justify-content: center;
-    align-items: center;
-    height: auto;
-    margin: 0;
-    padding: 20px;
+    width: 40%;
+    margin: auto;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    color: rgb(0, 0, 0);
+    font-size: 1rem;
+    background-image: url('/static/img/sug.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
+    background-attachment: fixed;
+    padding: 10px;
+    box-shadow: 0px 10px 30px rgba(54, 53, 53, 0.664);
+    border-radius: 30px; /* Bordes redondeados */
+    text-align: center;
+
 }
 
 /* Contenedor del formulario */
 form {
-    background-color: rgb(201, 228, 184);
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
@@ -25,7 +34,7 @@ h2 {
     font-size: 2em;
     text-align: center;
     margin-bottom: 20px;
-    color: rgb(0, 95, 95);
+    color: rgb(8, 134, 134);
 }
 
 /* Etiquetas */
@@ -49,7 +58,7 @@ input {
     width: 50%;
     margin-left: 25%;
     padding: 12px;
-    background: #00302d;
+    background: #03645e;
     color: white;
     border: none;
     border-radius: 5px;
