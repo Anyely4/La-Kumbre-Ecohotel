@@ -7,20 +7,24 @@
 
 <div class="container">
     <div class="section">
-        <div class="image-box">
-            <a href="/caba_tabi">
-                <img src="/static/img/cabatabi.jpg" alt="Cabaña Tabi">
-                <h2>Cabaña Tabi</h2>
-                <button id="openModalBtn">Conoce la cabaña</button>
-            </a>
+        <div class="carousel">
+            <div class="carousel-images">
+                <img src="/static/img/cabour.jpg" alt="Imagen 1">
+                <img src="/static/img/cageishaa.jpg" alt="Imagen 2">
+            </div>
         </div>
+        <h2>Cabaña Tabi</h2>
+        <button id="openModalBtn" class="btntabi">Conoce la cabaña</button>
         <br><br><br>
-        <div class="image-box">
-            <a href="/caba_bourbon">
-                <img src="/static/img/cabour.jpg" alt="Cabaña Bourbon">
-                <h2>Cabaña Bourbon</h2>
-            </a>
+
+        <div class="carousel">
+            <div class="carousel-images">
+                <img src="/static/img/cabour.jpg" alt="Imagen 1">
+                <img src="/static/img/cageishaa.jpg" alt="Imagen 2">
+            </div>
         </div>
+        <h2>Cabaña Bourbon</h2>
+        <button id="openModalBtn" class="btntabi">Conoce la cabaña</button>
     </div>
 
     <div class="section_middle">
@@ -28,37 +32,50 @@
         <h1>La Kumbre del Huila</h1>
         <h1>Conoce nuestras Cabañas</h1>
         <br><br><br>
-        <div class="image-box">
-            <a href="/caba_cafetal">
-                <img src="/static/img/cacafetal.jpg" alt="Cabaña Cafetal">
-                <h2>Cabaña Cafetal</h2>
-            </a>
+
+        <div class="carousel">
+            <div class="carousel-images">
+                <img src="/static/img/cabour.jpg" alt="Imagen 1">
+                <img src="/static/img/cageishaa.jpg" alt="Imagen 2">
+            </div>
         </div>
+        <h2>Cabaña Cafetal</h2>
+        <button id="openModalBtn" class="btntabi">Conoce la cabaña</button>
     </div>
 
     <div class="section">
-        <div class="image-box">
-            <a href="/caba_geisha">
-                <img src="/static/img/cageishaa.jpg" alt="Cabaña Geisha">
-                <h2>Cabaña Geisha</h2>
-            </a>
+        <div class="carousel">
+            <div class="carousel-images">
+                <img src="/static/img/cabour.jpg" alt="Imagen 1">
+                <img src="/static/img/cageishaa.jpg" alt="Imagen 2">
+            </div>
         </div>
+        <h2>Cabaña Geisha</h2>
+        <button id="openModalBtn" class="btntabi">Conoce la cabaña</button>
         <br><br><br>
-        <div class="image-box">
-            <a href="/caba_wush">
-                <img src="/static/img/wush1111.jpg" alt="Cabaña Wush">
-                <h2>Cabaña Wush</h2>
-            </a>
+|
+
+        <div class="carousel">
+            <div class="carousel-images">
+                <img src="/static/img/cabour.jpg" alt="Imagen 1">
+                <img src="/static/img/cageishaa.jpg" alt="Imagen 2">
+            </div>
         </div>
+        <h2>Cabaña Wush</h2>
+        <button id="openModalBtn" class="btntabi">Conoce la cabaña</button>
     </div>
 </div>
+
 <div id="infoModal" class="modal">
     <div class="modal-content">
         <span class="close">&times;</span>
         <h2>Información Importante</h2>
         <p>Este es un cuadro de información que aparece cuando presionas el botón.</p>
+        <button>reservar</button>
     </div>
 </div>
+
+<script src="{% static 'js/cabaña.js' %}"></script>
 
 
 

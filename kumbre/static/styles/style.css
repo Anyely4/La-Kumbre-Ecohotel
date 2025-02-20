@@ -10,6 +10,7 @@ body{
     background-color: rgb(255, 255, 255);
     margin: 0;
     min-height: auto;
+    font-family: 'Times New Roman', Times, serif;
 }
 header {
     background: linear-gradient(to bottom, rgb(201, 228, 184), #4fbdbd);
@@ -93,49 +94,6 @@ nav {
     display: none;
 }
 
-.contenedor12 {
-    position: relative;
-    display: inline-block;
-}
-
-.boton {
-    background-color: #00808000;
-    color: rgb(0, 0, 0);
-    font-family:'Times New Roman', Times, serif;
-    border: none;
-    cursor: pointer;
-    border-radius: 5px;
-    font-size: 1.25em;
-}
-
-.menu123 {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    background: #ffffff;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
-    border-radius: 5px;
-    position: absolute;
-    width: 150px;
-    top: 100%;
-    left: 50%;
-    transform: translateX(-50%);
-    display: none;
-    
-}
-.menu123 li {
-    cursor: pointer;
-    color: #000000;
-}
-
-.menu123 li:hover {
-    background-color: #a4e6d5;
-}
-
-.contenedor12:hover .menu123 {
-    display: block;
-    z-index: 1001;
-}
 @media (max-width: 1125px) {
     header{
         height: 80px;
@@ -328,7 +286,6 @@ footer {
     background: linear-gradient(to bottom, rgb(201, 228, 184), #4fbdbd);
     color: #000000;
     padding: 10px 20px;
-    font-family: Arial, sans-serif;
     bottom: 0;
     z-index: 10;
     margin-bottom: 0%;

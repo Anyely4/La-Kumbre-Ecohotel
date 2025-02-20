@@ -1,26 +1,15 @@
 *{
     box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    text-decoration: none;
     list-style: none;
 }
 
-html, body {
+body {
     width: 100%;
-    height: 100%;
     display: flex;
     flex-direction: column;
 }
-header {
-    width: 100%;
-    display: flex;
-    height: 80px;
-    position: absolute;
-    color: rgb(0, 0, 0);
-    padding: 10px;
-    text-align: center;
-    z-index: 1000;
+header{
+    background-color: #ffffff57;
 }
 .arriba{
     display: flex;
@@ -201,16 +190,22 @@ nav {
     padding: 0;
     box-sizing: border-box;
 }
-body, html {
+body{
     width: 100%;
-    height: 100%;
+    height: 200%;
     overflow: hidden;
 }
+.main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
 .carousel {
+    flex: 1;
     flex-grow: 1;
     width: 100%;
     height: 100vh;
-    min-height: 80vh; 
+    min-height: 85vh;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -259,14 +254,22 @@ body, html {
 
 
 /* footer */
-
+header {
+    width: 100%;
+    display: flex;
+    height: 80px;
+    position: absolute;
+    color: rgb(0, 0, 0);
+    padding: 10px;
+    text-align: center;
+    z-index: 1000;
+}
 footer {
     position: relative;
     width: 100%;
     background: linear-gradient(to bottom, rgb(201, 228, 184), #4fbdbd);
     color: #000000;
     padding: 10px 20px;
-    font-family: Arial, sans-serif;
     z-index: 1;
     }
 
