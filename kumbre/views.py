@@ -98,20 +98,39 @@ def caba_wush(request):
 def gracias(request):
     return render(request, 'gracias.html')
 
-from .forms import FormularioRegistro
+# 
 
 def registro(request):
     if request.method == "POST":
-        form = FormularioRegistro(request.POST)
-        if form.is_valid():
-            user = form.save()
-            messages.success(request, "Registro exitoso, Por favor inicia sesión")
-            return redirect('iniciar_sesion')
+        username = request.POST['username']
+        email = request.POST['email']
+        password = request.POST['password']
+        confirm_password = request.POST['confirm_password']
+
+        if password != confirm_password:
+            messages.error(request, 'Las contraseñas no coinciden')
+        elif User.objects.filter(email=email).exists():
+            messages.error(request, 'El correo ya esta registrado')
+        elif User.objects.filter(username=username).exists():
+            messages.error(request, 'El nombre de usuario ya esta en uso')
         else:
-            for field in form.errors:
-                for error in form[field].errors:
-                    messages.error(request, f"{field}: {error}")
-    return render(request, 'registro.html', {'register_mode': True})
+            user = User.objects.create_user(username=username, email=email, password=password)
+            messages.success(request, "¡Registro Exitoso!, Ahora inicia sesión.")
+            return redirect('iniciar_sesion')
+        
+    return render (request, 'registro.html')
+
+
+    #     form = FormularioRegistro(request.POST)
+    #     if form.is_valid():
+    #         user = form.save()
+    #         messages.success(request, "Registro exitoso, Por favor inicia sesión")
+    #         return redirect('iniciar_sesion')
+    #     else:
+    #         for field in form.errors:
+    #             for error in form[field].errors:
+    #                 messages.error(request, "{field}: {error}")
+    # return render(request, 'registro.html', {'register_mode': True})
 
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login as auth_login, authenticate, logout

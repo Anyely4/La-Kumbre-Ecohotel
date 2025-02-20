@@ -1,63 +1,122 @@
-
-{% extends 'base.html' %}
+<!-- web/templates/base.html -->
 {% load static %}
-{% block title %}Inicio - Turismo{% endblock %}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>La Kumbre</title>
+    <link rel="stylesheet" href="{% static 'styles/inicio.css' %}">
+    <link rel="shortcut icon" href="{% static 'img/icino.png' %}" type="image/x-icon">
+    <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet" />
+</head>
+<body>
+    <header>
+        <div class="arriba">
+            <div class="arriba">
+                <a href="{% url 'inicio'%}">
+                    <img src="{% static 'img/icino.png' %}" alt="Descripción de la imagen">
+                </a>
+            </div>
+            <h1 class="titulo"><strong>La Kumbre</strong></h1>
+        </div>
+        <nav>
+            <input type="checkbox" id="menu-toggle" class="menu-checkbox">
+        <label for="menu-toggle" class="menu-icon">&#9776;</label>
+        <ul class="menu">  
+            <li class="links"><a href="{% url 'nosotros' %}">Nosotros</a></li>
+            <div class="contenedor12">
+                <a href="{% url 'cabañas' %}"><button class="boton">Cabañas</button></a>
+                <ul class="menu123">
+                    <a href="/caba_tabi"><li>Cabaña Tabi</li></a>
+                    <a href="/caba_bourbon"><li>Cabaña Bourbon</li></a>
+                    <a href="/caba_geisha"><li>Cabaña Geisha</li></a>
+                    <a href="/caba_wush"><li>Cabaña Wush-Wush</li></a>
+                    <a href="/caba_cafetal"><li>Cabaña Cafetal</li></a>
+                </ul>
+            </div>
+            <li class="links"><a href="{% url 'gastronomia' %}">Gastronomia</a></li>
+            <li class="links"><a href="{% url 'galeria' %}">Galeria</a></li>
+        </ul>
+        <div class="user-options">
+            {% if user.is_authenticated %}
+                <a href="{% url 'logout' %}" class="cerrar-sesion"> <img src="{% static 'img/exit.png' %}"></a>
+            {% else %}
+                <a href="{% url 'iniciar_sesion' %}" class="iniciar-sesion"><img src="{% static 'img/iniciar.png' %}"></a>
+            {% endif %}
+        </div>
+        </nav>
+        
+    </header>
 
 {% block content %}
-<link rel="stylesheet" href="{% static 'styles/style.css' %}">
 
 <section>
-    <!-- Sección de imágenes principales -->
-     <div class="contenedor-carrusel">
-        <div class="carrusel">
-                <div class="fotos">
-                    <img src="{% static 'img/DJI_0123.jpg' %}" alt="Imagen 1">
-                    <img src="{% static 'img/image.png' %}" alt="Imagen 2">
-                    <img src="{% static 'img/dji_fly_20230711_174052_291_1689395541244_photo.jpg' %}" alt="Imagen 3">
-                </div>
-                <div class="fotos">
-                    <img src="{% static 'img/ca2.png' %}" alt="Imagen 1">
-                    <img src="{% static 'img/ca1.png' %}" alt="Imagen 2">
-                    <img src="{% static 'img/ca3.png' %}" alt="Imagen 3">
-                </div>
-        </div>      
-            <div class="controls">
-                <button class="control prev">&#9664;</button>
-                <button class="control next">&#9654;</button>
-            </div>
-    </div>
-
-    <div class="container">
-        <!-- Título de la sección -->
-        <div class="section title">
-            <h1>Conoce todas las maravillas que tiene reservadas para ti.</h1>
+    <div class="carousel">
+        <div class="slide active">
+            <img src="{% static 'img/fon1.jpg' %}" alt="Imagen " class="imagen">
+            <div class="text">Texto 1</div>
         </div>
-
-        <!-- Sección de Cabañas -->
-        <div class="section">
-            <h2>Cabañas</h2>
-            <a href="{% url 'cabañas' %}" >
-                <img src="{% static 'img/cabañas.jpg' %}" alt="Descripción de las cabañas">
-            </a> 
+        <div class="slide">
+            <img src="{% static 'img/fon2.jpg' %}" alt="Imagen " class="imagen">
+            <div class="text">Texto 2</div>
         </div>
-
-        <!-- Sección de Restaurante -->
-        <div class="section">
-            <h2>Restaurante</h2>
-            <a href="{% url 'gastronomia' %}">
-                <img src="{% static 'img/comida.jpg' %}" alt="Descripción del restaurante">
-            </a>
-        </div>
-
-        <!-- Sección de Atracciones -->
-        <div class="section">
-            <h2>Galeria</h2>
-            <a href="{% url 'galeria' %}" >
-                <img src="{% static 'img/atracciones.jpg' %}" alt="Descripción de las atracciones">
-            </a> 
+        <div class="slide">
+            <img src="{% static 'img/fogata.png' %}" alt="Imagen 2" class="imagen">
+            <div class="text">Texto 3</div>
         </div>
     </div>
+
+|   <h1>baje perro</h1>
 </section>
+
+<footer>
+    <div class="footer-container">
+        <!-- Apartado 1: Contactenos -->
+        <div class="footer-item contactenos">
+            <h3>Contactenos</h3>
+            <p><strong>Teléfono:</strong></p>
+            <p><a href="tel:+573107998890">3107998890</a></p>
+            <p><strong>Correo:</strong></p>
+            <p><a href="mailto:reservas@lakumbredelhuila.com">reservas@lakumbredelhuila.com</a></p>
+        </div>
+        
+        <!-- Apartado 2: Redes sociales -->
+        <div class="footer-item redes-sociales">
+            <div class="social-icons">
+                <a href="https://wa.link/asaqn3" target="_blank">
+                    <img src="{% static 'img/whatsapp.png' %}" alt="WhatsApp" width="40">
+                </a>
+                <a href="https://www.facebook.com/lakumbredelhuila/?_rdc=2&_rdr#" target="_blank">
+                    <img src="{% static 'img/facebook.png' %}" alt="Facebook" width="40">
+                </a>
+                <a href="https://www.instagram.com/lakumbredelhuila?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank">
+                    <img src="{% static 'img/instagram.png' %}" alt="Instagram" width="40">
+                </a>
+            </div>
+        </div>
+        
+        <!-- Apartado 3: Ubicación -->
+        <div class="footer-item ubicacion">
+            <h3>Estamos Ubicados En:</h3>
+            <p>Vereda Alto San Isidro</p>
+        </div>
+        
+        <!-- Apartado 4: Acerca de la Kumbre -->
+        <div class="footer-item acerca-de">
+            <h3>Acerca de la Kumbre</h3>
+            <ul>
+                <li><a href="{% url 'nosotros' %}">Nosotros</a></li>
+                <li><a href="{% url 'reservas' %}">Reservas</a></li>
+                <li><a href="{% url 'sugerencias' %}">Sugerencias</a></li>
+                <li><a href="{% url 'cabañas' %}">Cabañas</a></li>
+                <li><a href="{% url 'restricciones' %}">Restricciones</a></li>
+            </ul>
+        </div>
+    </div>
+</footer>
 <script src="{% static 'js/script.js' %}"></script>
 
 {% endblock %}

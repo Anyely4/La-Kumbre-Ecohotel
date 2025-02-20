@@ -136,7 +136,7 @@ nav {
     display: block;
     z-index: 1001;
 }
-@media (max-width: 768px) {
+@media (max-width: 1125px) {
     header{
         height: 80px;
     }
