@@ -31,7 +31,6 @@ urlpatterns = [
     path('sugerencias/', views.sugerencias, name='sugerencias'),
     path('restaurante/', views.restaurante, name='restaurante'),
     path('atracciones/', views.atracciones, name='atracciones'),
-    path("registro/", views.registro, name="registro"),
     path('gastronomia/', views.gastronomia, name='gastronomia'),
     path('restricciones/', views.restricciones, name='restricciones'),
     path('cabañas/', views.cabañas, name='cabañas'),
@@ -42,6 +41,7 @@ urlpatterns = [
     path('caba_wush/', views.caba_wush, name='caba_wush'),
     path('gracias/', views.gracias, name='gracias'),
     path("iniciar_sesion/", views.iniciar_sesion, name="iniciar_sesion"),
+    path("registro/", views.registro, name="registro"),
     path("logout/", views.logout_perfil, name="logout"),
     path('fechas_ocupadas/<int:cabaña_id>/', views.obtener_fechas_ocupadas, name='fechas_ocupadas'),
 ]

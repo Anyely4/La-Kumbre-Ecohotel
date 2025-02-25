@@ -1,4 +1,196 @@
-body{
+
+h1 {
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    color: #fff;
+    text-shadow: 0 1px 2px #000;
+}
+
+
+/*Time to apply widths for accordian to work
+Width of image = 640px
+total images = 5
+so width of hovered image = 640px
+width of un-hovered image = 40px - you can set this to anything
+so total container width = 640 + 40*4 = 800px;
+default width = 800/5 = 160px;
+*/
+
+.contenedor-galeria {
+    width: 1250px;
+    height: 335px;
+    overflow: hidden;
+    margin: 50px auto;
+    box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.466);
+    -webkit-box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.35);
+    -moz-box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.35);
+}
+
+.contenedor-galeria ul {
+    width: 2000px;
+}
+
+.contenedor-galeria li {
+    position: relative;
+    display: block;
+    width: 250px;
+    float: left;
+    box-shadow: 0 0 25px 10px rgba(0, 0, 0, 0.5);
+    -webkit-box-shadow: 0 0 25px 10px rgba(0, 0, 0, 0.5);
+    -moz-box-shadow: 0 0 25px 10px rgba(0, 0, 0, 0.5);
+    transition: all 0.5s;
+}
+
+.contenedor-galeria ul:hover li {
+    width: 100px;
+    filter: brightness(30%);
+}
+
+.contenedor-galeria ul li:hover {
+    width: 640px;
+    filter: brightness(100%);
+}
+
+.contenedor-galeria li img {
+    display: block;
+    width: 500px;
+    height: 100%;
+}
+
+.titulo-imagen {
+    background: rgba(0, 0, 0, 0.822);
+    position: absolute;
+    top: 100%;
+    width: 109.5%;
+    display: block;
+    transition: all 0.5s ease;
+    animation: cambia-color 10s linear infinite;
+    background: -webkit-linear-gradient(left, rgba(27, 56, 49, 0.8), rgba(255, 255, 255, 0.8));
+    background-size: 400% 400%;
+}
+
+@keyframes cambia-color {
+    0% {
+        background-position: 0%, 25%;
+    }
+    25% {
+        background-position: 50%, 25%;
+    }
+    50% {
+        background-position: 0%, 50%;
+    }
+}
+
+.titulo-imagen a {
+    display: block;
+    color: #fff;
+    text-decoration: none;
+    text-align: center;
+    padding: 20px;
+    font-size: 19px;
+    text-shadow: 0 1px 2px #000;
+    transition: all 0.5s ease;
+}
+
+.contenedor-galeria ul li:hover .titulo-imagen {
+    top: 0%;
+    box-shadow: 0 0 25px 10px rgba(0, 0, 0, 0.5);
+    -webkit-box-shadow: 0 0 25px 10px rgba(0, 0, 0, 0.5);
+    -moz-box-shadow: 0 0 25px 10px rgba(0, 0, 0, 0.5);
+}
+
+.titulo-imagen:hover a {
+    transform: scale(1.1);
+    transition: all 0.5s ease;
+}
+
+.titulo-imagen:active {
+    background: rgba(255, 255, 255, 0.5);
+}
+
+.carousel {
+    justify-content: center;
+    width: 700px;
+    height: 300px;
+    overflow: hidden;
+    position: relative;
+    border-radius: 10px;
+    box-shadow: 4px 4px 15px rgba(112, 218, 186, 0.445); 
+}
+
+
+.carousel-images {
+    display: flex;
+    width: 20%;
+    height: 100%;
+    transition: transform 0.5s ease-in-out;
+}
+
+
+.carousel-images img {
+    width: 200%;
+    height: 100%;
+    object-fit: cover;
+}
+
+
+.carousel:hover .carousel-images {
+    cursor: pointer;
+    animation: slide 7s infinite alternate;
+}
+
+
+@keyframes slide {
+    0% { transform: translateX(0); }
+    50% { transform: translateX(-100%); }
+}
+
+
+.btntabi {
+    background: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.btntabi:hover {
+    background-color: #0056b3;
+}
+
+
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    padding: 20px;
+    align-items: center;
+    justify-content: center;
+}
+
+
+
+.modal-content {
+    background-color: #fff;
+    padding: 20px;
+    width: 90%;
+    max-width: 500px;
+    border-radius: 10px;
+    text-align: center;
+    position: relative;
+    box-shadow: 0 4px 10px rgba(128, 231, 183, 0.315);
+} 
+/* body{
     background-image: url('/static/img/dji_fly_20230711_174052_291_1689395541244_photo.jpg');
     background-repeat: no-repeat;
     background-size: cover;
@@ -13,13 +205,13 @@ body:before {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* Color negro con 50% de opacidad */
+    background-color: rgba(0, 0, 0, 0.5); 
     z-index: -1; 
 }
 .container {
     display: grid;
-    grid-template-columns: repeat(3, 1fr); /* Tres columnas de igual tamaño */
-    gap: 20px; /* Espaciado entre las celdas del grid */
+    grid-template-columns: repeat(3, 1fr); 
+    gap: 20px; 
     width: 100%;
     height: 850px;
     padding: 20px;
@@ -53,7 +245,7 @@ body:before {
     box-shadow: 4px 4px 15px rgba(112, 218, 186, 0.445); 
 }
 
-/* Contenedor de las imágenes */
+
 .carousel-images {
     display: flex;
     width: 150%;
@@ -61,20 +253,20 @@ body:before {
     transition: transform 0.5s ease-in-out;
 }
 
-/* Imágenes dentro del carrusel */
+
 .carousel-images img {
     width: 100%;
     height: 100%;
     object-fit: cover;
 }
 
-/* Animación cuando el cursor pasa por encima */
+
 .carousel:hover .carousel-images {
     cursor: pointer;
     animation: slide 20s infinite alternate;
 }
 
-/* Definimos la animación */
+
 @keyframes slide {
     0% { transform: translateX(0); }
     50% { transform: translateX(-100%); }
@@ -94,7 +286,7 @@ h1{
 }
 @media (max-width: 768px) {
     .container {
-        grid-template-columns: 1fr; /* En pantallas pequeñas, solo una columna */
+        grid-template-columns: 1fr; 
         height: auto;
     }
     
@@ -103,7 +295,7 @@ h1{
     }
 }
 
-/* Botón de abrir modal */
+
 .btntabi {
     background: #007bff;
     color: white;
@@ -119,7 +311,7 @@ h1{
 }
 
 
-/* Estilos para el modal */
+
 .modal {
     display: none;
     position: fixed;
@@ -136,7 +328,7 @@ h1{
 }
 
 
-/* Contenido del modal */
+
 .modal-content {
     background-color: #fff;
     padding: 20px;
@@ -148,7 +340,7 @@ h1{
     box-shadow: 0 4px 10px rgba(128, 231, 183, 0.315);
 } 
 
-/* Botón de cierre */
+
 .close {
     position: absolute;
     top: 10px;
@@ -162,13 +354,12 @@ h1{
     color: #000;
 }
 
-/* Animación para mostrar el modal */
 @keyframes fadeIn {
     from { opacity: 0; transform: scale(0.9); }
     to { opacity: 1; transform: scale(1); }
 }
 
-/* Responsive para pantallas pequeñas */
+
 @media (max-width: 600px) {
     .modal-content {
         width: 100%;
@@ -180,4 +371,4 @@ h1{
         font-size: 14px;
         padding: 8px 16px;
     }
-}
+} */

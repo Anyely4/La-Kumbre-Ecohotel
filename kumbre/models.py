@@ -9,13 +9,13 @@ class Sugerencia(models.Model):
         ('Comida', 'Comida'),
     ]
     
-    nombre = models.CharField(max_length=100)
+    username = models.CharField(max_length=100)
     correo = models.EmailField()
     sugerencia = models.TextField()
     categoria = models.CharField(max_length=50, choices=CATEGORIAS)
 
     def __str__(self):
-        return f"{self.nombre} - {self.categoria}"
+        return f"{self.username} - {self.categoria}"
     
 class Usuario(models.Model):
     usuario = models.OneToOneField(User, on_delete=models.CASCADE, null=True)

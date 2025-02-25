@@ -1,11 +1,87 @@
-{% extends 'base.html' %}
+<!-- {% extends 'base.html' %} -->
 {% load static %}
 {% block title %}gastronomia{% endblock %}
- 
+<link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 {% block content %}
+
 <link rel="stylesheet" href="{% static 'styles/iniciar_sesion.css' %}">
+<body data-register-mode="{% if register_mode %}true{% else %}false{% endif %}">
+
+    {% if errores %}
+    <div class="error-box">
+        <ul>
+            {% for error in errores %}
+                <li class="error-message">{{ error }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endif %}
 
 
+<div class="container">
+    <div class="form-box login">
+        <form method="POST" action="{% url 'iniciar_sesion' %}">
+            {% csrf_token %}
+            <h1>Login</h1>
+            <div class="input-box">
+                <input type="text" placeholder="Usuario" id="nombre" name="username" required>
+                <i class='bx bxs-user'></i>
+            </div>
+            <div class="input-box">
+                <input type="password" placeholder="Contraseña" id="contraseña" name="password" required>
+                <i class='bx bxs-lock-alt' ></i>
+            </div>
+            <button type="submit" class="btn">Iniciar sesión</button>
+        </form>
+    </div>
+
+    <div class="form-box register">
+        <form action="{% url 'registro' %}" method="POST">
+            {% csrf_token %}
+            <h1>Registro</h1>
+            <div class="input-box">
+                <input type="text" placeholder="Ingrese el correo" name="email" required>
+                <i class='bx bxs-envelope' ></i>
+            </div>
+            <div class="input-box">
+                <input type="text" placeholder="Usuario" id="nombre" name="username" required>
+                <i class='bx bxs-user'></i>
+            </div>
+            <div class="input-box">
+                <input type="text" placeholder="Telefono" id="telefono" name="telefono" required>
+                <i class='bx bxs-phone'></i>
+            </div>
+            <div class="input-box">
+                <input type="password" placeholder="Contraseña" id="password" name="password" required>
+                <i class='bx bxs-lock-alt' ></i>
+            </div>
+            <div class="input-box">
+                <input type="password" placeholder="Confirmar Contaseña" id="confirm_password" name="confirm_password" required>
+                <i class='bx bxs-lock-alt' ></i>
+            </div>
+            <button type="submit" class="btn">Registrarse</button>
+        </form>
+    </div>
+
+    <div class="toggle-box">
+        <div class="toggle-panel toggle-left">
+            <h2>Bienvenido a</h2> <br>
+            <h2>La Kumbre</h2> <br>
+            <button class="btn register-btn">Registro</button>
+        </div>
+
+        <div class="toggle-panel toggle-right">
+            <h2>Bienvenido a</h2> <br>
+            <h2>La Kumbre</h2> <br>
+            <button class="btn login-btn">Iniciar Sesión</button>
+        </div>
+    </div>
+</div>
+
+<script src="{% static 'js/iniciar_sesio.js' %}"></script>
+
+{% endblock %}
+<!-- 
 <div class="todo123">
     <h2>Iniciar Sesión</h2>
     <div class="container">
@@ -23,7 +99,4 @@
     
         <p class="register-link">¿Aún no tienes cuenta? <a href="{% url 'registro' %}">Regístrate aquí</a></p>
     </div>
-</div>
-
-
-{% endblock %}
+</div> -->

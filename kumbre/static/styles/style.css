@@ -7,13 +7,30 @@
 }
 
 body{
-    background-color: rgb(255, 255, 255);
+    background-image: url('/static/img/dji_fly_20230711_174052_291_1689395541244_photo.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
+    background-attachment: fixed;
+    position: relative;
     margin: 0;
     min-height: auto;
     font-family: 'Times New Roman', Times, serif;
 }
+
+body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Color negro con 50% de opacidad */
+    z-index: -1; 
+}
+
 header {
-    background: linear-gradient(to bottom, rgb(201, 228, 184), #4fbdbd);
+    background: linear-gradient(to bottom, rgba(201, 228, 184, 0.664), #4fbdbda6);
     display: flex;
     height: 80px;
     position: relative;

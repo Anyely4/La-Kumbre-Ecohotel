@@ -4,7 +4,84 @@
 
 {% block content %}
 <link rel="stylesheet" href="{% static 'styles/cabaña.css' %}">
+<link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
 
+
+<h1>Conoce Nuestras Hermosas Cabañas</h1>
+	<div class="contenedor-galeria">
+		<ul>
+			<li>
+				<div class="carousel">
+                    <div class="carousel-images">
+                        <img src="/static/img/cabatabi111.jpg" alt="Imagen 1">
+                        <img src="/static/img/salatabi.jpg" alt="Imagen 2">
+                    </div>
+                </div>
+                <div class="titulo-imagen">
+					<a href="#">Cabaña Tabi</a>
+				</div>
+                <button id="openModalBtn" class="btntabi">Conoce la cabaña</button>
+			</li>
+			<li>
+				<div class="carousel">
+                    <div class="carousel-images">
+                        <img src="/static/img/geisha9.jpg" alt="Imagen 1">
+                        <img src="/static/img/geisha5.jpg" alt="Imagen 2">
+                    </div>
+                </div>
+                <div class="titulo-imagen">
+					<a href="#">Cabaña Geisha</a>
+				</div>
+                <button id="openModalBtn" class="btntabi">Conoce la cabaña</button>
+			</li>
+			<li>
+				<div class="carousel">
+                    <div class="carousel-images">
+                        <img src="/static/img/cafetalbuena.jpg" alt="Imagen 1">
+                        <img src="/static/img/camacafetal.jpg" alt="Imagen 2">
+                    </div>
+                </div>
+                <div class="titulo-imagen">
+					<a href="#">Cabaña Cafetal</a>
+				</div>
+                <button id="openModalBtn" class="btntabi">Conoce la cabaña</button>
+			</li>
+			<li>
+				<div class="carousel">
+                    <div class="carousel-images">
+                        <img src="/static/img/cabour.jpg" alt="Imagen 1">
+                        <img src="/static/img/bourbon111.jpg" alt="Imagen 2">
+                    </div>
+                </div>
+                <div class="titulo-imagen">
+					<a href="#">Cabaña Bourbon</a>
+				</div>
+                <button id="openModalBtn" class="btntabi">Conoce la cabaña</button>
+			</li>
+			<li>
+				<div class="carousel">
+                    <div class="carousel-images">
+                        <img src="/static/img/wushwush.jpg" alt="Imagen 1">
+                        <img src="/static/img/wush4.jpg" alt="Imagen 2">
+                    </div>
+                </div>
+                <div class="titulo-imagen">
+					<a href="#">Cabaña Wush</a>
+				</div>
+                <button id="openModalBtn" class="btntabi">Conoce la cabaña</button>
+			</li>
+		</ul>
+	</div>
+
+    <div id="infoModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span> 
+            <h2>Bienvenido a la Cabaña Tabi</h2>
+            <p>Este es un cuadro de información que aparece cuando presionas el botón.</p>
+            <button>reservar</button>
+        </div>
+    </div> 
+<!-- 
 <div class="container">
     <div class="section">
         <div class="carousel">
@@ -73,7 +150,7 @@
         <p>Este es un cuadro de información que aparece cuando presionas el botón.</p>
         <button>reservar</button>
     </div>
-</div>
+</div> -->
 
 <script src="{% static 'js/cabaña.js' %}"></script>
 

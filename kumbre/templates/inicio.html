@@ -30,6 +30,7 @@
             <li class="links"><a href="{% url 'cabañas' %}"><strong>Cabañas</strong></a></li>
             <li class="links"><a href="{% url 'gastronomia' %}"><strong>Gastronomia</strong></a></li>
             <li class="links"><a href="{% url 'galeria' %}"><strong>Galeria</strong></a></li>
+            <li class="links"><a href="{% url 'galeria' %}"><strong>Ayuda</strong></a></li>
         </ul>
         <div class="user-options">
             {% if user.is_authenticated %}
@@ -44,27 +45,53 @@
 
 {% block content %}
 
-<section>
-    <div class="main-content">
-        <div class="carousel">
-            <div class="slide active">
-                <img src="{% static 'img/fon1.jpg' %}" alt="Imagen " class="imagen">
-                <div class="text">Texto 1</div>
-            </div>
-            <div class="slide">
-                <img src="{% static 'img/fon2.jpg' %}" alt="Imagen " class="imagen">
-                <div class="text">Texto 2</div>
-            </div>
-            <div class="slide">
-                <img src="{% static 'img/fonan.jpg' %}" alt="Imagen 2" class="imagen">
-                <div class="text">Texto 3</div>
+
+<div class="container">
+    <div class="slide">
+        <div class="item" style="background-image: url('/static/img/fon1.jpg');">
+            <div class="content">
+                <div class="description">""Descubre lugares increíbles, vive experiencias inolvidables.""</div>
             </div>
         </div>
-    
-    </div>
-    
-</section>
 
+        <div class="item" style="background-image: url('/static/img/fon2.jpg');">
+            <div class="content">
+                <div class="description">"Deja la rutina atrás y aventúrate a descubrir lo extraordinario."</div>
+            </div>
+        </div>
+
+        <div class="item" style="background-image: url('/static/img/fonan.jpg');">
+            <div class="content">
+                <div class="description">"Viajar no es un gasto, es una inversión en recuerdos para toda la vida."</div>
+            </div>
+        </div>
+
+        <div class="item" style="background-image: url('/static/img/dji_fly_20230711_174052_291_1689395541244_photo.jpg');">
+            <div class="content">
+                <div class="description">"No colecciones cosas, colecciona momentos en lugares mágicos."</div>
+            </div>
+        </div>
+
+        <div class="item" style="background-image: url('/static/img/lakumbre555.jpg');">
+            <div class="content">
+                <div class="description">"Desconéctate de la rutina y conéctate con el mundo."</div>
+            </div>
+        </div>
+
+        <div class="item" style="background-image: url('/static/img/lakumbre888.jpg');">
+            <div class="content">
+                <div class="description">"Cada rincón del mundo tiene una historia que contar, ven a descubrirla."</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="button">
+        <button class="prev"><i class="fa-solid fa-arrow-left"></i></button>
+        <button class="next"><i class="fa-solid fa-arrow-right"></i></button>
+    </div>
+</div>
+
+{% endblock %}
 <footer>
     <div class="footer-container">
         <!-- Apartado 1: Contactenos -->
@@ -110,6 +137,7 @@
         </div>
     </div>
 </footer>
+
+</body>
 <script src="{% static 'js/script.js' %}"></script>
 
-{% endblock %}

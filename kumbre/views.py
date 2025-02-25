@@ -31,7 +31,7 @@ def sugerencias(request):
             send_mail(
                 'Nueva Sugerencia Recibida',
                 f"Categoría: {sugerencia.categoria}\n"
-                f"Nombre: {sugerencia.nombre}\n"
+                f"Nombre: {sugerencia.username}\n"
                 f"Correo: {sugerencia.correo}\n"
                 f"Sugerencia:\n{sugerencia.sugerencia}",
                 'anyelyo1@gmail.com',  # Correo del remitente
@@ -107,18 +107,28 @@ def registro(request):
         password = request.POST['password']
         confirm_password = request.POST['confirm_password']
 
+        errores = []  # Lista para almacenar errores
+
         if password != confirm_password:
-            messages.error(request, 'Las contraseñas no coinciden')
-        elif User.objects.filter(email=email).exists():
-            messages.error(request, 'El correo ya esta registrado')
-        elif User.objects.filter(username=username).exists():
-            messages.error(request, 'El nombre de usuario ya esta en uso')
-        else:
-            user = User.objects.create_user(username=username, email=email, password=password)
-            messages.success(request, "¡Registro Exitoso!, Ahora inicia sesión.")
-            return redirect('iniciar_sesion')
-        
-    return render (request, 'registro.html')
+            errores.append('Las contraseñas no coinciden')
+        if User.objects.filter(email=email).exists():
+            errores.append('El correo ya está registrado')
+        if User.objects.filter(username=username).exists():
+            errores.append('El nombre de usuario ya está en uso')
+
+        if errores:
+            return render(request, 'iniciar_sesion.html', {
+                'register_mode': True,  # Indica que debe mostrar el formulario de registro
+                'errores': errores
+            })
+
+        # Si no hay errores, crear el usuario
+        user = User.objects.create_user(username=username, email=email, password=password)
+        messages.success(request, "¡Registro Exitoso!, Ahora inicia sesión.")
+        return redirect('iniciar_sesion')
+
+    return render(request, 'iniciar_sesion.html', {'register_mode': True})
+
 
 
     #     form = FormularioRegistro(request.POST)
@@ -144,7 +154,7 @@ def iniciar_sesion(request):
             user = authenticate(username=username, password=password)
             if user is not None:
                 auth_login(request, user)
-                messages.error(request, "Haz iniciado sesión con exito")
+                messages.success(request, "Haz iniciado sesión con exito")
                 return redirect('inicio')
             else:
                 messages.error(request, "Usuario o contraseña incorrectos")

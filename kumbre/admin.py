@@ -10,8 +10,8 @@ from .models import Cabana, Reserva  # Asegúrate de importar el modelo correcto
 
 @admin.register(Sugerencia)
 class SugerenciaAdmin(admin.ModelAdmin):
-    list_display = ("nombre", "correo", "categoria")
-    search_fields = ("nombre", "correo", "categoria")
+    list_display = ("username", "correo", "categoria")
+    search_fields = ("username", "correo", "categoria")
 
 
 @admin.register(Cabana)

@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
 class SugerenciaForm(forms.ModelForm):
     class Meta:
         model = Sugerencia
-        fields = ['nombre', 'correo', 'sugerencia', 'categoria']
+        fields = ['username', 'correo', 'sugerencia', 'categoria']
 
 class FormularioRegistro(UserCreationForm):
     email = forms.EmailField(max_length=254)

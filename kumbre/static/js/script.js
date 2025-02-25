@@ -1,14 +1,12 @@
-let currentIndex = 0;
-        const slides = document.querySelectorAll('.slide');
-        
-        function changeSlide() {
-            slides[currentIndex].classList.remove('active');
-            currentIndex = (currentIndex + 1) % slides.length;
-            slides[currentIndex].classList.add('active');
-        }
-        
-        setInterval(changeSlide, 4000); // Cambia cada 4 segundos
+let next = document.querySelector('.next');
+let prev = document.querySelector('.prev');
 
-// Inicia el carrusel al cargar la página
-updateCarousel();
-startAutoPlay();
+next.addEventListener('click', function() {
+    let items = document.querySelectorAll('.item');
+    document.querySelector('.slide').appendChild(items[0]);
+})
+
+prev.addEventListener('click', function() {
+    let items = document.querySelectorAll('.item');
+    document.querySelector('.slide').prepend(items[items.length - 1]);
+})

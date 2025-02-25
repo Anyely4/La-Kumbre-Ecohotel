@@ -1,4 +1,197 @@
-.titulo1{
+.wrapper{
+    width: min(calc(100% - 4rem), 920px);
+    margin: 2rem auto;
+    
+    display: grid;
+    gap: 1rem;
+    grid-auto-rows: 200px;
+    grid-template-columns: 1fr;
+     grid-template-areas: 
+          "cat-tees"
+          "cat-sport" 
+          "cat-intimate"
+          "cat-cologne"
+          "cat-kids"
+          "cat-hoodies"
+          "cat-youth"
+          "cat-ladies-shirt"
+          "cat-mens-shirts"
+          "banner";
+    
+  }
+  
+  @media (min-width: 400px){
+    .wrapper{
+      grid-template-columns: 1fr 1fr;
+      grid-template-areas: 
+          "cat-tees         cat-tees"
+          "cat-tees         cat-tees"
+          "cat-sport        cat-sport" 
+          "cat-sport        cat-sport" 
+          "cat-intimate     cat-cologne"
+          "cat-kids         cat-kids"
+          "cat-kids         cat-kids"
+          "cat-hoodies      cat-hoodies"
+          "cat-youth        cat-youth"
+          "cat-youth        cat-youth"
+          "cat-ladies-shirt cat-mens-shirts"
+          "cat-ladies-shirt cat-mens-shirts"
+          "banner           banner";
+    }
+  }
+  @media (min-width: 600px){
+    .wrapper{
+      grid-template-columns: repeat(6, 1fr);
+      /* we have to define the area for each of the columns, even if it is the same, so, if an element covers 3 columns, we have to define it 3 times, once for each column - this is where grid-lines would be easier */
+      grid-template-areas: 
+        "cat-tees         cat-tees          cat-tees          cat-tees        cat-tees        cat-tees"
+        "cat-tees         cat-tees          cat-tees          cat-tees        cat-tees        cat-tees"
+        "cat-sport        cat-sport         cat-sport         cat-sport       cat-kids        cat-kids"
+        "cat-sport        cat-sport         cat-sport         cat-sport       cat-kids        cat-kids"
+        "cat-hoodies      cat-hoodies       cat-hoodies       cat-hoodies     cat-hoodies     cat-hoodies"
+        "cat-youth        cat-youth         cat-youth         cat-youth       cat-intimate    cat-intimate"
+        "cat-youth        cat-youth         cat-youth         cat-youth       cat-cologne     cat-cologne"
+        "banner           banner            banner            banner          banner          banner"
+        "cat-ladies-shirt cat-ladies-shirt  cat-ladies-shirt  cat-mens-shirts cat-mens-shirts cat-mens-shirts"
+        "cat-ladies-shirt cat-ladies-shirt  cat-ladies-shirt  cat-mens-shirts cat-mens-shirts cat-mens-shirts"
+        "cat-ladies-shirt cat-ladies-shirt  cat-ladies-shirt  cat-mens-shirts cat-mens-shirts cat-mens-shirts"
+        ;
+      
+    }
+  }
+  @media (min-width: 800px){
+    .wrapper{
+      grid-auto-rows: 200px;
+      grid-template-columns: repeat(4, 1fr);
+      grid-template-areas: 
+        "cat-sport        cat-tees  cat-tees    cat-hoodies"
+        "cat-ladies-shirt cat-tees  cat-tees    cat-youth"
+        "cat-ladies-shirt cat-kids  cat-cologne cat-cologne"
+        "cat-intimate     banner    banner      cat-mens-shirts";
+     }
+    
+  }
+  .wrapper > *{
+    grid-area: var(--grid-area);
+    position: relative;
+    color: black;
+    overflow: hidden;
+    border-radius: 10px;
+    text-decoration: none;
+  }
+  .wrapper > a::after{
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: linear-gradient(to bottom, rgba(0 0 0 / .25), transparent 25%);
+  }
+  
+  .wrapper > *:hover > img{
+    scale: 1.2;
+    rotate: 4deg;
+  }
+  
+  .wrapper > * > p{
+    position: absolute;
+    /*max-width: 12ch;*/
+    text-wrap: balance;
+    top: .75rem; 
+    left: .75rem;
+    font-size: .9rem;
+    z-index: 2;
+    
+  }
+  .wrapper > * > p.align-right{
+    left: auto;
+    right: .75rem;
+    text-align: right;
+  }
+  .wrapper img{
+    max-width: 100%;
+    width: 100%;
+    height: 100%;
+    display: block;
+    border-radius: 10px;
+    object-fit: cover;
+    transition: scale 1000ms ease-in-out, rotate 1000ms ease-in-out;
+  }
+  .banner{
+    background: #FFEDD5;
+    border-radius: 10px;
+    display: grid;
+    place-content: center;
+  }
+  
+  
+  
+  /* general styling */
+  *,
+  ::before,
+  ::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  :root {
+    --clr-bg: #222;
+    --clr-primary: #f5f5f5;
+    --clr-secondary: #075985;
+  }
+  html {
+    background-color: var(--clr-bg);
+    font-family: system-ui;
+    font-family: system-ui;
+  }
+  
+
+  h1 {
+    font-size: clamp(1rem, 2.5vw + 0.25rem, 1.2rem);
+    font-weight: 500;
+    line-height: 1.6;
+    max-width: 45ch;
+    text-wrap: balance;
+  }
+  code,
+  pre {
+    display: inline-block;
+    color: #38bdf8;
+    border: 1px solid hsl(from var(--clr-primary) h s 50% / 0.5);
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+  }
+  pre {
+    white-space: pre-wrap;
+  }
+  button{
+    cursor: pointer;
+  }
+  em {
+    font-size: 0.8rem;
+  }
+  /* this line is just to check that the toggle width is at exactly 50% */
+  /*
+  body::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    translate: -50% 0;
+    width: 1px;
+    height: 100svh;
+    background-color: white;
+    background: repeating-linear-gradient(
+      white 20px,
+      transparent 30px,
+      white 40px
+    );
+    z-index: -1;
+    opacity: 0.1;
+  }
+  */
+
+  
+
+
+/* .titulo1{
     display: flex;
     justify-content: center;
     align-items: center;
@@ -7,7 +200,7 @@
 }
 
 svg text {
-    fill: #0a6e5a; /* Verde azulado oscuro */
+    fill: #0a6e5a; 
     display: inline-block;
     animation: wave 3s infinite linear;
 }
@@ -36,7 +229,7 @@ svg text {
     margin-bottom: 60px;    
 }
 
-/* Contenedor de cada imagen y texto */
+
 .imagen-container {
     display: flex;
     flex-direction: column;
@@ -44,12 +237,12 @@ svg text {
     position: relative;
 }
 
-/* Imágenes circulares */
+
 .imagen {
     width: 250px;
     height: 250px;
     object-fit: cover;
-    border-radius: 50%; /* Hace las imágenes redondas */
+    border-radius: 50%; 
     border: 2px solid #333;
 }
 .imagen:hover {
@@ -106,19 +299,16 @@ svg text {
 }
 @media (max-width: 600px) {
     .grid-container {
-        grid-template-columns: 1fr; /* Se convierte en una columna */
-    }
+        grid-template-columns: 1fr; 
 }
 
-/* RESPONSIVE DESIGN */
+
 @media (max-width: 800px) {
     .galeria {
-        grid-template-columns: 1fr; /* Se convierte en una columna */
-    }
-}
+        grid-template-columns: 1fr; 
 @media (max-width: 567px){
     svg text {
         font-size: 1.5em;
         margin: 10px;
     }
-}
+} */
