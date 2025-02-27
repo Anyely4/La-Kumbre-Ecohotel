@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Cabañas{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'styles/perfil.css' %}">
+<link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
+    
+    <div class="container">
+        <div class="form-box login">
+            <form method="POST">
+                {% csrf_token %}
+                <h1>Bienvenido, {{ user.username }}</h1>
+                <h3>Información Personal</h3> <br>
+                <div class="input-box">
+                    Nombre: {{ user.username }}
+                    <i class='bx bxs-user'></i>
+                </div>
+                <div class="input-box">
+                     Email: {{ user.email }}
+                    <i class='bx bxs-envelope' ></i>
+                </div>
+
+           <br><br>
+            <div class="d-flex flex-row justify-content-between">
+                <div class="mt-4">
+                    <a href="{% url 'cambiar_contraseña' %}" class="boton1">
+                         Cambiar Contraseña
+                    </a> 
+                </div>
+                
+                <br><br>
+                
+                <form method="post" action="{% url 'eliminar_cuenta' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="boton1" onclick="return confirm('¿Estás seguro de que quieres eliminar tu cuenta?');">
+                        Eliminar Cuenta
+                    </button>
+                </form>
+            </div>
+            
+        </form>
+        </div>
+        
+        <div class="toggle-box">
+            <div class="toggle-panel toggle-left">
+                <img class="logotipo" src="{% static 'img/logotipo.png' %}" alt="Descripción de la imagen">
+            </div>
+        </div>
+         
+        
+    </div>
+
+{% endblock %}
+
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+    let form = document.getElementById("eliminarCuentaForm");
+
+    if (form) {
+        form.addEventListener("submit", function (event) {
+            event.preventDefault();  // Previene el envío automático
+            console.log("Evento submit detectado");
+
+            let confirmacion = confirm("¿Estás seguro de que quieres eliminar tu cuenta?");
+            if (confirmacion) {
+                console.log("Usuario confirmó la eliminación");
+                this.submit();  // Envía el formulario
+            } else {
+                console.log("Usuario canceló la eliminación");
+            }
+        });
+    } else {
+        console.log("No se encontró el formulario");
+    }
+});
+
+</script>
+

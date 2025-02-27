@@ -5,15 +5,7 @@
 {% block content %}
 <link rel="stylesheet" href="{% static 'styles/sugerencias.css' %}">
 
-{% if errores %}
-<div class="error-box">
-    <ul>
-        {% for error in errores %}
-            <li class="error-message">{{ error }}</li>
-        {% endfor %}
-    </ul>
-</div>
-{% endif %}
+
 
 
 <div class="container">
@@ -30,7 +22,7 @@
             <i class='bx bxs-envelope' ></i>
         </div>
         <select id="categoria" placeholder="Categoría" class="categoria" name="categoria" required>
-            <option value="Servicio">   </option>
+            <option value="">Categoria</option>
             <option value="Servicio">Servicio</option>
             <option value="Instalaciones">Instalaciones</option>
             <option value="Comida">Comida</option>
@@ -39,7 +31,7 @@
 
         <button class="boton1" type="submit">Enviar Sugerencia</button>
     </form>
-</div>
+</div> 
 <div class="toggle-box">
     <div class="toggle-panel toggle-left">
         <h2>Bienvenido a</h2> <br>

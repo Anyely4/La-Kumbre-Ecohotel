@@ -30,19 +30,46 @@
             <li class="links"><a href="{% url 'cabañas' %}">Cabañas</a></li>
             <li class="links"><a href="{% url 'gastronomia' %}">Gastronomia</a></li>
             <li class="links"><a href="{% url 'galeria' %}">Galeria</a></li>
-            <li class="links"><a href="{% url 'galeria' %}">Ayuda</a></li>
+            <li class="links"><a href="{% url 'manual' %}">Ayuda</a></li>
         </ul>
-        <div class="user-options">
+        
+        <div class="nav-iconos">
             {% if user.is_authenticated %}
-                <a href="{% url 'logout' %}" class="cerrar-sesion"> <img src="{% static 'img/exit.png' %}"></a>
+            <div class="nav-user-dropdown">
+                <i class="ri-user-line"></i>
+                <div class="dropdown-content">
+                    <a href="{% url 'perfil' %}">
+                        <i class="ri-user-line"></i>
+                        Perfil de usuario
+                    </a>
+                    <a href="{% url 'logout' %}">
+                        <i class="ri-logout-box-line"></i>
+                        Cerrar sesión
+                    </a>
+                </div>
+            </div>
+            <div class="cart-icon-container">
+                <a href="{% url 'reservas' %}">
+                    <i class="ri-calendar-check-line"></i>
+                    <span id="contador-carrito">0</span>
+                </a>
+            </div>
             {% else %}
-                <a href="{% url 'iniciar_sesion' %}" class="iniciar-sesion"><img src="{% static 'img/iniciar.png' %}"></a>
+            <a href="{% url 'iniciar_sesion' %}"><i class="ri-user-line"></i></a>
             {% endif %}
         </div>
-        </nav>
-        
-    </header>
+</nav>
 
+</header>
+{% if messages %}
+<div class="messages">
+    {% for message in messages %}
+        <div class="message {{ message.tags }}">
+            {{ message }}
+        </div>
+    {% endfor %}
+</div>
+{% endif %}
 <main>
     {% block content %}
     
@@ -96,6 +123,7 @@
         </div>
     </div>
 </footer>
+<script src="{% static 'js/base.js' %}"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 {% if messages %}
 {% for m in messages %}

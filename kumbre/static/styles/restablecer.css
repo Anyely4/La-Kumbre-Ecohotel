@@ -93,28 +93,6 @@ h2{
         transform: translateY(-50%);
         font-size: 20px;
     }
-.categoria{
-    position: relative;
-    margin: 30px 0;
-}
-.categoria{
-    font-family: 'Times New Roman', Times, serif;
-    width: 100%;
-    padding: 13px 50px 13px 20px;
-    background: #eee;
-    border-radius: 8px;
-    border: none;
-    outline: none;
-    font-size: 16px;
-    color: #333;
-    font-weight: 500;
-}
-
-    .categoria::placeholder{
-        color: #888;
-        font-weight: 400;
-    }
-
 
 
 
@@ -140,14 +118,17 @@ h2{
     height: 100%;
 }
 
+.logotipo{
+    width: 400px;
+}
     .toggle-box::before{
         content: '';
         position: absolute;
         left: -250%;
         width: 300%;
         height: 100%;
-        background-image: url('/static/img/fon1.jpg');
-        background-size: cover;
+        background-image: url('/static/img/fondoformu.jpg');
+        background-size: contain;
         background-position: center center;
         background-attachment: fixed;
         /* border: 2px solid red; */

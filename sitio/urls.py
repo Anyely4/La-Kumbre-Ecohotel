@@ -44,4 +44,11 @@ urlpatterns = [
     path("registro/", views.registro, name="registro"),
     path("logout/", views.logout_perfil, name="logout"),
     path('fechas_ocupadas/<int:cabaña_id>/', views.obtener_fechas_ocupadas, name='fechas_ocupadas'),
+    path('perfil/', views.perfil, name='perfil'),
+    path('manual/', views.manual, name='manual'),
+    path('eliminar_cuenta/', views.eliminar_cuenta, name='eliminar_cuenta'),
+    path('cambiar_contraseña/', views.cambiar_contrasena, name='cambiar_contraseña'),
+    path('restablecer/', views.restablecer, name='restablecer'),
+    path('contrasena/<uidb64>/<token>/', views.contrasena, name='contrasena'),
+    path('password_changed/', views.password_changed, name='password_changed'),
 ]

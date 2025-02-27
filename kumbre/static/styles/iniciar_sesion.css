@@ -113,7 +113,12 @@ h2{
     font-weight: 600;
 }
 
-
+.toggle-box p{
+    font-size: 1em;
+    background-color: #0000007e;
+    padding: 5px;
+    border-radius: 5px;
+}
 
 .toggle-box{
     position: absolute;
@@ -127,8 +132,9 @@ h2{
         left: -250%;
         width: 300%;
         height: 100%;
-        background-image: url('/static/img/fon1.jpg');
-        background-size: cover;
+        background-image: url('/static/img/fondoformu.jpg');
+        background-size: contain; 
+
         background-position: center center;
         background-attachment: fixed;
         /* border: 2px solid red; */
@@ -138,6 +144,22 @@ h2{
     }
 
         .container.active .toggle-box::before{ left: 50%; }
+/* Oculta el mensaje por defecto */
+.input-box .con {
+    display: none;
+    font-size: 13px;
+    color: #353535;
+    margin-top: 5px;
+    transition: opacity 0.3s ease;
+    opacity: 0;
+}
+
+/* Muestra el mensaje solo cuando el campo de contraseña tiene el foco */
+.input-box input:focus ~ .con {
+    display: block;
+    opacity: 1;
+}
+
 
 .toggle-panel{
     position: absolute;
@@ -230,95 +252,3 @@ h2{
 
     .toggle-panel h1{font-size: 30px; }
 }
-
-/* .todo123{
-    width: 40%;
-    margin: auto;
-    margin-top: 20px;
-    margin-bottom: 20px;
-    color: aliceblue;
-    font-size: 1rem;
-    background-image: url('/static/img/sug.jpg');
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center center;
-    background-attachment: fixed;
-    padding: 10px;
-    box-shadow: 0px 10px 30px rgba(54, 53, 53, 0.664);
-    border-radius: 30px;
-    text-align: center;
-}
-.container {
-    flex-direction: column;
-    padding: 20px;
-    border-radius: 20px;
-    box-shadow  : 0 0 10px rgba(44, 44, 44, 0.774);
-    margin-top: 40px;
-    margin-bottom: 40px;    
-    margin: 20px auto;
-    height: 400px;
-    width: 80%;
-    text-align: center;
-}
-
-
-h2 {
-    font-size: 2.5em;
-    color: rgb(26, 151, 151);  
-    margin: 20px auto ;
-}
-
-label {
-
-    display: block;
-    text-align: left;
-    margin: 20px 0 15px;
-    font-weight: bold;
-}
-
-input {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 15px;
-    border: 1px solid #00221c;
-    border-radius: 5px;
-}
-
-
-.boton12 {
-    width: 50%;
-    padding: 10px;
-    background: #01665f;
-    margin: 30px auto;
-    border: none;
-    color: white;
-    font-size: 16px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-.boton12:hover {
-    background: #077768;
-}
-
-
-.error {
-    color: red;
-    font-size: 14px;
-    margin-bottom: 10px;
-}
-
-.register-link {
-    margin: 20px auto;
-    font-size: 14px;
-}
-
-.register-link a {
-    color: #007bff;
-    text-decoration: none;
-}
-
-.register-link a:hover {
-    text-decoration: underline;
-} */

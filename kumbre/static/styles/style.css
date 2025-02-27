@@ -72,7 +72,8 @@ nav {
     justify-content: space-between;
     align-items: center;
     padding: 0;
-    margin: 0;
+    margin: auto ;
+    margin-right: auto;
     flex-grow: 1;
 }
 
@@ -109,6 +110,136 @@ nav {
 }
 .menu-checkbox {
     display: none;
+}
+
+/* Estilo del contenedor de iconos de navegación */
+.nav-iconos {
+    color: #000000;
+    display: flex;
+    align-items: center;
+    position: absolute;
+    right: 20px;
+}
+
+/* Íconos generales */
+.nav-iconos i {
+    display: inline-block;
+    font-size: 35px;
+    color: #000000; /* Color blanco para contrastar con el fondo */
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.nav-iconos i:hover {
+    color: #214d28; /* Color cálido que combina con la estética de La Kumbre */
+}
+
+/* Estilo del dropdown del usuario */
+.nav-user-dropdown {
+    margin-left: 20px;
+    position: relative;
+}
+/* Inicialmente ocultamos el menú */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #47636ed5; /* Fondo elegante */
+    color: white;
+    min-width: 160px;
+    right: 0;
+    top: 35px;
+    border-radius: 5px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    padding: 10px 0;
+}
+
+/* Cuando se activa con JavaScript, se muestra */
+.dropdown-content.show {
+    display: block;
+}
+
+.dropdown-content a {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    text-decoration: none;
+    color: rgb(255, 255, 255);
+    transition: background 0.3s ease;
+}
+
+.dropdown-content a i {
+    margin-right: 8px;
+}
+
+.dropdown-content a:hover {
+    background-color: #42b98c;
+    color: #35535f;
+}
+
+/* Estilo para el contenedor del usuario */
+.nav-user-dropdown {
+    color: #000000;
+    position: relative;
+    cursor: pointer;
+}
+
+/* Mostrar dropdown al pasar el mouse */
+.nav-user-dropdown:hover .dropdown-content {
+    display: block;
+}
+
+/* Carrito de reservas */
+.cart-icon-container {
+    position: relative;
+}
+
+.cart-icon-container a {
+    text-decoration: none;
+    color: rgb(0, 0, 0);
+    position: relative;
+}
+
+#contador-carrito {
+    position: absolute;
+    top: -8px;
+    right: -10px;
+    background: #81e4bb; 
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 3px 7px;
+    border-radius: 50%;
+}
+
+/* Icono de menú responsive */
+#menu-icon {
+    font-size: 26px;
+    display: none; /* Se oculta en pantallas grandes */
+}
+
+/* Responsive para móviles */
+@media (max-width: 1180px) {
+    #menu-icon {
+        display: block;
+    }
+
+    .nav-iconos {
+        gap: 10px;
+    }
+    .nav-iconos {
+        color: #000000;
+        display: flex;
+        align-items: center;
+        position: absolute;
+        right: 60px;
+    }
+    .nav-iconos i {
+        display: inline-block;
+        font-size: 25px;
+        margin-top: 11px;
+    }
+    
 }
 
 @media (max-width: 1125px) {
