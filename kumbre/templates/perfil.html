@@ -30,13 +30,9 @@
                 </div>
                 
                 <br><br>
-                
-                <form method="post" action="{% url 'eliminar_cuenta' %}">
-                    {% csrf_token %}
-                    <button type="submit" class="boton1" onclick="return confirm('¿Estás seguro de que quieres eliminar tu cuenta?');">
-                        Eliminar Cuenta
-                    </button>
-                </form>
+                <a href="{% url 'eliminar_cuenta' %}" class="boton1" onclick="eliminarCuenta(); return false;">
+                    Eliminar Cuenta
+                </a>
             </div>
             
         </form>
@@ -56,26 +52,39 @@
 
 <script>
 
-document.addEventListener("DOMContentLoaded", function () {
-    let form = document.getElementById("eliminarCuentaForm");
+function eliminarCuenta() {
+  fetch('/eliminar_cuenta/', {
+    method: 'POST',
+    headers: {
+      'X-CSRFToken': getCookie('csrftoken'), // Obtén el token CSRF
+    },
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      alert(data.mensaje);
+      window.location.href = '/logout/'; // Redirige al usuario al logout
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+      alert('Ocurrió un error al eliminar la cuenta.');
+    });
+}
 
-    if (form) {
-        form.addEventListener("submit", function (event) {
-            event.preventDefault();  // Previene el envío automático
-            console.log("Evento submit detectado");
-
-            let confirmacion = confirm("¿Estás seguro de que quieres eliminar tu cuenta?");
-            if (confirmacion) {
-                console.log("Usuario confirmó la eliminación");
-                this.submit();  // Envía el formulario
-            } else {
-                console.log("Usuario canceló la eliminación");
-            }
-        });
-    } else {
-        console.log("No se encontró el formulario");
+function getCookie(name) {
+  let cookieValue = null;
+  if (document.cookie && document.cookie !== '') {
+    const cookies = document.cookie.split(';');
+    for (let i = 0; i < cookies.length; i++) {
+      const cookie = cookies[i].trim();
+      // Does this cookie string begin with the name we want?
+      if (cookie.substring(0, name.length + 1) === (name + '=')) {
+        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+        break;
+      }
     }
-});
+  }
+  return cookieValue;
+}
 
 </script>
 
