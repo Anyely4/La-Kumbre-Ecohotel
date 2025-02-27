@@ -270,22 +270,19 @@ def fechas_ocupadas(request, cabana_id):
     fechas_ocupadas = [fecha.strftime("%Y-%m-%d") for fecha in reservas]
     return JsonResponse({"fechas_ocupadas": fechas_ocupadas})
 
+from django.contrib.auth import get_user_model
+from django.http import JsonResponse
+from django.views.decorators.http import require_POST
 
 @login_required
 def eliminar_cuenta(request):
-    if request.method == "POST":
+    if request.method == 'POST':
         user = request.user
         nombre_usuario = user.username
-        
-        logout(request)  # Cierra sesión
-        request.session.flush()  # Borra la sesión manualmente
-        user.delete()  # Ahora elimina el usuario
-        
-        messages.success(request, f"Adiós, {nombre_usuario}. ¡Tu cuenta ha sido eliminada!")
-        return redirect("inicio")
-
-    return redirect("inicio")
-
+        user.delete()
+        messages.success(request, f"Adiós, {nombre_usuario}. ¡Tu cuenta ha sido eliminada con exito!")
+        return redirect('home')  # Redirige a la página de inicio después de eliminar la cuenta
+    return render(request, 'eliminar_cuenta.html')
 
 from django.contrib.auth import update_session_auth_hash
 from .forms import CustomPasswordChangeForm
