@@ -22,6 +22,8 @@ from django.contrib.auth import logout
 from django.contrib.auth.tokens import default_token_generator
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_str
+from django.shortcuts import render, redirect, get_object_or_404
+
 
 def sugerencias(request):
     if request.method == 'POST':
@@ -177,87 +179,23 @@ def logout_perfil(request):
     return redirect("inicio")  # Redirige a la página de inicio
 
 
-def hacer_reserva(request):
-    cabanas = Cabana.objects.all()
-    reservas = Reserva.objects.values("cabana_id", "fecha_reserva")
-    fechas_ocupadas = {}
+def hacer_reserva(request, cabana_nombre):
+    cabana = get_object_or_404(Cabana, nombre=cabana_nombre)
 
-    for reserva in reservas:
-        cabana_id = str(reserva["cabana_id"])
-        fecha = reserva["fecha_reserva"].strftime("%Y-%m-%d")
-        
-        if cabana_id not in fechas_ocupadas:
-            fechas_ocupadas[cabana_id] = []
-        fechas_ocupadas[cabana_id].append(fecha)
+    if request.method == 'POST':
+        fecha_reserva = request.POST.get('fecha_reserva')
+        numero_personas = request.POST.get('numero_personas')
+        telefono = request.POST.get('telefono')
+        comentarios = request.POST.get('comentarios')
 
-    if request.method == "POST":
-        if not request.user.is_authenticated:
-            messages.error(request, "Debes iniciar sesión para hacer una reserva.")
-            return redirect("iniciar_sesion")
+        # Aquí puedes guardar la reserva o realizar alguna lógica adicional
+        print(f"Reserva para {cabana_nombre} - Fecha: {fecha_reserva}")
 
-        try:
-            usuario = Usuario.objects.get(usuario=request.user)
-        except Usuario.DoesNotExist:
-            messages.error(request, "Usuario no encontrado.")
-            return redirect("iniciar_sesion")
+        return render(request, 'confirmacion.html', {'cabana': cabana})
 
-        cabana_id = request.POST.get("cabana")
-        fecha_reserva = request.POST.get("fecha_reserva")
-        numero_personas = request.POST.get("numero_personas")
-        telefono = request.POST.get("telefono")
-        comentarios = request.POST.get("comentarios")
+    return render(request, 'reservas.html', {'cabana': cabana})
 
-        if date.fromisoformat(fecha_reserva) < date.today():
-            messages.error(request, "No puedes reservar una fecha pasada.")
-            return redirect("reservas")
 
-        try:
-            cabana = Cabana.objects.get(id=cabana_id)
-        except Cabana.DoesNotExist:
-            messages.error(request, "Cabaña no encontrada.")
-            return redirect("reservas")
-
-        if fecha_reserva in fechas_ocupadas.get(str(cabana_id), []):
-            messages.error(request, "Esta cabaña ya está reservada en esa fecha.")
-            return redirect("reservas")
-
-        try:
-            reserva = Reserva.objects.create(
-                usuario=usuario,
-                cabana=cabana,
-                fecha_reserva=fecha_reserva,
-                numero_personas=numero_personas,
-                telefono=telefono,
-                comentarios=comentarios,
-                estado="pendiente"
-            )
-            
-            send_mail(
-                "Nueva Reserva Solicitada",
-                f"Un usuario ha solicitado una reserva:\n\n"
-                f"Usuario: {request.user.username}\n"
-                f"Cabaña: {cabana.nombre}\n"
-                f"Fecha: {fecha_reserva}\n"
-                f"Número de Personas: {numero_personas}\n"
-                f"Teléfono: {telefono}\n"
-                f"Comentarios: {comentarios}\n\n"
-                "Revisa el panel de administración para aprobar o rechazar la reserva.",
-                "anyelyho1@gmail.com",
-                ["anyelyho1@gmail.com"],
-                fail_silently=False,
-            )
-
-            messages.success(request, "Reserva enviada. Espera la confirmación del administrador.")
-            return redirect("reservas")
-        
-        except Exception as e:
-            messages.error(request, f"Error al crear la reserva: {str(e)}")
-            return redirect("reservas")
-
-    return render(request, "reservas.html", {
-        "cabanas": cabanas,
-        "fechas_ocupadas": json.dumps(fechas_ocupadas)
-    })
 
 def obtener_fechas_ocupadas(request, cabana_id):
     reservas = Reserva.objects.filter(cabana_id=cabana_id, estado="aprobada").values_list("fecha_reserva", flat=True)

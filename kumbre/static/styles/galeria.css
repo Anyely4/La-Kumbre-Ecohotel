@@ -18,13 +18,6 @@ h1:hover {
   color: #d8f8f4;
 } */
 
-h2 {
-  font-size: 3rem;
-  margin: 20px;
-  text-align: center;
-  margin-bottom: 30px;
-  animation: colorChange 5s infinite alternate; /* Animación */
-}
 
 @keyframes colorChange {
   0% { color: rgb(226, 224, 123); }

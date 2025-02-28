@@ -20,7 +20,8 @@
                 <div class="titulo-imagen">
 					<a href="#">Cabaña Tabi</a>
 				</div>
-                <button id="openModalBtn" class="btntabi">Conoce la cabaña</button>
+                <button id="openModalBtn1" class="btntabi">Conoce la Cabaña 1</button>
+
 			</li>
 			<li>
 				<div class="carousel">
@@ -32,7 +33,7 @@
                 <div class="titulo-imagen">
 					<a href="#">Cabaña Geisha</a>
 				</div>
-                <button id="openModalBtn" class="btntabi">Conoce la cabaña</button>
+                <button id="openModalBtn2" class="btntabi">Conoce la Cabaña 2</button>
 			</li>
 			<li>
 				<div class="carousel">
@@ -44,7 +45,7 @@
                 <div class="titulo-imagen">
 					<a href="#">Cabaña Cafetal</a>
 				</div>
-                <button id="openModalBtn" class="btntabi">Conoce la cabaña</button>
+                <button id="openModalBtn3" class="btntabi">Conoce la Cabaña 3</button>
 			</li>
 			<li>
 				<div class="carousel">
@@ -56,9 +57,9 @@
                 <div class="titulo-imagen">
 					<a href="#">Cabaña Bourbon</a>
 				</div>
-                <button id="openModalBtn" class="btntabi">Conoce la cabaña</button>
+                <button id="openModalBtn4" class="btntabi">Conoce la Cabaña 4</button>
 			</li>
-			<li>
+			<li> 
 				<div class="carousel">
                     <div class="carousel-images">
                         <img src="/static/img/wushwush.jpg" alt="Imagen 1">
@@ -68,89 +69,220 @@
                 <div class="titulo-imagen">
 					<a href="#">Cabaña Wush</a>
 				</div>
-                <button id="openModalBtn" class="btntabi">Conoce la cabaña</button>
+                <button id="openModalBtn5" class="btntabi">Conoce la Cabaña 5</button>
 			</li>
 		</ul>
 	</div>
 
-    <div id="infoModal" class="modal">
-        <div class="modal-content">
-            <span class="close">&times;</span> 
+<!-- Modal para la Cabaña 2 -->
+<div id="modalCabaña1" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <div class="modal-header">
             <h2>Bienvenido a la Cabaña Tabi</h2>
-            <p>Este es un cuadro de información que aparece cuando presionas el botón.</p>
-            <button>reservar</button>
         </div>
-    </div> 
-<!-- 
-<div class="container">
-    <div class="section">
-        <div class="carousel">
-            <div class="carousel-images">
-                <img src="/static/img/cabour.jpg" alt="Imagen 1">
-                <img src="/static/img/cageishaa.jpg" alt="Imagen 2">
+        <div class="modal-body">
+            <div class="tab-container">
+                <div class="tab-header">
+                    <button class="tablinks active" onclick="openTab(event, 'tab1')">Descripción</button>
+                    <button class="tablinks" onclick="openTab(event, 'tab2')">Incluye</button>
+                    <button class="tablinks" onclick="openTab(event, 'tab3')">contiene</button>
+                </div>
+                <div class="tab-content">
+                    <div id="tab1" class="tab-pane active">
+                        <p><br><br>
+                            Esta cabaña es ideal para grupos y familias, con capacidad para 
+                            hasta 12 personas, ofreciendo comodidad y 
+                            un ambiente acogedor. <br> Al llegar, te recibiremos con dos cafés de 
+                            bienvenida y una botella de vino de cortesía. Disfruta de dos desayunos 
+                            incluidos y relájate en nuestra acogedora zona de descanso. Tendrás acceso a una fogata para momentos
+                            inolvidables, WiFi durante toda tu estancia, y un amplio jacuzzi 
+                            perfecto para compartir con amigos y familiares.</p>
+                            <div class="modal-images">
+                                <img src="{% static 'img/tabi1.jpg' %}"  class="fotos" alt="Imagen de la cabaña">
+                                <img src="{% static 'img/tabi2.jpg' %}"  class="fotos" alt="Imagen de la cabaña">
+                                <img src="{% static 'img/tabi3.jpg' %}"  class="fotos" alt="Imagen de la cabaña">
+                                <img src="{% static 'img/tabi4.jpg' %}"  class="fotos" alt="Imagen de la cabaña">
+                                <img src="{% static 'img/tabi5.jpg' %}"  class="fotos" alt="Imagen de la cabaña">
+                            </div>
+                    </div>
+                    <div id="tab2" class="tab-pane">
+                        <p> <br><br>-1 Botella de vino <br>
+                            -2 Cafés de bienvenida <br>
+                            -2 Desayunos <br>
+                            -Ingreso al mirador <br>
+                            -Wi-Fi <br>
+                            -Fogata y malvaviscos <br>                       
+                            -Parlante bluetooth <br>
+                            -Jabón artesanal</p>
+                            <div class="modal-images">
+                                <img src="{% static 'img/comida.jpg' %}"  class="fotos" alt="Imagen de la cabaña">
+                                <img src="{% static 'img/comida.jpg' %}"  class="fotos" alt="Imagen de la cabaña">
+                                <img src="{% static 'img/comida.jpg' %}"  class="fotos" alt="Imagen de la cabaña">
+                                <img src="{% static 'img/comida.jpg' %}"  class="fotos" alt="Imagen de la cabaña">
+                                <img src="{% static 'img/comida.jpg' %}"  class="fotos" alt="Imagen de la cabaña">
+                            </div>
+                    </div>
+                    <div id="tab3" class="tab-pane"> 
+                        <p><br><br> -3 camas de 1.40 m y 1 cama de 1.60 m <br>
+                            -Nevera <br>
+                            -Cafetera <br>
+                            -Jacuzzi para 8 personas  <br>
+                            -Parqueadero privado <br>
+                            -Zona de fogata <br>
+                            -Malla catamarán <br>
+                            -Sofácama</p>
+                            <div class="modal-images">
+                                <img src="{% static 'img/comida.jpg' %}"  class="fotos" alt="Imagen de la cabaña">
+                                <img src="{% static 'img/comida.jpg' %}"  class="fotos" alt="Imagen de la cabaña">
+                                <img src="{% static 'img/comida.jpg' %}"  class="fotos" alt="Imagen de la cabaña">
+                                <img src="{% static 'img/comida.jpg' %}"  class="fotos" alt="Imagen de la cabaña">
+                                <img src="{% static 'img/comida.jpg' %}"  class="fotos" alt="Imagen de la cabaña">
+                            </div>
+                    </div>
+                </div>
             </div>
+        
         </div>
-        <h2>Cabaña Tabi</h2>
-        <button id="openModalBtn" class="btntabi">Conoce la cabaña</button>
-        <br><br><br>
-
-        <div class="carousel">
-            <div class="carousel-images">
-                <img src="/static/img/cabour.jpg" alt="Imagen 1">
-                <img src="/static/img/cageishaa.jpg" alt="Imagen 2">
-            </div>
+        <div class="modal-footer">
+            <button class="btn-reservar"><a href="{% url 'reservas' cabana_nombre='Tabi' %}">Reservar</a>            </button>
         </div>
-        <h2>Cabaña Bourbon</h2>
-        <button id="openModalBtn" class="btntabi">Conoce la cabaña</button>
-    </div>
-
-    <div class="section_middle">
-        <h1>Explora un rincón mágico y encantador</h1>
-        <h1>La Kumbre del Huila</h1>
-        <h1>Conoce nuestras Cabañas</h1>
-        <br><br><br>
-
-        <div class="carousel">
-            <div class="carousel-images">
-                <img src="/static/img/cabour.jpg" alt="Imagen 1">
-                <img src="/static/img/cageishaa.jpg" alt="Imagen 2">
-            </div>
-        </div>
-        <h2>Cabaña Cafetal</h2>
-        <button id="openModalBtn" class="btntabi">Conoce la cabaña</button>
-    </div>
-
-    <div class="section">
-        <div class="carousel">
-            <div class="carousel-images">
-                <img src="/static/img/cabour.jpg" alt="Imagen 1">
-                <img src="/static/img/cageishaa.jpg" alt="Imagen 2">
-            </div>
-        </div>
-        <h2>Cabaña Geisha</h2>
-        <button id="openModalBtn" class="btntabi">Conoce la cabaña</button>
-        <br><br><br>
-|
-
-        <div class="carousel">
-            <div class="carousel-images">
-                <img src="/static/img/cabour.jpg" alt="Imagen 1">
-                <img src="/static/img/cageishaa.jpg" alt="Imagen 2">
-            </div>
-        </div>
-        <h2>Cabaña Wush</h2>
-        <button id="openModalBtn" class="btntabi">Conoce la cabaña</button>
     </div>
 </div>
 
-<div id="infoModal" class="modal">
+
+<!-- Modal para la Cabaña 2 -->
+<div id="modalCabaña2" class="modal">
     <div class="modal-content">
         <span class="close">&times;</span>
-        <h2>Información Importante</h2>
-        <p>Este es un cuadro de información que aparece cuando presionas el botón.</p>
-        <button>reservar</button>
+        <div class="modal-header">
+            <h2>Información de la Cabaña</h2>
+        </div>
+        <div class="modal-body">
+            <div class="tab-container">
+                <div class="tab-header">
+                    <button class="tablinks active" onclick="openTab(event, 'tab1')">Descripción</button>
+                    <button class="tablinks" onclick="openTab(event, 'tab2')">Servicios</button>
+                    
+                </div>
+                <div class="tab-content">
+                    <div id="tab1" class="tab-pane active">
+                        <p>Descripción de la cabaña...</p>
+                    </div>
+                    <div id="tab2" class="tab-pane">
+                        <p>Servicios ofrecidos...</p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-images">
+                <img src="imagen1.jpg" alt="Imagen de la cabaña">
+                <img src="imagen2.jpg" alt="Imagen de la cabaña">
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-reservar"><a href="{% url 'reservas' cabana_nombre='Geisha' %}">Reservar</a></button>
+        </div>
     </div>
-</div> -->
+</div>
+
+<!-- Modal para la Cabaña 3 -->
+<div id="modalCabaña3" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <div class="modal-header">
+            <h2>Información de la Cabaña</h2>
+        </div>
+        <div class="modal-body">
+            <div class="tab-container">
+                <div class="tab-header">
+                    <button class="tablinks active" onclick="openTab(event, 'tab1')">Descripción</button>
+                    <button class="tablinks" onclick="openTab(event, 'tab2')">Servicios</button>
+                </div>
+                <div class="tab-content">
+                    <div id="tab1" class="tab-pane active">
+                        <p>Descripción de la cabaña...</p>
+                    </div>
+                    <div id="tab2" class="tab-pane">
+                        <p>Servicios ofrecidos...</p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-images">
+                <img src="imagen1.jpg" alt="Imagen de la cabaña">
+                <img src="imagen2.jpg" alt="Imagen de la cabaña">
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-reservar"><a href="{% url 'reservas' cabana_nombre='Cafetal' %}">Reservar</a></button>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para la Cabaña 4 -->
+<div id="modalCabaña4" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <div class="modal-header">
+            <h2>Información de la Cabaña</h2>
+        </div>
+        <div class="modal-body">
+            <div class="tab-container">
+                <div class="tab-header">
+                    <button class="tablinks active" onclick="openTab(event, 'tab1')">Descripción</button>
+                    <button class="tablinks" onclick="openTab(event, 'tab2')">Servicios</button>
+                </div>
+                <div class="tab-content">
+                    <div id="tab1" class="tab-pane active">
+                        <p>Descripción de la cabaña...</p>
+                    </div>
+                    <div id="tab2" class="tab-pane">
+                        <p>Servicios ofrecidos...</p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-images">
+                <img src="imagen1.jpg" alt="Imagen de la cabaña">
+                <img src="imagen2.jpg" alt="Imagen de la cabaña">
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-reservar"><a href="{% url 'reservas' cabana_nombre='Bourbon Rosado' %}">Reservar</a></button>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para la Cabaña 5 -->
+<div id="modalCabaña5" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <div class="modal-header">
+            <h2>Información de la Cabaña</h2>
+        </div>
+        <div class="modal-body">
+            <div class="tab-container">
+                <div class="tab-header">
+                    <button class="tablinks active" onclick="openTab(event, 'tab1')">Descripción</button>
+                    <button class="tablinks" onclick="openTab(event, 'tab2')">Servicios</button>
+                </div>
+                <div class="tab-content">
+                    <div id="tab1" class="tab-pane active">
+                        <p>Descripción de la cabaña...</p>
+                    </div>
+                    <div id="tab2" class="tab-pane">
+                        <p>Servicios ofrecidos...</p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-images">
+                <img src="imagen1.jpg" alt="Imagen de la cabaña">
+                <img src="imagen2.jpg" alt="Imagen de la cabaña">
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-reservar"><a href="{% url 'reservas' cabana_nombre='Wush-Wush' %}">Reservar</a></button>
+        </div>
+    </div>
+</div>
 
 <script src="{% static 'js/cabaña.js' %}"></script>
 

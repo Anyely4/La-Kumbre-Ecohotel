@@ -57,12 +57,17 @@ class FormularioRegistro(UserCreationForm):
         return user
 
 class ReservaForm(forms.ModelForm):
-    cabana = forms.ModelChoiceField(
-        queryset=Cabana.objects.all(),  # Asegúrate de que aquí se obtienen las cabañas
-        empty_label="Selecciona una cabaña",
-        widget=forms.Select(attrs={'class': 'form-control'})
-    )
-
     class Meta:
         model = Reserva
-        fields = ['usuario', 'cabana', 'fecha_reserva']
+        fields = ('cabana', 'fecha_reserva', 'numero_personas', 'telefono', 'comentarios')
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        
+        # Agregar el precio de la cabaña como un campo no editable
+        self.fields['cabana'].widget.attrs['readonly'] = True
+        
+    def get_precio_cabana(self):
+        if self.instance:
+            return self.instance.cabana.precio
+        return None
