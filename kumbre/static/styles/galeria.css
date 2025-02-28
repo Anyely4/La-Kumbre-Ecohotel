@@ -186,11 +186,6 @@ h1:hover {
     gap: 5px;
   }
 }
-    height: 300px;
-    margin-top: 50px;
-    margin-bottom: 60px;
-    border-radius: 20px;
-}
 .grid-container {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -218,7 +213,7 @@ h1:hover {
     padding: 20px;
 }
 
-@media (max-width: 900px) {
+/* @media (max-width: 900px) {
     .grid-container {
         grid-template-columns: repeat(2, 1fr);
     }
@@ -240,7 +235,7 @@ h1:hover {
 } */
 
 
-h1 {
+/* h1 {
   margin: 20px 0;
   color: #333;
 }
@@ -267,3 +262,4 @@ h1 {
   transform: scale(1.1);
 }
 
+} */
