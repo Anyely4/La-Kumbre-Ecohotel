@@ -43,6 +43,7 @@ urlpatterns = [
     path("iniciar_sesion/", views.iniciar_sesion, name="iniciar_sesion"),
     path("registro/", views.registro, name="registro"),
     path("logout/", views.logout_perfil, name="logout"),
+    path('reservas/<str:cabana_nombre>/', views.hacer_reserva, name='reservas'),
     path('fechas_ocupadas/<int:cabaña_id>/', views.obtener_fechas_ocupadas, name='fechas_ocupadas'),
     path('perfil/', views.perfil, name='perfil'),
     path('manual/', views.manual, name='manual'),
@@ -51,4 +52,5 @@ urlpatterns = [
     path('restablecer/', views.restablecer, name='restablecer'),
     path('contrasena/<uidb64>/<token>/', views.contrasena, name='contrasena'),
     path('password_changed/', views.password_changed, name='password_changed'),
+
 ]
