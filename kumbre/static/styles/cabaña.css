@@ -1,85 +1,100 @@
-
-h1 {
-    text-align: center;
-    margin-top: 20px;
-    margin-bottom: 20px;
-    color: #fff;
-    text-shadow: 0 1px 2px #000;
-}
-
-
-/*Time to apply widths for accordian to work
-Width of image = 640px
-total images = 5
-so width of hovered image = 640px
-width of un-hovered image = 40px - you can set this to anything
-so total container width = 640 + 40*4 = 800px;
-default width = 800/5 = 160px;
-*/
-
 .contenedor-galeria {
-    width: 1250px;
-    height: 335px;
+    width: 90%; /* Ajusta el ancho para que ocupe todo el espacio disponible */
+    height: 500px; /* Mantén la altura fija para una mejor visualización */
     overflow: hidden;
-    margin: 50px auto;
+    margin: 100px auto;
     box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.466);
     -webkit-box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.35);
     -moz-box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.35);
+    display: flex; /* Agrega flexbox para una mejor distribución de los elementos */
+    justify-content: center; /* Centra los elementos horizontalmente */
+}
+h1{
+    margin: 60px auto auto auto;
+    font-size: 3em;
+    text-align: center;
+    color: #79e0db;
+    
 }
 
+/* Ajusta la lista para que sea flexible */
 .contenedor-galeria ul {
-    width: 2000px;
+    list-style: none; /* Elimina los puntos de la lista */
+    padding: 0; /* Elimina el padding por defecto */
+    margin: 0; /* Elimina el margin por defecto */
+    display: flex;
+    justify-content: space-around; /* Distribuye los elementos con espacios iguales entre ellos */
 }
 
+/* Ajusta cada elemento de la lista */
 .contenedor-galeria li {
     position: relative;
-    display: block;
-    width: 250px;
-    float: left;
+    width: calc(20% - 0px); 
+    margin: 0px; /* Agrega un margen para separar los elementos */
     box-shadow: 0 0 25px 10px rgba(0, 0, 0, 0.5);
     -webkit-box-shadow: 0 0 25px 10px rgba(0, 0, 0, 0.5);
-    -moz-box-shadow: 0 0 25px 10px rgba(0, 0, 0, 0.5);
+    -moz-box-shadow: 0 0 25px 10px rgba(0, 0, 0, 0.671);
     transition: all 0.5s;
 }
 
+/* Al hacer hover, ajusta el ancho para que no se corra demasiado */
 .contenedor-galeria ul:hover li {
-    width: 100px;
+    width: calc(20% - 20px); /* Mantén el ancho similar al original */
     filter: brightness(30%);
 }
 
+/* Al hacer hover sobre un elemento específico, ajusta su ancho */
 .contenedor-galeria ul li:hover {
-    width: 640px;
+    width: calc(40% - 20px); /* Ajusta el ancho para que sea más grande pero no demasiado */
     filter: brightness(100%);
 }
 
-.contenedor-galeria li img {
-    display: block;
-    width: 500px;
-    height: 100%;
+/* Ajusta las imágenes dentro del carousel */
+.carousel {
+    justify-content: center;
+    width: 200%; /* Ajusta el ancho para que ocupe todo el espacio disponible */
+    height: 93%; /* Ajusta la altura para que ocupe todo el espacio disponible */
+    overflow: hidden;
+    position: relative;
+    border-radius: 10px;
+    box-shadow: 4px 4px 15px rgba(96, 177, 153, 0.582);
 }
 
+.carousel-images {
+    display: flex;
+    width: 100%; /* Ajusta el ancho para que ocupe todo el espacio disponible */
+    height: 100%; /* Ajusta la altura para que ocupe todo el espacio disponible */
+    transition: transform 0.5s ease-in-out;
+}
+
+.carousel-images img {
+    width: 50%; /* Ajusta el ancho para que las imágenes se muestren una al lado de la otra */
+    height: 100%;
+    object-fit: cover;
+}
+
+.carousel:hover .carousel-images {
+    cursor: pointer;
+    animation: slide 7s infinite alternate;
+}
+
+@keyframes slide {
+    0% { transform: translateX(0); }
+    50% { transform: translateX(-50%); } /* Ajusta la animación para que no se corra demasiado */
+}
+
+/* Mantén el estilo del título y botón igual */
 .titulo-imagen {
+    font-family: 'Times New Roman', Times, serif;
     background: rgba(0, 0, 0, 0.822);
     position: absolute;
     top: 100%;
-    width: 109.5%;
+    width: 100%; /* Ajusta el ancho para que ocupe todo el espacio disponible */
     display: block;
     transition: all 0.5s ease;
     animation: cambia-color 10s linear infinite;
     background: -webkit-linear-gradient(left, rgba(27, 56, 49, 0.8), rgba(255, 255, 255, 0.8));
     background-size: 400% 400%;
-}
-
-@keyframes cambia-color {
-    0% {
-        background-position: 0%, 25%;
-    }
-    25% {
-        background-position: 50%, 25%;
-    }
-    50% {
-        background-position: 0%, 50%;
-    }
 }
 
 .titulo-imagen a {
@@ -105,52 +120,15 @@ default width = 800/5 = 160px;
     transition: all 0.5s ease;
 }
 
-.titulo-imagen:active {
-    background: rgba(255, 255, 255, 0.5);
-}
-
-.carousel {
-    justify-content: center;
-    width: 700px;
-    height: 300px;
-    overflow: hidden;
-    position: relative;
-    border-radius: 10px;
-    box-shadow: 4px 4px 15px rgba(112, 218, 186, 0.445); 
-}
-
-
-.carousel-images {
-    display: flex;
-    width: 20%;
-    height: 100%;
-    transition: transform 0.5s ease-in-out;
-}
-
-
-.carousel-images img {
-    width: 200%;
-    height: 100%;
-    object-fit: cover;
-}
-
-
-.carousel:hover .carousel-images {
-    cursor: pointer;
-    animation: slide 7s infinite alternate;
-}
-
-
-@keyframes slide {
-    0% { transform: translateX(0); }
-    50% { transform: translateX(-100%); }
-}
-
 
 .btntabi {
-    background: #007bff;
+    font-family: 'Times New Roman', Times, serif;
+    height: 50px;
+    background: #0a423f;
+    font-size: 20px;
     color: white;
-    padding: 10px 20px;
+    margin-top: -5px;
+    padding: 0px 20px;
     border-radius: 5px;
     cursor: pointer;
     text-decoration: none;
@@ -158,217 +136,190 @@ default width = 800/5 = 160px;
 }
 
 .btntabi:hover {
-    background-color: #0056b3;
-}
-
-
-
-.modal {
-    display: none;
-    position: fixed;
-    z-index: 1000;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    display: flex;
-    padding: 20px;
-    align-items: center;
-    justify-content: center;
-}
-
-
-
-.modal-content {
-    background-color: #fff;
-    padding: 20px;
-    width: 90%;
-    max-width: 500px;
-    border-radius: 10px;
-    text-align: center;
-    position: relative;
-    box-shadow: 0 4px 10px rgba(128, 231, 183, 0.315);
-} 
-/* body{
-    background-image: url('/static/img/dji_fly_20230711_174052_291_1689395541244_photo.jpg');
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center center;
-    background-attachment: fixed;
-    position: relative;
-}
-body:before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); 
-    z-index: -1; 
-}
-.container {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr); 
-    gap: 20px; 
-    width: 100%;
-    height: 850px;
-    padding: 20px;
-}
-
-.section {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background-color: rgba(255, 255, 255, 0);
-}
-
-
-.image-box {
-    text-align: center;
-}
-
-.image-box img {
-    width: 250px;
-    height: 250px;
-    box-shadow: 4px 4px 15px rgba(197, 196, 196, 0.308); 
-}
-
-.carousel {
-    justify-content: center;
-    width: 300px;
-    height: 300px;
-    overflow: hidden;
-    position: relative;
-    border-radius: 10px;
-    box-shadow: 4px 4px 15px rgba(112, 218, 186, 0.445); 
-}
-
-
-.carousel-images {
-    display: flex;
-    width: 150%;
-    height: 100%;
-    transition: transform 0.5s ease-in-out;
-}
-
-
-.carousel-images img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-
-.carousel:hover .carousel-images {
-    cursor: pointer;
-    animation: slide 20s infinite alternate;
-}
-
-
-@keyframes slide {
-    0% { transform: translateX(0); }
-    50% { transform: translateX(-100%); }
-}
-h1{
-    font-size: 1.5rem;
-    color: white;
-    text-align: center;
-}
-.image-box h2 {
-    margin-top: 5px;
-    color: white;
-}
-.section_middle{
-    margin-top: 20px;
-    color: white;
-}
-@media (max-width: 768px) {
-    .container {
-        grid-template-columns: 1fr; 
-        height: auto;
-    }
-    
-    .section {
-        flex-direction: column;
-    }
-}
-
-
-.btntabi {
-    background: #007bff;
-    color: white;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    text-decoration: none;
-    display: inline-block;
-}
-
-.btntabi:hover {
-    background-color: #0056b3;
-}
-
-
-
-.modal {
-    display: none;
-    position: fixed;
-    z-index: 1000;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    display: flex;
-    padding: 20px;
-    align-items: center;
-    justify-content: center;
-}
-
-
-
-.modal-content {
-    background-color: #fff;
-    padding: 20px;
-    width: 90%;
-    max-width: 500px;
-    border-radius: 10px;
-    text-align: center;
-    position: relative;
-    box-shadow: 0 4px 10px rgba(128, 231, 183, 0.315);
-} 
-
-
-.close {
-    position: absolute;
-    top: 10px;
-    right: 20px;
-    font-size: 24px;
-    cursor: pointer;
-    color: #555;
-}
-
-.close:hover {
+    background-color: #4ea186;
     color: #000;
 }
 
-@keyframes fadeIn {
-    from { opacity: 0; transform: scale(0.9); }
-    to { opacity: 1; transform: scale(1); }
+/* Añade media queries para hacerlo más responsive */
+@media (max-width: 1000px) {
+    .contenedor-galeria {
+        height: 300px;
+    }
+        .contenedor-galeria li {
+            width: 30%; /* Ajusta el ancho para pantallas más pequeñas */
+        }   
+        .contenedor-galeria ul li:hover {
+        width: calc(50% - 20px);
+    }
+}
+
+@media (max-width: 480px) {
+    .contenedor-galeria li {
+        width: calc(50% - 20px);
+    }
+    .contenedor-galeria ul li:hover {
+        width: calc(100% - 20px);
+    }
 }
 
 
-@media (max-width: 600px) {
-    .modal-content {
-        width: 100%;
-        max-width: 300px;
-        padding: 15px;
-    }
 
-    .btntabi {
-        font-size: 14px;
-        padding: 8px 16px;
+
+
+
+
+
+
+
+
+/* Estilos del Modal */
+.modal{
+    margin-top: -100px;
+    display: none; 
+    border-radius: 20px;
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto; /* 15% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; /* Could be more or less, depending on screen size */
+}
+
+.close {
+    color: #302f2f;
+    float: right;
+    font-size: 32px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* Estilos de las Pestañas */
+.tab-container {
+    width: 100%;
+}
+
+.tab-header {
+    background-color: #f1f1f1;
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+}
+
+.tablinks {
+    width: 120px;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 18px;
+    background-color: inherit;
+    float: left;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    transition: 0.3s;
+}
+
+.tablinks:hover {
+    background-color: #ddd;
+}
+
+.tablinks.active {
+    background-color: #ccc;
+}
+
+.tab-content {
+    padding: 6px 12px;
+    border: 1px solid #ccc;
+    border-top: none;
+}
+
+.tab-pane {
+    display: none;
+    padding: 0px 20px;
+}
+
+.tab-pane.active {
+    display: block;
+}
+
+/* Estilos de las Imágenes */
+.modal-images {
+    margin-top: 20px;
+    display: flex; /* Usa flexbox para distribuir las imágenes */
+    justify-content: space-around;
+    width: 280px;
+    padding: 20px;
+}
+
+/* Ajustar el tamaño de las imágenes */
+.modal-images img {
+    border-radius: 10px;
+    width: 400px;
+    height: auto; 
+    max-width: 300px; 
+    max-height: 200px; 
+    margin: 10px 20px; 
+    object-fit: cover;
+}
+/* Para pantallas más pequeñas */
+@media (max-width: 768px) {
+    .fotos {
+        width: calc(30% - 20px); /* Ajusta el ancho para pantallas más pequeñas */
     }
-} */
+}
+
+/* Para pantallas móviles */
+@media (max-width: 480px) {
+    .fotos {
+        width: calc(50% - 20px); /* Ajusta el ancho para pantallas móviles */
+    }
+}
+/* Estilos del Pie del Modal */
+.modal-footer {
+    padding: 10px;
+    background-color: #f1f1f1;
+    border-top: 1px solid #c6f0d9;
+}
+.tab-pane{
+    background-color: rgb(226, 235, 235);
+    text-align: justify;
+    font-size: 25px;
+    font-family: 'Times New Roman', Times, serif;
+}
+.btn-close-modal, .btn-reservar {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+
+.btn-reservar {
+    background-color: #b7e6f1;
+    color: white;
+    font-size: 20px;
+    float: right;
+}
+
+.btn-close-modal:hover {
+    background-color: #aaa;
+}
+
+.btn-reservar:hover {
+    background-color: #a9faec;
+}
