@@ -1,267 +1,190 @@
-/* .wrapper{
-    width: min(calc(100% - 4rem), 920px);
-    margin: 2rem auto;
-    
-    display: grid;
-    gap: 1rem;
-    grid-auto-rows: 200px;
-    grid-template-columns: 1fr;
-     grid-template-areas: 
-          "cat-tees"
-          "cat-sport" 
-          "cat-intimate"
-          "cat-cologne"
-          "cat-kids"
-          "cat-hoodies"
-          "cat-youth"
-          "cat-ladies-shirt"
-          "cat-mens-shirts"
-          "banner";
-    
-  }
-  
-  @media (min-width: 400px){
-    .wrapper{
-      grid-template-columns: 1fr 1fr;
-      grid-template-areas: 
-          "cat-tees         cat-tees"
-          "cat-tees         cat-tees"
-          "cat-sport        cat-sport" 
-          "cat-sport        cat-sport" 
-          "cat-intimate     cat-cologne"
-          "cat-kids         cat-kids"
-          "cat-kids         cat-kids"
-          "cat-hoodies      cat-hoodies"
-          "cat-youth        cat-youth"
-          "cat-youth        cat-youth"
-          "cat-ladies-shirt cat-mens-shirts"
-          "cat-ladies-shirt cat-mens-shirts"
-          "banner           banner";
-    }
-  }
-  @media (min-width: 600px){
-    .wrapper{
-      grid-template-columns: repeat(6, 1fr);
-      grid-template-areas: 
-        "cat-tees         cat-tees          cat-tees          cat-tees        cat-tees        cat-tees"
-        "cat-tees         cat-tees          cat-tees          cat-tees        cat-tees        cat-tees"
-        "cat-sport        cat-sport         cat-sport         cat-sport       cat-kids        cat-kids"
-        "cat-sport        cat-sport         cat-sport         cat-sport       cat-kids        cat-kids"
-        "cat-hoodies      cat-hoodies       cat-hoodies       cat-hoodies     cat-hoodies     cat-hoodies"
-        "cat-youth        cat-youth         cat-youth         cat-youth       cat-intimate    cat-intimate"
-        "cat-youth        cat-youth         cat-youth         cat-youth       cat-cologne     cat-cologne"
-        "banner           banner            banner            banner          banner          banner"
-        "cat-ladies-shirt cat-ladies-shirt  cat-ladies-shirt  cat-mens-shirts cat-mens-shirts cat-mens-shirts"
-        "cat-ladies-shirt cat-ladies-shirt  cat-ladies-shirt  cat-mens-shirts cat-mens-shirts cat-mens-shirts"
-        "cat-ladies-shirt cat-ladies-shirt  cat-ladies-shirt  cat-mens-shirts cat-mens-shirts cat-mens-shirts"
-        ;
-      
-    }
-  }
-  @media (min-width: 800px){
-    .wrapper{
-      grid-auto-rows: 200px;
-      grid-template-columns: repeat(4, 1fr);
-      grid-template-areas: 
-        "cat-sport        cat-tees  cat-tees    cat-hoodies"
-        "cat-ladies-shirt cat-tees  cat-tees    cat-youth"
-        "cat-ladies-shirt cat-kids  cat-cologne cat-cologne"
-        "cat-intimate     banner    banner      cat-mens-shirts";
-     }
-    
-  }
-  .wrapper > *{
-    grid-area: var(--grid-area);
-    position: relative;
-    color: black;
-    overflow: hidden;
-    border-radius: 10px;
-    text-decoration: none;
-  }
-  .wrapper > a::after{
-      content: '';
-      position: absolute;
-      inset: 0;
-      background-image: linear-gradient(to bottom, rgba(0 0 0 / .25), transparent 25%);
-  }
-  
-  .wrapper > *:hover > img{
-    scale: 1.2;
-    rotate: 4deg;
-  }
-  
-  .wrapper > * > p{
-    position: absolute;
-    text-wrap: balance;
-    top: .75rem; 
-    left: .75rem;
-    font-size: .9rem;
-    z-index: 2;
-    
-  }
-  .wrapper > * > p.align-right{
-    left: auto;
-    right: .75rem;
-    text-align: right;
-  }
-  .wrapper img{
-    max-width: 100%;
-    width: 100%;
-    height: 100%;
-    display: block;
-    border-radius: 10px;
-    object-fit: cover;
-    transition: scale 1000ms ease-in-out, rotate 1000ms ease-in-out;
-  }
-  .banner{
-    background: #FFEDD5;
-    border-radius: 10px;
-    display: grid;
-    place-content: center;
-  }
-  
-  
-  *,
-  ::before,
-  ::after {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-  :root {
-    --clr-bg: #222;
-    --clr-primary: #f5f5f5;
-    --clr-secondary: #075985;
-  }
-  html {
-    background-color: var(--clr-bg);
-    font-family: system-ui;
-    font-family: system-ui;
-  }
-  
-
-  h1 {
-    font-size: clamp(1rem, 2.5vw + 0.25rem, 1.2rem);
-    font-weight: 500;
-    line-height: 1.6;
-    max-width: 45ch;
-    text-wrap: balance;
-  }
-  code,
-  pre {
-    display: inline-block;
-    color: #38bdf8;
-    border: 1px solid hsl(from var(--clr-primary) h s 50% / 0.5);
-    padding: 0.5rem 1rem;
-    border-radius: 5px;
-  }
-  pre {
-    white-space: pre-wrap;
-  }
-  button{
-    cursor: pointer;
-  }
-  em {
-    font-size: 0.8rem;
-  } */
-
-  
-  /* this line is just to check that the toggle width is at exactly 50% */
-  /*
-  body::before {
-    content: "";
-    position: absolute;
-    left: 50%;
-    translate: -50% 0;
-    width: 1px;
-    height: 100svh;
-    background-color: white;
-    background: repeating-linear-gradient(
-      white 20px,
-      transparent 30px,
-      white 40px
-    );
-    z-index: -1;
-    opacity: 0.1;
-  }
-  */
-
-  
-
-
-/* .titulo1{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: -20px;
-
-}
-
-svg text {
-    fill: #0a6e5a; 
-    display: inline-block;
-    animation: wave 3s infinite linear;
-}
-
-@keyframes wave {
-    0%, 100% { transform: rotate(0deg); }
-    50% { transform: rotate(3deg); }
-}
-
-.todo {
-    background: linear-gradient(to bottom, #c6f1ee60, #337057d8);
-    justify-content: center;
-    align-items: center;
-    min-height: auto;
-    margin: auto;
-    padding: 20px;
-}
-
 .galeria {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 60px;
-    text-align: center;
-    max-width: 100%;
-    width: 100%;
-    margin-bottom: 60px;    
+  max-width: 90%;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* h1 {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-size: 3rem;
+  margin: 20px;
+  text-align: center;
+  margin-bottom: 30px;
+  color: #ffffff;
+  transition: color 0.3s ease;
+}
+
+h1:hover {
+  color: #d8f8f4;
+} */
+
+
+@keyframes colorChange {
+  0% { color: rgb(226, 224, 123); }
+  25% { color: rgb(131, 186, 194); }
+  50% { color: rgb(103, 185, 147); }
+  75% { color: rgb(102, 230, 212); }
+  100% { color: rgb(138, 71, 138); }
 }
 
 
-.imagen-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    position: relative;
+/* Estilos para las filas */
+.fila {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 15px;
+  flex-wrap: wrap;
 }
-
 
 .imagen {
-    width: 250px;
-    height: 250px;
-    object-fit: cover;
-    border-radius: 50%; 
-    border: 2px solid #333;
-}
-.imagen:hover {
-    transform: scale(1.5);
-    cursor: pointer;
+  object-fit: cover;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: all 0.2s ease;
+  cursor: pointer;
 }
 
-.todo1{
-    background: linear-gradient(to bottom, #337057d8, #c6f1ee60);
+/* Primera fila - 4 imágenes grandes */
+.fila-superior .imagen {
+  width: 400px;
+  height: 300px;
+  border-bottom: 3px solid #3498db;
 }
-.fotoscuatro{
-    display: flex;
-    margin: 0px auto;
-    justify-content: space-around;
+
+/* Segunda fila - 5 imágenes con una principal en el medio */
+.fila-central .imagen {
+  width: 300px;
+  height: 260px;
+  border-bottom: 3px solid #66df9cce;
+  
 }
-.imagen2{
+
+/* Imagen central más grande */
+.central {
+  width: 400px !important;
+  height: 290px !important;
+  border-radius: 20px;
+  border-bottom: 3px solid #66df9cce;
+}
+
+/* Tercera fila - 6 imágenes */
+.fila-inferior .imagen {
+  width: 250px;
+  height: 300px;
+  border-bottom: 3px solid #d4b03a;
+}
+
+/* Cuarta fila - 4 imágenes grandes nuevamente */
+.fila-central:last-of-type .imagen {
+  width: 400px;
+  height: 300px;
+  border-bottom: 3px solid #9b59b6;
+}
+
+/* Efectos al pasar el cursor */
+.imagen:hover {
+  transform: scale(1.05);
+  z-index: 10;
+  box-shadow: 0 12px 20px rgba(0, 0, 0, 0.3);
+  filter: brightness(1.1) contrast(1.1);
+}
+
+/* Para que la transición sea más suave al dejar de hacer hover */
+.imagen:not(:hover) {
+  transition: transform 0.5s ease-out;
+}
+
+/* Vista ampliada al hacer clic en una imagen */
+.vista-ampliada {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.9);
+  z-index: 100;
+  justify-content: center;
+  align-items: center;
+}
+
+.vista-ampliada img {
+  max-width: 80%;
+  max-height: 80%;
+  border-radius: 5px;
+}
+
+.cerrar-vista {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  color: white;
+  font-size: 30px;
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.2);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Estilos responsivos */
+@media (max-width: 768px) {
+  .fila-superior .imagen,
+  .fila-central:last-of-type .imagen {
     width: 200px;
-    height: 300px;
-    margin-top: 50px;
-    margin-bottom: 60px;
-    border-radius: 20px;
+    height: 150px;
+  }
+  
+  .fila-central .imagen {
+    width: 150px;
+    height: 130px;
+  }
+  
+  .central {
+    width: 180px !important;
+    height: 160px !important;
+  }
+  
+  .fila-inferior .imagen {
+    width: 140px;
+    height: 120px;
+  }
+  
+  .fila {
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .fila-superior .imagen,
+  .fila-central:last-of-type .imagen {
+    width: 150px;
+    height: 120px;
+  }
+  
+  .fila-central .imagen {
+    width: 120px;
+    height: 100px;
+  }
+  
+  .central {
+    width: 140px !important;
+    height: 120px !important;
+  }
+  
+  .fila-inferior .imagen {
+    width: 100px;
+    height: 90px;
+  }
+  
+  .fila {
+    gap: 5px;
+  }
 }
 .grid-container {
     display: grid;
@@ -290,7 +213,7 @@ svg text {
     padding: 20px;
 }
 
-@media (max-width: 900px) {
+/* @media (max-width: 900px) {
     .grid-container {
         grid-template-columns: repeat(2, 1fr);
     }
@@ -312,7 +235,7 @@ svg text {
 } */
 
 
-h1 {
+/* h1 {
   margin: 20px 0;
   color: #333;
 }
@@ -339,3 +262,4 @@ h1 {
   transform: scale(1.1);
 }
 
+} */
