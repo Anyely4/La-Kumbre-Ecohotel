@@ -11,7 +11,7 @@ from django.contrib.auth.hashers import make_password, check_password
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.urls import reverse 
-from .models import Reserva, Cabana
+from .models import Reserva, Cabana, Producto
 from datetime import date
 from django.http import JsonResponse
 import json
@@ -23,6 +23,8 @@ from django.contrib.auth.tokens import default_token_generator
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_str
 from django.shortcuts import render, redirect, get_object_or_404
+from .models import Producto, CarritoProducto
+from django.db.models import Sum
 
 
 def sugerencias(request):
@@ -73,8 +75,9 @@ def restaurante(request):
 def atracciones(request):
     return render(request, 'atracciones.html')
 
-def gastronomia(request):
-    return render(request, 'gastronomia.html')
+def lista_productos(request):
+    productos = Producto.objects.all()  # Obtiene todos los productos de la BD
+    return render(request, 'productos.html', {'productos': productos})
 
 def restricciones(request):
     return render(request, 'restricciones.html')
@@ -179,34 +182,74 @@ def logout_perfil(request):
     return redirect("inicio")  # Redirige a la página de inicio
 
 
-def hacer_reserva(request, cabana_nombre):
-    cabana = get_object_or_404(Cabana, nombre=cabana_nombre)
 
-    if request.method == 'POST':
-        fecha_reserva = request.POST.get('fecha_reserva')
-        numero_personas = request.POST.get('numero_personas')
-        telefono = request.POST.get('telefono')
-        comentarios = request.POST.get('comentarios')
+@login_required
+def hacer_reserva(request):
+    if request.method == "POST":
+        # Obtener los datos del formulario manual
+        cabana_valor = request.POST.get("cabana")
+        precio = request.POST.get("precio")
+        fecha = request.POST.get("fecha")
+        telefono = request.POST.get("telefono")
+        numero_personas = request.POST.get("numero_personas")
+        
+        # Aquí podrías agregar validación de los datos recibidos
+        
+        # Crear y guardar la reserva
+        reserva = Reserva(
+            usuario=request.user,
+            cabana=cabana_valor,  # Asegúrate de que en tu modelo el campo se llama así (sin tilde)
+            precio=precio,
+            fecha=fecha,
+            telefono=telefono,
+            numero_personas=numero_personas,
+            confirmada=False
+        )
+        reserva.save()
+        messages.success(request, "Reserva añadida al carrito.")
+        return redirect('reservas')
+    
+    else:
+        # GET: precargar los datos de la cabaña si se recibe cabana_id en la URL
+        cabana_id = request.GET.get("cabana_id")
+        context = {}
+        if cabana_id:
+            cabana = get_object_or_404(Cabana, id=cabana_id)
+            context["cabana"] = cabana  # Enviamos la cabaña para precargar el nombre y precio
+        return render(request, "reservas.html", context)
+    
+@login_required
+def resumen_compra(request):
+    # Reservas pendientes (aún no confirmadas)
+    reservas_carrito = Reserva.objects.filter(usuario=request.user, confirmada=False)
+    # Productos añadidos al carrito
+    productos_carrito = CarritoProducto.objects.filter(usuario=request.user)
+    context = {
+        'reservas': reservas_carrito,
+        'productos': productos_carrito,
+    }
+    return render(request, 'resumen_compra.html', context)
 
-        # Aquí puedes guardar la reserva o realizar alguna lógica adicional
-        print(f"Reserva para {cabana_nombre} - Fecha: {fecha_reserva}")
 
-        return render(request, 'confirmacion.html', {'cabana': cabana})
+@login_required
+def metodos_pago(request):
+    # Aquí puedes implementar la lógica de métodos de pago o mostrar un template placeholder
+    return render(request, 'metodos_pago.html')
 
-    return render(request, 'reservas.html', {'cabana': cabana})
-
-
+@login_required
+def eliminar_reserva(request, reserva_id):
+    # Se obtiene la reserva, asegurándose de que pertenezca al usuario logueado
+    reserva = get_object_or_404(Reserva, id=reserva_id, usuario=request.user)
+    reserva.delete()
+    messages.success(request, "Reserva eliminada correctamente.")
+    return redirect('resumen_compra')
 
 def obtener_fechas_ocupadas(request, cabana_id):
-    reservas = Reserva.objects.filter(cabana_id=cabana_id, estado="aprobada").values_list("fecha_reserva", flat=True)
-    fechas_ocupadas = list(reservas)  # Convertimos a lista
-    return JsonResponse({"fechas_ocupadas": fechas_ocupadas})
-
-
-def fechas_ocupadas(request, cabana_id):
-    reservas = Reserva.objects.filter(cabana_id=cabana_id).values_list("fecha_reserva", flat=True)
+    reservas = Reserva.objects.filter(cabana__id=cabana_id).values_list('fecha', flat=True)
     fechas_ocupadas = [fecha.strftime("%Y-%m-%d") for fecha in reservas]
-    return JsonResponse({"fechas_ocupadas": fechas_ocupadas})
+    return JsonResponse({'fechas_ocupadas': fechas_ocupadas})
+
+
 
 from django.contrib.auth import get_user_model
 from django.http import JsonResponse
@@ -287,3 +330,45 @@ def contrasena(request, uidb64, token):
 
 def password_changed(request):
     return render(request, "password_changed.html")
+
+@login_required
+def agregar_producto_carrito(request, producto_id):
+    if request.method == "POST":
+        producto = get_object_or_404(Producto, id=producto_id)
+        # Obtenemos la cantidad enviada, por defecto 1 si no se especifica
+        cantidad = int(request.POST.get('cantidad', 1))
+        
+        # Si el producto ya está en el carrito, actualizamos la cantidad; sino, lo creamos.
+        carrito_item, created = CarritoProducto.objects.get_or_create(
+            usuario=request.user,
+            producto=producto,
+            defaults={'cantidad': cantidad}
+        )
+        if not created:
+            carrito_item.cantidad += cantidad
+            carrito_item.save()
+        
+        # Opcional: Obtener el total de artículos en el carrito
+        total = CarritoProducto.objects.filter(usuario=request.user).aggregate(
+            total=Sum('cantidad')
+        )['total'] or 0
+
+        return JsonResponse({
+            'success': True,
+            'cart_count': total
+        })
+    else:
+        return JsonResponse({'success': False, 'mensaje': 'Método inválido.'}, status=400)
+    
+
+@login_required
+def eliminar_producto(request, producto_id):
+    if request.method == "POST":
+        producto = get_object_or_404(CarritoProducto, id=producto_id, usuario=request.user)
+        producto.delete()
+        total = CarritoProducto.objects.filter(usuario=request.user).aggregate(
+            total=Sum('cantidad')
+        )['total'] or 0
+        return JsonResponse({'success': True, 'cart_count': total})
+    else:
+        return JsonResponse({'success': False, 'mensaje': 'Método inválido.'}, status=400)

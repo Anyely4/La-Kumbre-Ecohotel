@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Resumen de Compra</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1>Tu Carrito</h1>
+    
+        <!-- Sección de Reservas -->
+        <h3>Reservas</h3>
+        {% if reservas %}
+            <ul class="list-group mb-4">
+                {% for reserva in reservas %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <div>
+                            <strong>Cabaña:</strong> {{ reserva.cabana }} <br>
+                            <strong>Fecha:</strong> {{ reserva.fecha }} <br>
+                            <strong>Precio:</strong> ${{ reserva.precio }}
+                        </div>
+                        <a href="{% url 'eliminar_reserva' reserva.id %}" class="btn btn-danger btn-sm">Eliminar</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No tienes reservas en el carrito.</p>
+        {% endif %}
+    
+        <!-- Sección de Productos -->
+        <h3>Productos</h3>
+        {% if productos %}
+            <ul class="list-group mb-4">
+                {% for item in productos %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <div>
+                            <strong>Producto:</strong> {{ item.producto.nombre }} <br>
+                            <strong>Cantidad:</strong> {{ item.cantidad }} <br>
+                            <strong>Precio:</strong> ${{ item.producto.precio }}
+                        </div>
+                        <button type="button" class="btn btn-danger eliminar-producto" data-producto-id="{{ item.id }}">
+                            Eliminar
+                       </button>              
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No tienes productos en el carrito.</p>
+        {% endif %}
+    
+        <!-- Botón para proceder al pago -->
+        <a href="{% url 'metodos_pago' %}" class="btn btn-success">Proceder a Pago</a>
+</div>
+</body>
+</html>
+<script>
+    // Función para obtener el CSRF token desde las cookies (según la recomendación de Django)
+    function getCookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+             var cookies = document.cookie.split(';');
+             for (var i = 0; i < cookies.length; i++) {
+                 var cookie = cookies[i].trim();
+                 if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                     cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                     break;
+                 }
+             }
+        }
+        return cookieValue;
+    }
+    var csrftoken = getCookie('csrftoken');
+    
+    $(document).ready(function(){
+        $('.eliminar-producto').on('click', function(e){
+             e.preventDefault();
+             var btn = $(this);
+             var productoId = btn.data('producto-id');
+             var url = "/eliminar_producto/" + productoId + "/";
+             console.log("Enviando POST a", url);
+             
+             $.ajax({
+                 url: url,
+                 type: "POST",
+                 headers: {
+                     "X-CSRFToken": csrftoken
+                 },
+                 dataType: "json",
+                 success: function(response) {
+                     console.log("Respuesta:", response);
+                     if(response.success) {
+                         // Remover el elemento del DOM
+                         btn.closest('.product-item').remove();
+                         // Actualizar el contador
+                         $('#contador-carrito').text(response.cart_count);
+                     } else {
+                         console.error("Error en respuesta:", response.mensaje);
+                     }
+                 },
+                 error: function(xhr, status, error) {
+                     console.error("Error AJAX:", error);
+                 }
+             });
+        });
+    });
+    </script>

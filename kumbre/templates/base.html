@@ -28,7 +28,7 @@
         <ul class="menu">  
             <li class="links"><a href="{% url 'nosotros' %}">Nosotros</a></li>
             <li class="links"><a href="{% url 'cabañas' %}">Cabañas</a></li>
-            <li class="links"><a href="{% url 'gastronomia' %}">Gastronomia</a></li>
+            <li class="links"><a href="{% url 'productos' %}">Gastronomia</a></li>
             <li class="links"><a href="{% url 'galeria' %}">Galeria</a></li>
             <li class="links"><a href="{% url 'manual' %}">Ayuda</a></li>
         </ul>
@@ -49,9 +49,9 @@
                 </div>
             </div>
             <div class="cart-icon-container">
-                <a href="{% url 'reservas' %}">
+                <a href="{% url 'resumen_compra' %}">
                     <i class="ri-calendar-check-line"></i>
-                    <span id="contador-carrito">0</span>
+                    <span id="contador-carrito">{{ cart_count }}</span>
                 </a>
             </div>
             {% else %}
@@ -115,7 +115,6 @@
             <h3>Acerca de la Kumbre</h3>
             <ul>
                 <li><a href="{% url 'nosotros' %}">Nosotros</a></li>
-                <li><a href="{% url 'reservas' %}">Reservas</a></li>
                 <li><a href="{% url 'sugerencias' %}">Sugerencias</a></li>
                 <li><a href="{% url 'cabañas' %}">Cabañas</a></li>
                 <li><a href="{% url 'restricciones' %}">Restricciones</a></li>

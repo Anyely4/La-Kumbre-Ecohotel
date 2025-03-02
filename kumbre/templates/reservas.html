@@ -6,58 +6,95 @@
 <link rel="stylesheet" href="{% static 'styles/reservas.css' %}">
 <!-- Flatpickr CSS -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-<!-- Flatpickr JS -->
-<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
-    
-<h2>Reserva para la Cabaña {{ cabana_seleccionada.nombre }}</h2>
-<p>Precio: {{ cabana_seleccionada.precio }}</p>
+<style>
+    /* Opcional: Estilo para fechas ocupadas en el Datepicker */
+    .ocupado a {
+        background-color: #ff5b5be0 !important;
+        color: #999 !important;
+    }
+        
+  </style>
+</head>
 
-<form method="post" action="{% url 'reservas' cabana_nombre='Cabaña Tabi' %}">
-    {% csrf_token %}
-    <label for="fecha_reserva">Fecha de Reserva:</label>
-    <input type="date" id="fecha_reserva" name="fecha_reserva" required>
+<div class="container mt-5">
+  <h1>Hacer Reserva</h1>
+  <form method="post">
+      {% csrf_token %}
+      <!-- Campo Cabaña: precargado y de solo lectura -->
+      <div class="form-group">
+          <label for="cabana">Cabaña</label>
+          <input type="text" id="cabana" name="cabana" class="form-control" 
+                 value="{% if cabana %}{{ cabana.nombre }}{% endif %}" readonly>
+      </div>
+      <!-- Campo Precio: precargado y de solo lectura -->
+      <div class="form-group">
+          <label for="precio">Precio</label>
+          <input type="text" id="precio" name="precio" class="form-control" 
+                 value="{% if cabana %}{{ cabana.precio }}{% endif %}" readonly>
+      </div>
+      <!-- Campo Fecha: se integrará con el calendario -->
+      <div class="form-group">
+          <label for="fecha">Fecha</label>
+          <input type="text" id="fecha" name="fecha" class="form-control">
+      </div>
+      <!-- Campo Teléfono -->
+      <div class="form-group">
+          <label for="telefono">Teléfono</label>
+          <input type="text" id="telefono" name="telefono" class="form-control">
+      </div>
+      <!-- Campo Número de Personas -->
+      <div class="form-group">
+          <label for="numero_personas">Número de Personas</label>
+          <input type="number" id="numero_personas" name="numero_personas" class="form-control">
+      </div>
+      <button type="submit" class="btn btn-primary">Añadir al carrito</button>
+  </form>
+</div>
 
-    <label for="numero_personas">Número de Personas:</label>
-    <input type="int" name="numero_personas" required min="1">
-
-    <label for="telefono">Teléfono de Contacto:</label>
-    <input type="tel" name="telefono" required pattern="[0-9]{10}" title="Debe contener 10 dígitos">
-
-    <label for="comentarios">Comentarios Adicionales:</label>
-    <textarea name="comentarios"></textarea>
-
-    <button type="submit">Reservar</button>
-</form>
-
+<!-- Cargar jQuery y jQuery UI -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const fechaInput = document.getElementById("fecha_reserva");
-        const cabañaSelect = document.querySelector("select[name='cabaña']");
+$(document).ready(function(){
+  // Obtener el cabana_id de la URL
+  const urlParams = new URLSearchParams(window.location.search);
+  const cabanaId = urlParams.get('cabana_id');
+  
+  // Inicializar el Datepicker en el campo "fecha"
+  $("#fecha").datepicker({
+      dateFormat: "yy-mm-dd",
+      beforeShowDay: function(date) {
+          let y = date.getFullYear();
+          let m = ("0" + (date.getMonth() + 1)).slice(-2);
+          let d = ("0" + date.getDate()).slice(-2);
+          let dateString = y + '-' + m + '-' + d;
+          // Si existen fechas ocupadas, deshabilitarlas
+          if(window.fechasOcupadas && window.fechasOcupadas.indexOf(dateString) !== -1){
+              return [false, "ocupado", "Fecha ocupada"];
+          }
+          return [true, "", ""];
+      }
+  });
+  
+  // Si hay cabanaId, se hace una petición AJAX para obtener las fechas ocupadas
+  if(cabanaId) {
+      $.ajax({
+          url: '/fechas_ocupadas/' + cabanaId + '/',
+          method: 'GET',
+          dataType: 'json',
+          success: function(data){
+              window.fechasOcupadas = data.fechas_ocupadas;
+              $("#fecha").datepicker("refresh");
+          },
+          error: function(){
+              console.error("Error al obtener las fechas ocupadas.");
+          }
+      });
+  }
+});
+</script>
 
-        function obtenerFechasOcupadas() {
-            const cabañaId = cabañaSelect.value;
-            if (!cabañaId) return;
-
-            fetch(`/fechas_ocupadas/${cabañaId}/`)
-                .then(response => response.json())
-                .then(data => {
-                    let fechasOcupadas = data.fechas_ocupadas || [];
-
-                    // Bloquear fechas en el calendario
-                    fechaInput.addEventListener("input", function () {
-                        if (fechasOcupadas.includes(this.value)) {
-                            alert("Esta fecha ya está ocupada. Por favor, elige otra.");
-                            this.value = "";
-                        }
-                    });
-                });
-        }
-
-        // Cargar fechas cuando el usuario seleccione una cabaña
-        cabañaSelect.addEventListener("change", obtenerFechasOcupadas);
-    });
-</script> 
 
 <!--     
 

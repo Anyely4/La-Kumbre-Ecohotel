@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}gastronomia{% endblock %}
+ 
+{% block content %}
+<link rel="stylesheet" href="{% static 'styles/gastronomias.css' %}">
+
+<style>
+    .container{
+        height: 800px;
+    }
+    /* Ejemplo de estilos para un grid de 4 columnas */
+    .products-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 20px;
+    }
+    .product-card {
+        border: 1px solid #ccc;
+        padding: 10px;
+        text-align: center;
+    }
+    .product-image {
+        max-width: 100%;
+        height: auto;
+    }
+</style>
+
+<div class="container">
+    <h1>Lista de Productos</h1>
+    <div class="products-grid">
+        {% for producto in productos %}
+            <div class="product-card">
+                {% if producto.imagen %}
+                    <img src="{{ producto.imagen.url }}" alt="{{ producto.nombre }}" class="product-image">
+                {% else %}
+                    <img src="/static/images/no-image.png" alt="Sin imagen" class="product-image">
+                {% endif %}
+                <h3>{{ producto.nombre }}</h3>
+                <p>{{ producto.descripcion }}</p>
+                <p><strong>Precio: </strong>${{ producto.precio }}</p>
+                
+                <!-- Campo para la cantidad -->
+                <label for="cantidad-{{ producto.id }}">Cantidad:</label>
+                <input type="number" id="cantidad-{{ producto.id }}" class="cantidad-input" value="1" min="1" style="width: 60px;">
+                
+                <!-- Botón que dispara la acción AJAX -->
+                <button class="btn btn-primary agregar-carrito" data-producto-id="{{ producto.id }}">
+                    Añadir al carrito
+                </button>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- Incluye jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function(){
+    $('.agregar-carrito').click(function(e){
+        e.preventDefault();
+        var btn = $(this);
+        var productoId = btn.data('producto-id');
+        // Obtener la cantidad del input correspondiente
+        var cantidad = btn.closest('.product-card').find('.cantidad-input').val();
+        
+        $.ajax({
+            url: "{% url 'agregar_producto_carrito' 0 %}".replace("0", productoId),
+            type: "POST",
+            data: {
+                csrfmiddlewaretoken: '{{ csrf_token }}',
+                cantidad: cantidad
+            },
+            dataType: "json",
+            success: function(response) {
+                if(response.success) {
+                    // Actualizamos el contador del carrito (por ejemplo, en un elemento con id "contador-carrito")
+                    $('#contador-carrito').text(response.cart_count);
+                    // Opcional: Puedes mostrar un mensaje en la página, por ejemplo, en un div de notificaciones
+                } else {
+                    console.error("Error: " + response.mensaje);
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error("Ocurrió un error al agregar el producto.");
+            }
+        });
+    });
+});
+</script>
+
+{% endblock %}

@@ -18,6 +18,8 @@ from django.contrib import admin
 from django.urls import path
 from kumbre import views
 from django.shortcuts import redirect
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('', lambda request: redirect('inicio'), name='home'),  # Redirigir a inicio
@@ -31,20 +33,17 @@ urlpatterns = [
     path('sugerencias/', views.sugerencias, name='sugerencias'),
     path('restaurante/', views.restaurante, name='restaurante'),
     path('atracciones/', views.atracciones, name='atracciones'),
-    path('gastronomia/', views.gastronomia, name='gastronomia'),
+    path('productos/', views.lista_productos, name='productos'),
     path('restricciones/', views.restricciones, name='restricciones'),
     path('cabañas/', views.cabañas, name='cabañas'),
-    path('caba_tabi/', views.caba_tabi, name='caba_tabi'),
-    path('caba_geisha/', views.caba_geisha, name='caba_geisha'),
-    path('caba_bourbon/', views.caba_bourbon, name='caba_bourbon'),
-    path('caba_cafetal/', views.caba_cafetal, name='caba_cafetal'),
-    path('caba_wush/', views.caba_wush, name='caba_wush'),
-    path('gracias/', views.gracias, name='gracias'),
     path("iniciar_sesion/", views.iniciar_sesion, name="iniciar_sesion"),
     path("registro/", views.registro, name="registro"),
     path("logout/", views.logout_perfil, name="logout"),
-    path('reservas/<str:cabana_nombre>/', views.hacer_reserva, name='reservas'),
-    path('fechas_ocupadas/<int:cabaña_id>/', views.obtener_fechas_ocupadas, name='fechas_ocupadas'),
+    path('reservas/', views.hacer_reserva, name='reservas'),
+    path('resumen/', views.resumen_compra, name='resumen_compra'),
+    path('metodos_pago/', views.metodos_pago, name='metodos_pago'),
+    path('eliminar_reserva/<int:reserva_id>/', views.eliminar_reserva, name='eliminar_reserva'),
+    path('fechas_ocupadas/<int:cabana_id>/', views.obtener_fechas_ocupadas, name='fechas_ocupadas'),
     path('perfil/', views.perfil, name='perfil'),
     path('manual/', views.manual, name='manual'),
     path('eliminar_cuenta/', views.eliminar_cuenta, name='eliminar_cuenta'),
@@ -52,5 +51,10 @@ urlpatterns = [
     path('restablecer/', views.restablecer, name='restablecer'),
     path('contrasena/<uidb64>/<token>/', views.contrasena, name='contrasena'),
     path('password_changed/', views.password_changed, name='password_changed'),
+    path('agregar_producto/<int:producto_id>/', views.agregar_producto_carrito, name='agregar_producto_carrito'),
+    path('eliminar_producto/<int:producto_id>/', views.eliminar_producto, name='eliminar_producto'),
 
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -1,6 +1,6 @@
 from django import forms
 from .models import Sugerencia, Usuario
-from .models import Reserva, Cabana
+
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import PasswordChangeForm
@@ -56,18 +56,10 @@ class FormularioRegistro(UserCreationForm):
             
         return user
 
+
+from .models import Reserva
+
 class ReservaForm(forms.ModelForm):
     class Meta:
         model = Reserva
-        fields = ('cabana', 'fecha_reserva', 'numero_personas', 'telefono', 'comentarios')
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        
-        # Agregar el precio de la cabaña como un campo no editable
-        self.fields['cabana'].widget.attrs['readonly'] = True
-        
-    def get_precio_cabana(self):
-        if self.instance:
-            return self.instance.cabana.precio
-        return None
+        fields = ['telefono', 'numero_personas', 'fecha']

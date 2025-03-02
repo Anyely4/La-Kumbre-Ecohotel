@@ -1,67 +1,62 @@
-.container1 {
-    display: flex;
-    height: auto;
-}
+    /* Contenedor principal */
+    .container {
+        width: 80%;
+        margin: 0 auto;
+        padding: 20px;
+    }
 
-.left {
-    width: 50%;
-    display: flex;
-    flex-direction: column;
-}
+    /* Título */
+    h1 {
+        text-align: center;
+        margin-bottom: 30px;
+    }
 
-.box {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 20px;
-    font-weight: bold;
-    color: white;
-}
+    /* Grid de productos: 4 columnas en pantallas grandes */
+    .products-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr); /* 4 columnas */
+        gap: 20px; /* Espacio entre columnas y filas */
+    }
 
-.rectangulo1{
-    text-align: justify;
-    font-size: 2.5rem;
-    margin: 50px auto 20px 30px;
-}
-.rectangulo2{
-    text-align: justify;
-    font-size: 1.5rem;
-    margin: 30px auto 40px 30px;
-}
+    /* Tarjeta de cada producto */
+    .product-card {
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        padding: 15px;
+        text-align: center;
+    }
 
-.img-rotar {
-    width: 150px;
-    height: 150px;
-    margin-left: auto;
-    margin-right: auto;
-    transition: transform 0.7s ease-in-out;
-}
+    /* Imagen del producto */
+    .product-image {
+        max-width: 100%;
+        height: auto;
+        border-radius: 5px;
+    }
 
-.img-rotar:hover {
-    cursor: pointer;
-    transform: rotate(50deg);
-}
-.right {
-    width: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 30px;
-    margin-bottom: 30px;
-}
+    /* Botón */
+    .btn {
+        display: inline-block;
+        margin-top: 10px;
+        padding: 10px 15px;
+        background-color: #007bff;
+        color: #fff;
+        text-decoration: none;
+        border-radius: 4px;
+    }
 
-.grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
-    /* row-gap: 20px;
-    column-gap: 70px; */
-}
+    .btn:hover {
+        background-color: #0056b3;
+    }
 
-.grid img {
-    width: 200px;
-    height: 200px;
-    object-fit: cover;
-    border-radius: 5px;
-}
+    /* Responsivo: si la pantalla es más pequeña, ajustar columnas */
+    @media (max-width: 992px) {
+        .products-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    @media (max-width: 576px) {
+        .products-grid {
+            grid-template-columns: 1fr;
+        }
+    }
