@@ -41,7 +41,7 @@ urlpatterns = [
     path("logout/", views.logout_perfil, name="logout"),
     path('reservas/', views.hacer_reserva, name='reservas'),
     path('resumen/', views.resumen_compra, name='resumen_compra'),
-    path('metodos_pago/', views.metodos_pago, name='metodos_pago'),
+    path('metodos_pago/', views.metodo_pago, name='metodos_pago'),
     path('eliminar_reserva/<int:reserva_id>/', views.eliminar_reserva, name='eliminar_reserva'),
     path('fechas_ocupadas/<int:cabana_id>/', views.obtener_fechas_ocupadas, name='fechas_ocupadas'),
     path('perfil/', views.perfil, name='perfil'),
@@ -53,6 +53,8 @@ urlpatterns = [
     path('password_changed/', views.password_changed, name='password_changed'),
     path('agregar_producto/<int:producto_id>/', views.agregar_producto_carrito, name='agregar_producto_carrito'),
     path('eliminar_producto/<int:producto_id>/', views.eliminar_producto, name='eliminar_producto'),
+     path('confirmar_compra/', views.confirmar_compra, name='confirmar_compra'),
+    path('compra_confirmada/<int:compra_id>/', views.compra_confirmada, name='compra_confirmada'),
 
 ]
 

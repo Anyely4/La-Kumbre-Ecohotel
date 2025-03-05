@@ -7,50 +7,88 @@
 <!-- Flatpickr CSS -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 
-<style>
-    /* Opcional: Estilo para fechas ocupadas en el Datepicker */
-    .ocupado a {
-        background-color: #ff5b5be0 !important;
-        color: #999 !important;
-    }
-        
-  </style>
-</head>
 
-<div class="container mt-5">
+
+
+<div class="container">
+    <div class="form-box login">
+        <form method="POST">
+            {% csrf_token %}
+            <h1>Hacer Reservas</h1>
+            <div class="input-box">
+                <label for="cabana">Cabaña</label>
+                <input type="text" id="cabana" name="cabana" class="form-control" 
+                       value="{% if cabana %}{{ cabana.nombre }}{% endif %}" readonly>
+                <i class='bx bxs-user'></i>
+            </div>
+            <div class="input-box">
+                <label for="precio">Precio</label>
+                <input type="text" id="precio" name="precio" class="form-control" 
+                       value="{% if cabana %}{{ cabana.precio }}{% endif %}" readonly>
+                <i class='bx bxs-envelope' ></i>
+            </div>
+            <div class="input-box">
+                <label for="fecha">Fecha</label>
+                <input type="text" id="fecha" name="fecha" class="form-control" required>
+                <i class='bx bxs-calendar' ></i> 
+            </div>
+            <div class="input-box">
+                <label for="telefono">Teléfono</label>
+                <input type="text" id="telefono" name="telefono" class="form-control" required>
+                <i class='bx bxs-phone' ></i>
+            </div>
+            <div class="input-box">
+                <label for="numero_personas">Número de Personas</label>
+          <input type="number" id="numero_personas" name="numero_personas" class="form-control" required>
+                <i class='bx bxs-envelope' ></i>
+            </div>
+            <button type="submit" class="boton1">Añadir al carrito</button>
+
+            
+        </form>
+    </div> 
+    <div class="toggle-box">
+            <div class="toggle-panel toggle-left">
+                <img class="logotipo" src="{% static 'img/logotipo.png' %}" alt="Descripción de la imagen">
+            </div>
+    </div>
+    
+    
+
+<!-- <div class="container mt-5">
   <h1>Hacer Reserva</h1>
   <form method="post">
       {% csrf_token %}
-      <!-- Campo Cabaña: precargado y de solo lectura -->
+    
       <div class="form-group">
           <label for="cabana">Cabaña</label>
           <input type="text" id="cabana" name="cabana" class="form-control" 
                  value="{% if cabana %}{{ cabana.nombre }}{% endif %}" readonly>
       </div>
-      <!-- Campo Precio: precargado y de solo lectura -->
+    
       <div class="form-group">
           <label for="precio">Precio</label>
           <input type="text" id="precio" name="precio" class="form-control" 
                  value="{% if cabana %}{{ cabana.precio }}{% endif %}" readonly>
       </div>
-      <!-- Campo Fecha: se integrará con el calendario -->
+      
       <div class="form-group">
           <label for="fecha">Fecha</label>
-          <input type="text" id="fecha" name="fecha" class="form-control">
+          <input type="text" id="fecha" name="fecha" class="form-control" required>
       </div>
-      <!-- Campo Teléfono -->
+      
       <div class="form-group">
           <label for="telefono">Teléfono</label>
-          <input type="text" id="telefono" name="telefono" class="form-control">
+          <input type="text" id="telefono" name="telefono" class="form-control" required>
       </div>
-      <!-- Campo Número de Personas -->
+     
       <div class="form-group">
           <label for="numero_personas">Número de Personas</label>
-          <input type="number" id="numero_personas" name="numero_personas" class="form-control">
+          <input type="number" id="numero_personas" name="numero_personas" class="form-control" required>
       </div>
       <button type="submit" class="btn btn-primary">Añadir al carrito</button>
   </form>
-</div>
+</div> -->
 
 <!-- Cargar jQuery y jQuery UI -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -94,43 +132,6 @@ $(document).ready(function(){
   }
 });
 </script>
-
-
-<!--     
-
-<div class="todo123">
-    <h2>Realizar una Reserva</h2>
-
-
-<form method="POST" action="{% url 'reservas' %}">
-    {% csrf_token %}
-    
-    <label for="cabaña">Selecciona una Cabaña:</label>
-    <select name="cabana" id="cabana" class="form-control">
-        <option value="">Selecciona una cabaña</option>
-        {% for cabana in cabanas %}
-            <option value="{{ cabana.id }}">{{ cabana.nombre }}</option>
-        {% endfor %}
-    </select>
-    
-    <label for="fecha_reserva">Fecha de Reserva:</label>
-    <input type="date" id="fecha_reserva" name="fecha_reserva" required>
-    
-    <label for="numero_personas">Número de Personas:</label>
-    <input type="number" name="numero_personas" required>
-    
-    <label for="telefono">Teléfono de Contacto:</label>
-    <input type="text" name="telefono" required>
-    
-    <label for="comentarios">Comentarios Adicionales:</label>
-    <textarea name="comentarios"></textarea>
-    
-    <button class="boton3" type="submit">Reservar</button>
-</form>
-
-
-</div>  -->
-
 
 {% endblock %}
 `

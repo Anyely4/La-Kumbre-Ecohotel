@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}gastronomia{% endblock %}
+{% block content %}
+
+<link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'styles/compra_confirmada.css' %}">
+
+    <div class="container1">
+        <h1>"¡La espera ha terminado! 🕰️ Tu compra está confirmada 📝. </h1> <br>
+        <p class="para">"¡Gracias por tu compra! 🎉</p>
+
+
+        <p class="para"><strong>Método de pago:</strong> {{ compra.metodo_pago|upper }}</p>
+        <p class="para"><strong>Total:</strong> ${{ compra.total }}</p>
+        <p class="para">Se le ha enviado un correo de confirmación a {{ compra.email }}.</p>
+
+        <button class="boton1"><a href="{% url 'inicio' %}" class="boton1">Regresar al inicio</a></button>
+    </div>
+
+    <script src="{% static 'js/confirmar_compra.js' %}"></script>
+{% endblock %}

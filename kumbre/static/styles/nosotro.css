@@ -1,5 +1,5 @@
 .frase{
-    background-image: url('/static/img/dji_fly_20230711_174052_291_1689395541244_photo.jpg');
+    background-image: url('/static/img/portadanosotros.jpg');
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center center;
@@ -7,26 +7,16 @@
     position: relative;
     z-index: 1;
     width: 100%;
-    height: 530px;
+    height: 830px;
 }
 
-.frase::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5); /* Color negro con 50% de opacidad */
-  z-index: -1; 
-}
 
 .tit h1{
   display: grid;
-  color: white;
+  color: rgb(199, 252, 195);
   height: 85vh;
   place-items: center;
-  font-size: 3.1em;
+  font-size: 4em;
   margin:auto;
   align-items: center;
   width: 500px;
@@ -55,7 +45,57 @@
 
 .button-container {
   text-align: center;
-  margin: 50px auto 140px auto;
+  margin: -160px auto 140px auto;
+}
+
+.creative-button {
+  background: linear-gradient(45deg, #32CD32, #e9ac5c); 
+  font-family: 'Times New Roman', Times, serif;
+  border: none;
+  border-radius: 50px;
+  padding: 15px 30px;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  position: relative;
+  overflow: hidden;
+  margin: 10px auto auto auto;
+}
+
+.creative-button:hover {
+  background: linear-gradient(45deg, #f3ae53, #32CD32); 
+  transform: scale(1.1);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.582);
+}
+
+
+.creative-button:active {
+  transform: scale(1);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+}
+
+.creative-button::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 200%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.2);
+  transform: skewX(-45deg);
+  transition: all 0.5s ease;
+  pointer-events: none;
+}
+
+.creative-button:hover::before {
+  left: 100%;
+}
+
+.button-container2 {
+  text-align: center;
+  margin: 10px auto 140px auto;
 }
 
 .creative-button {
@@ -105,31 +145,33 @@
 
 
 
-
-
 .nosotros{
-  background-color: rgba(133, 175, 154, 0.281);
-  height: 610px;
+  background-color: rgba(33, 50, 42, 0.346);
+  height: 850px;
   display: grid;
   grid-template-columns: repeat(3, 1fr); 
   margin: 0px;
 }
 .video{
+  border-radius: 20px;
   margin: auto;
   box-shadow: 0 6px 30px rgba(91, 224, 157, 0.623);
 }
 .video video{
-  height: 400px;
-  width: 350px;
+  height: 600px;
+  width: 600px;
 }
 .medio{
-  width: 350px;
-  margin: 30px auto auto auto;
+  color: white;
+  text-align: center;
+  width: 600px;
+  margin: 80px auto auto auto;
   height: 470px;
 }
+
 .medio p{
   font-family: 'Times New Roman', Times, serif;
-  font-size: large;
+  font-size: 1.7rem;
   text-align: justify;
 }
 
@@ -141,16 +183,17 @@
 }
 
 .imagenes img{
-  width: 150px;
-  height: 200px;
+  width: 450px;
+  height: 250px;
   border-radius: 20px;
 }
 .arri img{
-  width: 350px;
-  height: 420px;
+  vertical-align: top;
+  width: 640px;
+  height: 600px;
   display: grid;
   grid-template-columns: repeat(2, 1fr); 
-
+  box-shadow: 0 6px 30px rgba(91, 224, 157, 0.623);
 
 }
 .abajo img{
@@ -163,34 +206,37 @@
   height: 200px;
   margin-top: 0px;
 }
-
+ 
 
 .mapa{
-  height: 500px;
+  width: 80%;
+  height: 700px;
   display: flex;
 }
+
 .text{
-  width: 80%;
+  text-align: center;
+  width: 35%;
   background-color: rgb(179, 209, 161);
 }
 .text h1{
-  font-size: 2.5rem;
+  font-size: 3rem;
   margin: 30px 10px;
   color: #066344;
 }
 .text p{
-  width: 400px;
+  padding: 5px 20px;
   margin: auto 10px;
-  font-size: 1.3rem;
+  font-size: 1.5rem;
   text-align: justify;
 }
 .text img{
   width: 180px;
   height: 180px;
   transition: transform 0.3s ease;
-  margin: 10px 120px; 
+  margin: 60px 120px; 
 
 }
 .text img:hover{
-  transform: rotate(15deg);
+  transform: rotate(25deg);
 }

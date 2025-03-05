@@ -48,9 +48,9 @@
                 </div>
             </div>
             <div class="cart-icon-container">
-                <a href="{% url 'reservas' %}">
+                <a href="{% url 'resumen_compra' %}">
                     <i class="ri-calendar-check-line"></i>
-                    <span id="contador-carrito">0</span>
+                    <span id="contador-carrito">{{ cart_count }}</span>
                 </a>
             </div>
             {% else %}
@@ -77,7 +77,7 @@
                 <div class="description">"Deja la rutina atrás y aventúrate a descubrir lo extraordinario."</div>
             </div>
         </div>
-
+ 
         <div class="item" style="background-image: url('/static/img/fonan.jpg');">
             <div class="content">
                 <div class="description">"Viajar no es un gasto, es una inversión en recuerdos para toda la vida."</div>
@@ -147,7 +147,6 @@
             <h3>Acerca de la Kumbre</h3>
             <ul>
                 <li><a href="{% url 'nosotros' %}">Nosotros</a></li>
-                <li><a href="{% url 'reservas' %}">Reservas</a></li>
                 <li><a href="{% url 'sugerencias' %}">Sugerencias</a></li>
                 <li><a href="{% url 'cabañas' %}">Cabañas</a></li>
                 <li><a href="{% url 'restricciones' %}">Restricciones</a></li>

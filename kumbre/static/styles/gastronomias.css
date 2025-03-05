@@ -1,9 +1,9 @@
-<<<<<<< HEAD
     /* Contenedor principal */
     .container {
         width: 80%;
         margin: 0 auto;
         padding: 20px;
+        height: auto;
     }
 
     /* Título */
@@ -61,5 +61,3 @@
             grid-template-columns: 1fr;
         }
     }
-=======
->>>>>>> a6f7ca0e22ea52a16542e385e7d1c6800b6cd8f2

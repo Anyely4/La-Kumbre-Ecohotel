@@ -24,7 +24,11 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_str
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Producto, CarritoProducto
-from django.db.models import Sum
+from django.db.models import Sum, F
+from .forms import MetodoPagoForm
+from .models import Compra, DetalleCompra
+from .forms import CompraForm
+from django.db import IntegrityError
 
 
 def sugerencias(request):
@@ -32,8 +36,10 @@ def sugerencias(request):
         form = SugerenciaForm(request.POST)
         if form.is_valid():
             sugerencia = form.save()
+            
+            # Correo para Anyely (administrador)
             send_mail(
-                'Hola Anyely! Tienes una nueva Sugerencia',
+                'Hola Anyely! Tienes una nueva Sugerencia📝',
                 f"Categoría: {sugerencia.categoria}\n"
                 f"Nombre: {sugerencia.username}\n"
                 f"Correo: {sugerencia.correo}\n"
@@ -42,14 +48,29 @@ def sugerencias(request):
                 ['anyelyho1@gmail.com'],  
                 fail_silently=False,
             )
-            messages.success(request,"Tu sugerencia ha sido enviada con éxito.")
+            
+            # Correo de confirmación para el usuario
+            send_mail(
+                'Confirmación de Sugerencia Recibida📝',
+                f"Hola {sugerencia.username},\n\n"
+                "Gracias por enviar tu sugerencia. Hemos recibido tu mensaje📑 "
+                "y lo revisaremos lo antes posible.\n\n"
+                "Detalles de tu sugerencia:\n"
+                f"Categoría: {sugerencia.categoria}\n"
+                f"Sugerencia: {sugerencia.sugerencia}\n\n"
+                "Atentamente,\nLa Kumbre.",
+                'anyelyo1@gmail.com',  # Tu correo de remitente
+                [sugerencia.correo],  # Correo del usuario
+                fail_silently=False,
+            )
+            
+            messages.success(request, "Tu sugerencia ha sido enviada con éxito.")
             return redirect('sugerencias') 
 
     else:
         form = SugerenciaForm()
 
-    return render(request, 'sugerencias.html', {'form': form})  # ✅ Asegurar el nombre correcto
-
+    return render(request, 'sugerencias.html', {'form': form})
 
 def inicio(request):
     usuario_id = request.session.get("usuario_id")
@@ -139,18 +160,6 @@ def registro(request):
     return render(request, 'iniciar_sesion.html', {'register_mode': True})
 
 
-
-    #     form = FormularioRegistro(request.POST)
-    #     if form.is_valid():
-    #         user = form.save()
-    #         messages.success(request, "Registro exitoso, Por favor inicia sesión")
-    #         return redirect('iniciar_sesion')
-    #     else:
-    #         for field in form.errors:
-    #             for error in form[field].errors:
-    #                 messages.error(request, "{field}: {error}")
-    # return render(request, 'registro.html', {'register_mode': True})
-
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login as auth_login, authenticate, logout
 
@@ -183,6 +192,7 @@ def logout_perfil(request):
 
 
 
+
 @login_required
 def hacer_reserva(request):
     if request.method == "POST":
@@ -193,21 +203,26 @@ def hacer_reserva(request):
         telefono = request.POST.get("telefono")
         numero_personas = request.POST.get("numero_personas")
         
-        # Aquí podrías agregar validación de los datos recibidos
-        
-        # Crear y guardar la reserva
+        # Crear la reserva
         reserva = Reserva(
             usuario=request.user,
-            cabana=cabana_valor,  # Asegúrate de que en tu modelo el campo se llama así (sin tilde)
+            cabana=cabana_valor,  # Asegúrate de que en tu modelo el campo se llama "cabana"
             precio=precio,
             fecha=fecha,
             telefono=telefono,
             numero_personas=numero_personas,
             confirmada=False
         )
-        reserva.save()
-        messages.success(request, "Reserva añadida al carrito.")
-        return redirect('reservas')
+        try:
+            reserva.save()
+            messages.success(request, "Reserva añadida al carrito, Deseas algo mas?")
+            return redirect('productos')
+        except IntegrityError:
+            # Si se produce un IntegrityError, significa que ya existe una reserva para esa cabaña en esa fecha.
+            messages.error(request, "La cabaña ya está reservada para esa fecha.")
+            # Puedes re-renderizar el formulario con algún contexto adicional si lo deseas.
+            context = {"error": "La cabaña ya está reservada para esa fecha.", "cabana": cabana_valor}
+            return render(request, "reservas.html", context)
     
     else:
         # GET: precargar los datos de la cabaña si se recibe cabana_id en la URL
@@ -217,7 +232,7 @@ def hacer_reserva(request):
             cabana = get_object_or_404(Cabana, id=cabana_id)
             context["cabana"] = cabana  # Enviamos la cabaña para precargar el nombre y precio
         return render(request, "reservas.html", context)
-    
+        
 @login_required
 def resumen_compra(request):
     # Reservas pendientes (aún no confirmadas)
@@ -231,17 +246,12 @@ def resumen_compra(request):
     return render(request, 'resumen_compra.html', context)
 
 
-@login_required
-def metodos_pago(request):
-    # Aquí puedes implementar la lógica de métodos de pago o mostrar un template placeholder
-    return render(request, 'metodos_pago.html')
 
 @login_required
 def eliminar_reserva(request, reserva_id):
     # Se obtiene la reserva, asegurándose de que pertenezca al usuario logueado
     reserva = get_object_or_404(Reserva, id=reserva_id, usuario=request.user)
     reserva.delete()
-    messages.success(request, "Reserva eliminada correctamente.")
     return redirect('resumen_compra')
 
 def obtener_fechas_ocupadas(request, cabana_id):
@@ -335,40 +345,248 @@ def password_changed(request):
 def agregar_producto_carrito(request, producto_id):
     if request.method == "POST":
         producto = get_object_or_404(Producto, id=producto_id)
-        # Obtenemos la cantidad enviada, por defecto 1 si no se especifica
         cantidad = int(request.POST.get('cantidad', 1))
         
-        # Si el producto ya está en el carrito, actualizamos la cantidad; sino, lo creamos.
-        carrito_item, created = CarritoProducto.objects.get_or_create(
-            usuario=request.user,
-            producto=producto,
-            defaults={'cantidad': cantidad}
-        )
-        if not created:
-            carrito_item.cantidad += cantidad
-            carrito_item.save()
+        # Logging detallado
+        print(f"Usuario: {request.user}")
+        print(f"Producto: {producto.nombre}")
+        print(f"Cantidad: {cantidad}")
         
-        # Opcional: Obtener el total de artículos en el carrito
-        total = CarritoProducto.objects.filter(usuario=request.user).aggregate(
-            total=Sum('cantidad')
-        )['total'] or 0
-
+        # Verificar antes de crear
+        existing_cart_item = CarritoProducto.objects.filter(
+            usuario=request.user, 
+            producto=producto
+        ).first()
+        
+        if existing_cart_item:
+            print(f"Producto ya en carrito. Cantidad actual: {existing_cart_item.cantidad}")
+            existing_cart_item.cantidad += cantidad
+            existing_cart_item.save()
+        else:
+            nuevo_item = CarritoProducto.objects.create(
+                usuario=request.user,
+                producto=producto,
+                cantidad=cantidad
+            )
+            print(f"Nuevo item creado: {nuevo_item}")
+        
+        # Verificar carrito después de modificación
+        carrito_actual = CarritoProducto.objects.filter(usuario=request.user)
+        print("Carrito actual:")
+        for item in carrito_actual:
+            print(f"- {item.producto.nombre}: {item.cantidad}")
+        
         return JsonResponse({
             'success': True,
-            'cart_count': total
+            'cart_count': carrito_actual.count()
         })
-    else:
-        return JsonResponse({'success': False, 'mensaje': 'Método inválido.'}, status=400)
-    
+
+from django.http import JsonResponse
+from django.shortcuts import get_object_or_404
+from django.db.models import Sum
+from django.contrib.auth.decorators import login_required
+from .models import CarritoProducto
 
 @login_required
 def eliminar_producto(request, producto_id):
     if request.method == "POST":
-        producto = get_object_or_404(CarritoProducto, id=producto_id, usuario=request.user)
-        producto.delete()
-        total = CarritoProducto.objects.filter(usuario=request.user).aggregate(
-            total=Sum('cantidad')
-        )['total'] or 0
-        return JsonResponse({'success': True, 'cart_count': total})
+        try:
+            producto = get_object_or_404(CarritoProducto, id=producto_id, usuario=request.user)
+            producto.delete()
+            
+            # Calcular el total de productos en el carrito
+            total = CarritoProducto.objects.filter(usuario=request.user).aggregate(
+                total=Sum('cantidad')
+            )['total'] or 0
+
+            return JsonResponse({'success': True, 'cart_count': total})
+
+        except Exception as e:
+            return JsonResponse({'success': False, 'mensaje': f'Error al eliminar: {str(e)}'}, status=500)
+    
+    return JsonResponse({'success': False, 'mensaje': 'Método inválido.'}, status=400)
+
+    
+
+
+@login_required
+def metodo_pago(request):
+    metodo = request.GET.get('metodo', '')
+    
+    # Obtener productos y reservas de manera explícita
+    productos = CarritoProducto.objects.filter(usuario=request.user)
+    reservas = Reserva.objects.filter(usuario=request.user, confirmada=False)
+    
+    # Crear el formulario con datos iniciales
+    form = CompraForm(initial={
+        'metodo_pago': metodo,
+        'nombre': request.user.first_name,
+        'email': request.user.email
+    })
+    
+    # Imprimir información de depuración
+    print("Productos en carrito:", list(productos.values('producto__nombre', 'cantidad')))
+    print("Reservas pendientes:", list(reservas.values('cabana', 'precio')))
+
+    context = {
+        'form': form,
+        'metodo': metodo,
+        'productos': productos,
+        'reservas': reservas,
+    }
+    return render(request, 'metodos_pago.html', context)
+
+@login_required
+def confirmar_compra(request):
+    """
+    Procesa el formulario de compra:
+      - Recoge los datos del comprador y el método de pago.
+      - Calcula el total sumando los productos en el carrito y las reservas pendientes.
+      - Crea la compra y los detalles (DetalleCompra) correspondientes.
+      - Confirma las reservas y vacía el carrito.
+      - Envía dos correos, uno al usuario y otro al administrador.
+      - Redirige a la página de confirmación.
+    """
+    if request.method == "POST":
+        form = CompraForm(request.POST)
+        if form.is_valid():
+            # Datos del comprador
+            nombre_usuario = form.cleaned_data['nombre']
+            email_usuario = form.cleaned_data['email']
+            telefono_usuario = form.cleaned_data['telefono']
+            metodo_pago = form.cleaned_data['metodo_pago']
+            
+            # Mapeo de método de pago a código
+            METHOD_CODES = {
+                'nequi': 'NEQ001',
+                'daviplata': 'DAV001',
+                'bancolombia': 'BAN001'
+            }
+            codigo_metodo = METHOD_CODES.get(metodo_pago, 'UNKNOWN')
+            
+            # Total de productos en el carrito
+            productos = CarritoProducto.objects.filter(usuario=request.user)
+            print("Productos en carrito:", productos.count())
+            total_productos = productos.aggregate(
+                total=Sum(F('cantidad') * F('producto__precio'))
+            )['total'] or 0
+            
+            # Total de reservas pendientes
+            reservas = Reserva.objects.filter(usuario=request.user, confirmada=False)
+            print("Reservas pendientes:", reservas.count())
+            total_reservas = reservas.aggregate(total=Sum('precio'))['total'] or 0
+            
+            # Total general
+            total = total_productos + total_reservas
+            
+            # Crear la compra y marcarla como pagada
+            compra = Compra.objects.create(
+                usuario=request.user,
+                nombre=nombre_usuario,
+                email=email_usuario,
+                telefono=telefono_usuario,
+                total=total,
+                metodo_pago=metodo_pago,
+                pagado=True
+            )
+            
+            detalles_compra = []
+            # Registrar cada producto del carrito en DetalleCompra
+            for item in productos:
+                DetalleCompra.objects.create(
+                    compra=compra,
+                    producto=item.producto,
+                    precio_unitario=item.producto.precio,
+                    cantidad=item.cantidad,
+                    precio_total=item.cantidad * item.producto.precio
+                )
+                detalles_compra.append(f"- {item.cantidad}x {item.producto.nombre} - ${item.cantidad * item.producto.precio}")
+            
+            # Registrar cada reserva y confirmarla
+            for reserva in reservas:
+                DetalleCompra.objects.create(
+                    compra=compra,
+                    reserva=reserva,
+                    precio_unitario=reserva.precio,
+                    cantidad=1,
+                    precio_total=reserva.precio
+                )
+                reserva.confirmada = True
+                reserva.save()
+                # Dado que 'cabana' es un CharField, usamos el valor directamente
+                detalles_compra.append(f"- Reserva en {reserva.cabana} - ${reserva.precio}")
+            
+            # Vaciar el carrito
+            productos.delete()
+            
+            # Preparar el mensaje de correo para el usuario
+            detalles_texto = "\n".join(detalles_compra)
+            mensaje_usuario = f"""
+Hola {nombre_usuario},
+
+Su compra ha sido recibida y confirmada. A continuación, los detalles:
+
+{detalles_texto}
+
+Total: ${total}
+Método de pago: {metodo_pago.upper()} (Código: {codigo_metodo})
+
+Gracias por confiar en nosotros.
+
+Saludos,
+La Kumbre.
+            """.strip()
+            
+            from_email = settings.DEFAULT_FROM_EMAIL
+            send_mail("Confirmación de Compra - La Kumbre", mensaje_usuario, from_email, [email_usuario])
+            
+            # Enviar correo al administrador (en un correo separado)
+            admin_email = getattr(settings, "ADMIN_EMAIL", None)
+            if admin_email:
+                mensaje_admin = f"""
+Nueva compra realizada en La Kumbre:
+
+Cliente: {nombre_usuario}
+Correo: {email_usuario}
+Teléfono: {telefono_usuario}
+
+Detalles de la compra:
+{detalles_texto}
+
+Total: ${total}
+Método de pago: {metodo_pago.upper()} (Código: {codigo_metodo})
+
+Por favor, revise el panel de administración para más detalles.
+                """.strip()
+                send_mail("Nueva Compra Realizada - La Kumbre", mensaje_admin, from_email, [admin_email])
+            
+            return redirect('compra_confirmada', compra_id=compra.id)
     else:
-        return JsonResponse({'success': False, 'mensaje': 'Método inválido.'}, status=400)
+        form = CompraForm()
+    return render(request, 'metodos_pago.html', {'form': form})
+    
+@login_required
+def compra_confirmada(request, compra_id):
+    """
+    Muestra la confirmación final de la compra, incluyendo detalles y la imagen del método de pago.
+    """
+    compra = get_object_or_404(Compra, id=compra_id, usuario=request.user)
+    METHOD_CODES = {
+        'nequi': 'NEQ001',
+        'daviplata': 'DAV001',
+        'bancolombia': 'BAN001'
+    }
+    codigo_metodo = METHOD_CODES.get(compra.metodo_pago, 'UNKNOWN')
+    # Mapeo de método a imagen en static (asegúrate de que estas imágenes existan en static/images/)
+    image_mapping = {
+        'nequi': 'images/nequi.png',
+        'daviplata': 'images/daviplata.png',
+        'bancolombia': 'images/bancolombia.png'
+    }
+    image_url = image_mapping.get(compra.metodo_pago, None)
+    context = {
+        'compra': compra,
+        'codigo_metodo': codigo_metodo,
+        'image_url': image_url,
+    }
+    return render(request, 'compra_confirmada.html', context)

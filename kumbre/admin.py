@@ -4,6 +4,7 @@ from .models import Sugerencia
 from .models import Usuario 
 from .models import Cabana, Reserva  # Asegúrate de importar el modelo correcto
 from .models import Producto
+from .models import Compra, DetalleCompra
 
 
 # Register your models here.
@@ -28,6 +29,9 @@ class ReservaAdmin(admin.ModelAdmin):
 
 admin.site.register(Reserva, ReservaAdmin)
 
-
-
 admin.site.register(Producto)
+
+
+
+admin.site.register(Compra)
+admin.site.register(DetalleCompra)

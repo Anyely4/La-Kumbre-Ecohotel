@@ -20,7 +20,7 @@
                 <div class="titulo-imagen">
 					<a href="#">Cabaña Tabi</a>
 				</div>
-                <button id="openModalBtn1" class="btntabi">Conoce la Cabaña 1</button>
+                <button id="openModalBtn1" class="btntabi">Conoce la Cabaña Tabi</button>
 
 			</li>
 			<li>
@@ -33,7 +33,7 @@
                 <div class="titulo-imagen">
 					<a href="#">Cabaña Geisha</a>
 				</div>
-                <button id="openModalBtn2" class="btntabi">Conoce la Cabaña 2</button>
+                <button id="openModalBtn2" class="btntabi">Conoce la Cabaña Geisha</button>
 			</li>
 			<li>
 				<div class="carousel">
@@ -45,7 +45,7 @@
                 <div class="titulo-imagen">
 					<a href="#">Cabaña Cafetal</a>
 				</div>
-                <button id="openModalBtn3" class="btntabi">Conoce la Cabaña 3</button>
+                <button id="openModalBtn3" class="btntabi">Conoce la Cabaña Cafetal</button>
 			</li>
 			<li>
 				<div class="carousel">
@@ -57,7 +57,7 @@
                 <div class="titulo-imagen">
 					<a href="#">Cabaña Bourbon</a>
 				</div>
-                <button id="openModalBtn4" class="btntabi">Conoce la Cabaña 4</button>
+                <button id="openModalBtn4" class="btntabi">Conoce la Cabaña Bourbon</button>
 			</li>
 			<li> 
 				<div class="carousel">
@@ -69,7 +69,7 @@
                 <div class="titulo-imagen">
 					<a href="#">Cabaña Wush</a>
 				</div>
-                <button id="openModalBtn5" class="btntabi">Conoce la Cabaña 5</button>
+                <button id="openModalBtn5" class="btntabi">Conoce la Cabaña Wush-Wush</button>
 			</li>
 		</ul>
 	</div>
@@ -78,75 +78,81 @@
 <div id="modalCabaña1" class="modal">
     <div class="modal-content">
         <span class="close">&times;</span>
-        <div class="modal-header">
-            <h2>Bienvenido a la Cabaña Tabi</h2>
-        </div>
         <div class="modal-body">
-            <div class="tab-container">
-                <div class="tab-header">
-                    <button class="tablinks active" onclick="openTab(event, 'tab1')">Descripción</button>
-                    <button class="tablinks" onclick="openTab(event, 'tab2')">Incluye</button>
-                    <button class="tablinks" onclick="openTab(event, 'tab3')">contiene</button>
+            <div class="slider-container">
+                <div class="slider-wrapper">
+                    <div class="slide active">
+                        <div class="bouncing-title">
+                            Bienvenido a la Cabaña Tabi
+                        </div>
+                        <p>Esta cabaña es ideal para grupos y familias, con capacidad para hasta 12 personas, ofreciendo comodidad y un ambiente acogedor.
+                            Al llegar, te recibiremos con dos cafés de bienvenida y una botella de vino de cortesía. Disfruta de dos desayunos incluidos y 
+                            relájate en nuestra acogedora zona de descanso. Tendrás acceso a una fogata para momentos inolvidables, WiFi durante toda tu 
+                            estancia, y un amplio jacuzzi perfecto para compartir con amigos y familiares.
+                        </p>
+                        <div class="gallery">
+                            <div class="gallery-item">
+                                <img src="{% static 'img/tabi11.jpg' %}" class="fotos" alt="Imagen de la cabaña">
+                            </div>
+                            <div class="gallery-item">
+                                <img src="{% static 'img/tabi22.jpg' %}" class="fotos" alt="Imagen de la cabaña">
+                            </div>
+                            <div class="gallery-item">
+                                <img src="{% static 'img/tabi33.jpg' %}" class="fotos" alt="Imagen de la cabaña">
+                            </div>
+                            <div class="gallery-item">
+                                <img src="{% static 'img/tabi44.jpg' %}" class="fotos" alt="Imagen de la cabaña">
+                            </div>
+                        </div>
+                       
+                    </div>
+                    <div class="slide">
+                        <div class="bouncing-title">
+                            Bienvenido a la Cabaña Geisha
+                        </div>
+                        <div class="dos">
+                       
+                                <div class="izqui">
+                                    <h3>Tu reserva incluye:</h3>
+                                    -1 Botella de vino <br>
+                                -2 Cafés de bienvenida <br>
+                                    -2 Desayunos <br>
+                                    -Ingreso al mirador <br>
+                                    -Malla catamarán <br> 
+                                    -Ducha y jacuzzi con agua caliente y baño de espuma (para 8 personas) <br>
+                                    -Wi-Fi <br> 
+                                    -Fogata y malvaviscos <br> 
+                                    -Souvenir <br>
+                                    -Café al gusto <br>
+                                    -Parqueadero privado <br>
+                                    -Parlante bluetooth <br>
+                                    -Jabón artesanal 
+                    
+                                </div>
+                                    
+                                <div class="dere">
+                                    <h3> Las cabañas están equipadas con:</h3> <br>
+                                    -3 camas de 1.40 m y 1 cama de 1.60 m <br><br>
+                                    -Nevera <br><br>
+                                    -Cafetera <br><br>
+                                    -Jacuzzi para 8 personas <br><br>
+                                    -Zona de fogata <br><br>
+                                    -Malla catamarán <br><br>
+                                    -Sofácama
+                        </div>
+                                </div>
+                                   
+                    </div>
                 </div>
-                <div class="tab-content">
-                    <div id="tab1" class="tab-pane active">
-                        <p><br><br>
-                            Esta cabaña es ideal para grupos y familias, con capacidad para 
-                            hasta 12 personas, ofreciendo comodidad y 
-                            un ambiente acogedor. <br> Al llegar, te recibiremos con dos cafés de 
-                            bienvenida y una botella de vino de cortesía. Disfruta de dos desayunos 
-                            incluidos y relájate en nuestra acogedora zona de descanso. Tendrás acceso a una fogata para momentos
-                            inolvidables, WiFi durante toda tu estancia, y un amplio jacuzzi 
-                            perfecto para compartir con amigos y familiares.</p>
-                            <div class="modal-images">
-                                <img src="{% static 'img/tabi1.jpg' %}"  class="fotos" alt="Imagen de la cabaña">
-                                <img src="{% static 'img/tabi2.jpg' %}"  class="fotos" alt="Imagen de la cabaña">
-                                <img src="{% static 'img/tabi3.jpg' %}"  class="fotos" alt="Imagen de la cabaña">
-                                <img src="{% static 'img/tabi4.jpg' %}"  class="fotos" alt="Imagen de la cabaña">
-                                <img src="{% static 'img/tabi5.jpg' %}"  class="fotos" alt="Imagen de la cabaña">
-                            </div>
-                    </div>
-                    <div id="tab2" class="tab-pane">
-                        <p> <br><br>-1 Botella de vino <br>
-                            -2 Cafés de bienvenida <br>
-                            -2 Desayunos <br>
-                            -Ingreso al mirador <br>
-                            -Wi-Fi <br>
-                            -Fogata y malvaviscos <br>                       
-                            -Parlante bluetooth <br>
-                            -Jabón artesanal</p>
-                            <div class="modal-images">
-                                <img src="{% static 'img/comida.jpg' %}"  class="fotos" alt="Imagen de la cabaña">
-                                <img src="{% static 'img/comida.jpg' %}"  class="fotos" alt="Imagen de la cabaña">
-                                <img src="{% static 'img/comida.jpg' %}"  class="fotos" alt="Imagen de la cabaña">
-                                <img src="{% static 'img/comida.jpg' %}"  class="fotos" alt="Imagen de la cabaña">
-                                <img src="{% static 'img/comida.jpg' %}"  class="fotos" alt="Imagen de la cabaña">
-                            </div>
-                    </div>
-                    <div id="tab3" class="tab-pane"> 
-                        <p><br><br> -3 camas de 1.40 m y 1 cama de 1.60 m <br>
-                            -Nevera <br>
-                            -Cafetera <br>
-                            -Jacuzzi para 8 personas  <br>
-                            -Parqueadero privado <br>
-                            -Zona de fogata <br>
-                            -Malla catamarán <br>
-                            -Sofácama</p>
-                            <div class="modal-images">
-                                <img src="{% static 'img/comida.jpg' %}"  class="fotos" alt="Imagen de la cabaña">
-                                <img src="{% static 'img/comida.jpg' %}"  class="fotos" alt="Imagen de la cabaña">
-                                <img src="{% static 'img/comida.jpg' %}"  class="fotos" alt="Imagen de la cabaña">
-                                <img src="{% static 'img/comida.jpg' %}"  class="fotos" alt="Imagen de la cabaña">
-                                <img src="{% static 'img/comida.jpg' %}"  class="fotos" alt="Imagen de la cabaña">
-                            </div>
-                    </div>
-                </div>
+                <button class="prev-button">Anterior</button>
+                <button class="next-button">Siguiente</button>
             </div>
-        
         </div>
-        <div class="modal-footer">
-            <button class="btn-reservar"> <a href="{% url 'reservas' %}?cabana_id=11" class="btn btn-primary">Reservar Tabi</a></button>
-        </div>
+    
+        <button class="boton1">
+            <a href="{% url 'reservas' %}?cabana_id=11">Reservar Tabi</a>
+        </button>
+
     </div>
 </div>
 
@@ -155,34 +161,83 @@
 <div id="modalCabaña2" class="modal">
     <div class="modal-content">
         <span class="close">&times;</span>
-        <div class="modal-header">
-            <h2>Información de la Cabaña</h2>
-        </div>
         <div class="modal-body">
-            <div class="tab-container">
-                <div class="tab-header">
-                    <button class="tablinks active" onclick="openTab(event, 'tab1')">Descripción</button>
-                    <button class="tablinks" onclick="openTab(event, 'tab2')">Servicios</button>
+            <div class="slider-container">
+                <div class="slider-wrapper">
+                    <div class="slide active">
+                        <div class="bouncing-title">
+                            Bienvenido a la Cabaña Geisha
+                        </div>
                     
-                </div>
-                <div class="tab-content">
-                    <div id="tab1" class="tab-pane active">
-                        <p>Descripción de la cabaña...</p>
+                        <p>Al llegar, te recibiremos con dos cafés de bienvenida y una botella de vino de cortesía.
+                             Disfruta de dos desayunos incluidos y relájate en nuestra acogedora zona de descanso.
+                              Tendrás acceso a una fogata para momentos inolvidables, WiFi durante toda tu estancia, 
+                              y podrás disfrutar de un jacuzzi con baño de espuma.
+                        </p>
+                        <div class="gallery">
+                            <div class="gallery-item">
+                                <img src="{% static 'img/geisha11.jpg' %}" class="fotos" alt="Imagen de la cabaña">
+                            </div>
+                            <div class="gallery-item">
+                                <img src="{% static 'img/geisha22.jpg' %}" class="fotos" alt="Imagen de la cabaña">
+                            </div>
+                            <div class="gallery-item">
+                                <img src="{% static 'img/geisha33.jpg' %}" class="fotos" alt="Imagen de la cabaña">
+                            </div>
+                            <div class="gallery-item">
+                                <img src="{% static 'img/geisha44.jpg' %}" class="fotos" alt="Imagen de la cabaña">
+                            </div>
+                        </div>
+                       
+                       
                     </div>
-                    <div id="tab2" class="tab-pane">
-                        <p>Servicios ofrecidos...</p>
+                    <div class="slide">
+                        <div class="bouncing-title">
+                            Bienvenido a la Cabaña Tabi
+                        </div>
+                        <div class="dos">
+                       
+                                <div class="izqui">
+                                    <h3>Tu reserva incluye:</h3>
+                                    -1 Botella de vino <br>
+                                -2 Cafés de bienvenida <br>
+                                    -2 Desayunos <br>
+                                    -Ingreso al mirador <br>
+                                    -Malla catamarán <br> 
+                                    -Ducha y jacuzzi con agua caliente y baño de espuma <br>
+                                    -Wi-Fi <br> 
+                                    -Fogata y malvaviscos <br> 
+                                    -Souvenir <br>
+                                    -Café al gusto <br>
+                                    -Parqueadero privado <br>
+                                    -Parlante bluetooth <br>
+                                    -Jabón artesanal 
+                    
+                                </div>
+                                    
+                                <div class="dere">
+                                    <h3> Las cabañas están equipadas con:</h3> <br>
+                                    -Cama doble de 2*2 m  <br><br>
+                                    -Nevera <br><br>
+                                    -Cafetera <br><br>
+                                    -Jacuzzi <br><br>
+                                    -Zona de fogata <br><br>
+                                    -Malla catamarán <br><br>
+                                    -Sofácama
+                        </div>
+                                </div>
+                                   
                     </div>
                 </div>
-            </div>
-            <div class="modal-images">
-                <img src="imagen1.jpg" alt="Imagen de la cabaña">
-                <img src="imagen2.jpg" alt="Imagen de la cabaña">
+                <button class="prev-button">Anterior</button>
+                <button class="next-button">Siguiente</button>
             </div>
         </div>
-        <div class="modal-footer">
-            <button class="btn-reservar"><a href="{% url 'reservas' %}?cabana_id=12" class="btn btn-primary">Reservar Geisha</a></button>
+    
+        <button class="boton1">
+            <a href="{% url 'reservas' %}?cabana_id=12">Reservar Cabaña Geisha </a>
+        </button>
 
-        </div>
     </div>
 </div>
 
@@ -190,32 +245,81 @@
 <div id="modalCabaña3" class="modal">
     <div class="modal-content">
         <span class="close">&times;</span>
-        <div class="modal-header">
-            <h2>Información de la Cabaña</h2>
-        </div>
         <div class="modal-body">
-            <div class="tab-container">
-                <div class="tab-header">
-                    <button class="tablinks active" onclick="openTab(event, 'tab1')">Descripción</button>
-                    <button class="tablinks" onclick="openTab(event, 'tab2')">Servicios</button>
-                </div>
-                <div class="tab-content">
-                    <div id="tab1" class="tab-pane active">
-                        <p>Descripción de la cabaña...</p>
+            <div class="slider-container">
+                <div class="slider-wrapper">
+                    <div class="slide active">
+                        <div class="bouncing-title">
+                            Bienvenido a la Cabaña Cafetal
+                        </div>
+                        <p>Esta cabaña familiar cuenta con capacidad ideal para parejas o pequeñas familias, brindando un espacio cálido y confortable.
+                            Al llegar, te recibiremos con dos cafés de bienvenida y una botella de vino de cortesía. Disfruta de dos desayunos incluidos
+                            y relájate en nuestra acogedora zona de descanso. Tendrás acceso a una fogata para momentos inolvidables, WiFi durante toda
+                            tu estancia, y un ambiente perfecto para disfrutar en pareja o en familia.
+                        </p>
+                        <div class="gallery">
+                            <div class="gallery-item">
+                                <img src="{% static 'img/cafetal11.jpg' %}" class="fotos" alt="Imagen de la cabaña">
+                            </div>
+                            <div class="gallery-item">
+                                <img src="{% static 'img/cafetal22.jpg' %}" class="fotos" alt="Imagen de la cabaña">
+                            </div>
+                            <div class="gallery-item">
+                                <img src="{% static 'img/cafetal33.jpg' %}" class="fotos" alt="Imagen de la cabaña">
+                            </div>
+                            <div class="gallery-item">
+                                <img src="{% static 'img/cafetal44.jpg' %}" class="fotos" alt="Imagen de la cabaña">
+                            </div>
+                        </div>
+                       
+                       
                     </div>
-                    <div id="tab2" class="tab-pane">
-                        <p>Servicios ofrecidos...</p>
+                    <div class="slide">
+                        <div class="bouncing-title">
+                            Bienvenido a la Cabaña Cafetal
+                        </div>
+                        <div class="dos">
+                       
+                                <div class="izqui">
+                                    <h3>Tu reserva incluye:</h3>
+                                    -1 Botella de vino <br>
+                                -2 Cafés de bienvenida <br>
+                                    -2 Desayunos <br>
+                                    -Ingreso al mirador <br>
+                                    -Malla catamarán <br> 
+                                    -Ducha y jacuzzi con agua caliente y baño de espuma<br>
+                                    -Wi-Fi <br> 
+                                    -Fogata y malvaviscos <br> 
+                                    -Souvenir <br>
+                                    -Café al gusto <br>
+                                    -Parqueadero privado <br>
+                                    -Parlante bluetooth <br>
+                                    -Jabón artesanal 
+                    
+                                </div>
+                                    
+                                <div class="dere">
+                                    <h3> Las cabañas están equipadas con:</h3> <br>
+                                    - 1 cama de 2*2 m y 1 cama de 1.40 m <br><br>
+                                    -Nevera <br><br>
+                                    -Cafetera <br><br>
+                                    -Jacuzzi para 8 personas <br><br>
+                                    -Zona de fogata <br><br>
+                                    -Malla catamarán <br><br>
+                                    -Sofácama
+                        </div>
+                                </div>
+                                   
                     </div>
                 </div>
-            </div>
-            <div class="modal-images">
-                <img src="imagen1.jpg" alt="Imagen de la cabaña">
-                <img src="imagen2.jpg" alt="Imagen de la cabaña">
+                <button class="prev-button">Anterior</button>
+                <button class="next-button">Siguiente</button>
             </div>
         </div>
-        <div class="modal-footer">
-            <button class="btn-reservar"> <a href="{% url 'reservas' %}?cabana_id=13" class="btn btn-primary">Reservar Cafetal</a></button>
-        </div>
+    
+        <button class="boton1">
+            <a href="{% url 'reservas' %}?cabana_id=13">Reservar Cabaña Cafetal</a>
+        </button>
     </div>
 </div>
 
@@ -223,32 +327,82 @@
 <div id="modalCabaña4" class="modal">
     <div class="modal-content">
         <span class="close">&times;</span>
-        <div class="modal-header">
-            <h2>Información de la Cabaña</h2>
-        </div>
         <div class="modal-body">
-            <div class="tab-container">
-                <div class="tab-header">
-                    <button class="tablinks active" onclick="openTab(event, 'tab1')">Descripción</button>
-                    <button class="tablinks" onclick="openTab(event, 'tab2')">Servicios</button>
-                </div>
-                <div class="tab-content">
-                    <div id="tab1" class="tab-pane active">
-                        <p>Descripción de la cabaña...</p>
+            <div class="slider-container">
+                <div class="slider-wrapper">
+                    <div class="slide active">
+                        <div class="bouncing-title">
+                            Bienvenido a la Cabaña Borubon Rosado
+                        </div>
+                    
+                        <p>Esta cabaña es perfecta para parejas o familias pequeñas, ofreciendo un espacio acogedor y confortable.
+                            Al llegar, te recibiremos con dos cafés de bienvenida y una botella de vino de cortesía. Disfruta de dos desayunos incluidos y 
+                            relájate en nuestra acogedora zona de descanso. Tendrás acceso a una fogata para momentos inolvidables, WiFi durante toda tu 
+                            estancia, y un amplio jacuzzi perfecto para compartir con amigos y familiares.
+                        </p>
+                        <div class="gallery">
+                            <div class="gallery-item">
+                                <img src="{% static 'img/bourbon11.jpg' %}" class="fotos" alt="Imagen de la cabaña">
+                            </div>
+                            <div class="gallery-item">
+                                <img src="{% static 'img/bourbon22.jpg' %}" class="fotos" alt="Imagen de la cabaña">
+                            </div>
+                            <div class="gallery-item">
+                                <img src="{% static 'img/bourbon44.jpg' %}" class="fotos" alt="Imagen de la cabaña">
+                            </div>
+                            <div class="gallery-item">
+                                <img src="{% static 'img/bourbon55.jpg' %}" class="fotos" alt="Imagen de la cabaña">
+                            </div>
+                        </div>
+                       
                     </div>
-                    <div id="tab2" class="tab-pane">
-                        <p>Servicios ofrecidos...</p>
+                    <div class="slide">
+                        <div class="bouncing-title">
+                            Bienvenido a la Cabaña Bourbon Rosado
+                        </div>
+                    
+                        <div class="dos">
+                       
+                                <div class="izqui">
+                                    <h3>Tu reserva incluye:</h3>
+                                    -1 Botella de vino <br>
+                                -2 Cafés de bienvenida <br>
+                                    -2 Desayunos <br>
+                                    -Ingreso al mirador <br>
+                                    -Malla catamarán <br> 
+                                    -Ducha y jacuzzi con agua caliente y baño de espuma  <br>
+                                    -Wi-Fi <br> 
+                                    -Fogata y malvaviscos <br> 
+                                    -Souvenir <br>
+                                    -Café al gusto <br>
+                                    -Parqueadero privado <br>
+                                    -Parlante bluetooth <br>
+                                    -Jabón artesanal 
+                    
+                                </div>
+                                    
+                                <div class="dere">
+                                    <h3> Las cabañas están equipadas con:</h3> <br>
+                                    -1 cama de 2*2 m y 1 cama de 1.40 m <br><br>
+                                    -Nevera <br><br>
+                                    -Cafetera <br><br>
+                                    -Jacuzzi para 8 personas <br><br>
+                                    -Zona de fogata <br><br>
+                                    -Malla catamarán <br><br>
+                                    -Sofácama
+                        </div>
+                                </div>
+                                   
                     </div>
                 </div>
-            </div>
-            <div class="modal-images">
-                <img src="imagen1.jpg" alt="Imagen de la cabaña">
-                <img src="imagen2.jpg" alt="Imagen de la cabaña">
+                <button class="prev-button">Anterior</button>
+                <button class="next-button">Siguiente</button>
             </div>
         </div>
-        <div class="modal-footer">
-            <button class="btn-reservar"> <a href="{% url 'reservas' %}?cabana_id=14" class="btn btn-primary">Reservar Bourbon</a></button>
-        </div>
+    
+        <button class="boton1">
+            <a href="{% url 'reservas' %}?cabana_id=14">Reservar Cabaña  Bourbon Rosado</a>
+        </button>
     </div>
 </div>
 
@@ -256,33 +410,83 @@
 <div id="modalCabaña5" class="modal">
     <div class="modal-content">
         <span class="close">&times;</span>
-        <div class="modal-header">
-            <h2>Información de la Cabaña</h2>
-        </div>
         <div class="modal-body">
-            <div class="tab-container">
-                <div class="tab-header">
-                    <button class="tablinks active" onclick="openTab(event, 'tab1')">Descripción</button>
-                    <button class="tablinks" onclick="openTab(event, 'tab2')">Servicios</button>
-                </div>
-                <div class="tab-content">
-                    <div id="tab1" class="tab-pane active">
-                        <p>Descripción de la cabaña...</p>
+            <div class="slider-container">
+                <div class="slider-wrapper">
+                    <div class="slide active">
+                        <div class="bouncing-title">
+                            Bienvenido a la Cabaña Wush-Wush
+                        </div>
+                    
+                        <p>
+                            Al llegar, te recibiremos con dos cafés de bienvenida y una botella de vino de cortesía. Disfruta de dos desayunos incluidos y 
+                            relájate en nuestra acogedora zona de descanso. Tendrás acceso a una fogata para momentos inolvidables, WiFi durante toda tu 
+                            estancia, y un amplio jacuzzi perfecto para compartir con amigos y familiares.
+                        </p>
+                        <div class="gallery">
+                            <div class="gallery-item">
+                                <img src="{% static 'img/wush2.jpg' %}" class="fotos" alt="Imagen de la cabaña">
+                            </div>
+                            <div class="gallery-item">
+                                <img src="{% static 'img/wush3.jpg' %}" class="fotos" alt="Imagen de la cabaña">
+                            </div>
+                            <div class="gallery-item">
+                                <img src="{% static 'img/wush4.jpg' %}" class="fotos" alt="Imagen de la cabaña">
+                            </div>
+                            <div class="gallery-item">
+                                <img src="{% static 'img/wush6.jpg' %}" class="fotos" alt="Imagen de la cabaña">
+                            </div>
+                        </div>
+                       
+                       
                     </div>
-                    <div id="tab2" class="tab-pane">
-                        <p>Servicios ofrecidos...</p>
+                    <div class="slide">
+                        <div class="bouncing-title">
+                            Bienvenido a la Cabaña Wush-Wush
+                        </div>
+                    
+                        <div class="dos">
+                       
+                                <div class="izqui">
+                                    <h3>Tu reserva incluye:</h3>
+                                    -1 Botella de vino <br>
+                                -2 Cafés de bienvenida <br>
+                                    -2 Desayunos <br>
+                                    -Ingreso al mirador <br>
+                                    -Malla catamarán <br> 
+                                    -Ducha y jacuzzi con agua caliente y baño de espuma<br>
+                                    -Wi-Fi <br> 
+                                    -Fogata y malvaviscos <br> 
+                                    -Souvenir <br>
+                                    -Café al gusto <br>
+                                    -Parqueadero privado <br>
+                                    -Parlante bluetooth <br>
+                                    -Jabón artesanal 
+                    
+                                </div>
+                                    
+                                <div class="dere">
+                                    <h3> Las cabañas están equipadas con:</h3> <br>
+                                    -Cama doble de 1.40 m <br><br>
+                                    -Nevera <br><br>
+                                    -Cafetera <br><br>
+                                    -Jacuzzi para 8 personas <br><br>
+                                    -Zona de fogata <br><br>
+                                    -Malla catamarán <br><br>
+                                    -Sofácama
+                        </div>
+                                </div>
+                                   
                     </div>
                 </div>
-            </div>
-            <div class="modal-images">
-                <img src="imagen1.jpg" alt="Imagen de la cabaña">
-                <img src="imagen2.jpg" alt="Imagen de la cabaña">
+                <button class="prev-button">Anterior</button>
+                <button class="next-button">Siguiente</button>
             </div>
         </div>
-        <div class="modal-footer">
-            <button class="btn-reservar"> <a href="{% url 'reservas' %}?cabana_id=15" class="btn btn-primary">Reservar Wush</a></button>
-
-        </div>
+    
+        <button class="boton1">
+            <a href="{% url 'reservas' %}?cabana_id=15">Reservar Cabaña Wush-Wush</a>
+        </button>
     </div>
 </div>
 

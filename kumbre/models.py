@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
 
 
 class Sugerencia(models.Model):
@@ -42,6 +43,14 @@ class Reserva(models.Model):
     estado = models.CharField(max_length=50, choices=[('Pendiente', 'Pendiente'), ('Aprobada', 'Aprobada')])
     confirmada = models.BooleanField(default=False)  
 
+    class Meta:
+        unique_together = ('cabana', 'fecha')
+
+    def clean(self):
+        # Si ya existe una reserva para la misma cabana y fecha (excluyendo la misma instancia en caso de edición)
+        if Reserva.objects.filter(cabana=self.cabana, fecha=self.fecha).exclude(pk=self.pk).exists():
+            raise ValidationError("La cabaña ya está reservada para esa fecha.")
+
     def __str__(self):
         return f"Reserva de {self.cabana} para {self.fecha}"
 
@@ -66,3 +75,42 @@ class CarritoProducto(models.Model):
 
     def __str__(self):
         return f"{self.producto.nombre} ({self.cantidad})"
+    
+
+
+class Compra(models.Model):
+    METODO_PAGO_CHOICES = [
+        ('nequi', 'Nequi'),
+        ('daviplata', 'Daviplata'),
+        ('bancolombia', 'Bancolombia'),
+    ]
+    
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
+    nombre = models.CharField(max_length=200)
+    email = models.EmailField()
+    telefono = models.CharField(max_length=20)
+    total = models.DecimalField(max_digits=10, decimal_places=2)
+    metodo_pago = models.CharField(max_length=20, choices=METODO_PAGO_CHOICES)
+    pagado = models.BooleanField(default=False)
+    fecha_creacion = models.DateTimeField(auto_now_add=True)
+    
+    def __str__(self):
+        return f"Compra #{self.id} de {self.usuario.username}"
+    
+
+class DetalleCompra(models.Model):
+    compra = models.ForeignKey(Compra, related_name='detalles', on_delete=models.CASCADE)
+    # El detalle puede estar asociado a un producto o a una reserva.
+    # Se usa SET_NULL para que si se elimina el producto o la reserva, el detalle conserve la información.
+    producto = models.ForeignKey('Producto', on_delete=models.SET_NULL, null=True, blank=True)
+    reserva = models.ForeignKey('Reserva', on_delete=models.SET_NULL, null=True, blank=True)
+    precio_unitario = models.DecimalField(max_digits=10, decimal_places=2)
+    cantidad = models.PositiveIntegerField(default=1)
+    precio_total = models.DecimalField(max_digits=10, decimal_places=2)  # Se puede calcular como precio_unitario * cantidad
+    
+    def __str__(self):
+        if self.producto:
+            return f"{self.cantidad} x {self.producto.nombre}"
+        elif self.reserva:
+            return f"Reserva: {self.reserva.cabana} para {self.reserva.fecha}"
+        return "Detalle sin asignar"

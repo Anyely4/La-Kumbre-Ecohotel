@@ -4,7 +4,7 @@
     font-family: 'Times New Roman', Times, serif;
     position: relative;
     width: 850px;
-    height: 550px;
+    height: 650px;
     background: #ffffff;
     margin: 40px auto;
     border-radius: 30px;
@@ -116,7 +116,9 @@ h2{
     }
 
 
-
+    .logotipo{
+        width: 400px;
+    }
 
 .boton1{
     font-family: 'Times New Roman', Times, serif;
@@ -146,8 +148,8 @@ h2{
         left: -250%;
         width: 300%;
         height: 100%;
-        background-image: url('/static/img/formularios.jpg');
-        background-size: cover;
+        background-image: url('/static/img/fot3.jpg');
+        background-size: contain; 
         background-position: center center;
         background-attachment: fixed;
         /* border: 2px solid red; */

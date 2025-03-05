@@ -1,5 +1,5 @@
 from django import forms
-from .models import Sugerencia, Usuario
+from .models import Sugerencia, Usuario, Compra
 
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
@@ -63,3 +63,26 @@ class ReservaForm(forms.ModelForm):
     class Meta:
         model = Reserva
         fields = ['telefono', 'numero_personas', 'fecha']
+
+
+class MetodoPagoForm(forms.ModelForm):
+    class Meta:
+        model = Compra
+        fields = ['metodo_pago']
+        labels = {
+            'metodo_pago': 'Método de Pago',
+        }
+        widgets = {
+            'metodo_pago': forms.Select(attrs={'class': 'form-control'}),
+        }
+        
+from django import forms
+from .models import Compra
+
+class CompraForm(forms.ModelForm):
+    class Meta:
+        model = Compra
+        fields = ['nombre', 'email', 'telefono', 'metodo_pago']
+        widgets = {
+            'metodo_pago': forms.HiddenInput(),
+        }

@@ -6,6 +6,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
     <title>La Kumbre</title>
     <link rel="stylesheet" href="{% static 'styles/style.css' %}">
     <link rel="shortcut icon" href="{% static 'img/icino.png' %}" type="image/x-icon">
@@ -124,6 +125,16 @@
 </footer>
 <script src="{% static 'js/base.js' %}"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+
+<script>
+    AOS.init({
+      delay: 200,  // Agrega un retraso de 200ms a todas las animaciones
+      duration: 1000, // Duración de 1s en todas las animaciones
+      once: true // La animación ocurre solo una vez
+    });
+  </script>
+  
 {% if messages %}
 {% for m in messages %}
     <script>
@@ -138,3 +149,4 @@
 {% endif %}
 </body>
 </html>
+

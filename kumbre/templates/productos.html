@@ -3,31 +3,10 @@
 {% block title %}gastronomia{% endblock %}
  
 {% block content %}
-<link rel="stylesheet" href="{% static 'styles/gastronomias.css' %}">
-
-<style>
-    .container{
-        height: 800px;
-    }
-    /* Ejemplo de estilos para un grid de 4 columnas */
-    .products-grid {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 20px;
-    }
-    .product-card {
-        border: 1px solid #ccc;
-        padding: 10px;
-        text-align: center;
-    }
-    .product-image {
-        max-width: 100%;
-        height: auto;
-    }
-</style>
+<link rel="stylesheet" href="{% static 'styles/productos.css' %}">
 
 <div class="container">
-    <h1>Lista de Productos</h1>
+    <h1>Deleitate con nuestro Productos</h1>
     <div class="products-grid">
         {% for producto in productos %}
             <div class="product-card">
@@ -37,7 +16,7 @@
                     <img src="/static/images/no-image.png" alt="Sin imagen" class="product-image">
                 {% endif %}
                 <h3>{{ producto.nombre }}</h3>
-                <p>{{ producto.descripcion }}</p>
+              
                 <p><strong>Precio: </strong>${{ producto.precio }}</p>
                 
                 <!-- Campo para la cantidad -->

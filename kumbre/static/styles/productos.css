@@ -1,0 +1,118 @@
+
+        /* Contenedor principal */
+        .container {
+            display: flex;
+            flex-direction: column;
+            height: auto;
+            max-width: 1500px;
+            margin: auto;
+            padding: 20px;
+            text-align: center;
+        }
+
+        /* Título */
+        h1 {
+            color: #76d6b0;
+            font-size: 3rem;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        /* Grid de productos */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr); /* Siempre 4 columnas en pantallas grandes */
+            gap: 20px;
+            justify-content: center;
+            margin-top: 10px;
+        }
+
+        /* Tarjetas de productos */
+        .product-card {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            padding: 15px;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        /* Efecto hover en productos */
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Imágenes */
+        .product-image {
+            width: 100%;
+            max-width: 300px;
+            height: 300px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        /* Texto de producto */
+        h3 {
+            font-size: 1.2rem;
+            color: #222;
+            margin: 10px 0;
+        }
+
+        p {
+            font-size: 0.95rem;
+            color: #555;
+        }
+
+        /* Precio */
+        p strong {
+            font-size: 1rem;
+            color: #000;
+        }
+
+        /* Campo de cantidad */
+        .cantidad-input {
+            width: 50px;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        /* Botón de agregar al carrito */
+        .agregar-carrito {
+            display: inline-block;
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            font-size: 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            margin-top: 10px;
+        }
+
+        /* Efecto hover en el botón */
+        .agregar-carrito:hover {
+            background: #3d648d;
+        }
+
+        /* Responsividad */
+        @media (max-width: 1024px) {
+            .products-grid {
+                grid-template-columns: repeat(3, 1fr); /* 3 columnas en tablets */
+            }
+        }
+
+        @media (max-width: 768px) {
+            .products-grid {
+                grid-template-columns: repeat(2, 1fr); /* 2 columnas en pantallas pequeñas */
+            }
+        }
+
+        @media (max-width: 480px) {
+            .products-grid {
+                grid-template-columns: repeat(1, 1fr); /* 1 columna en celulares pequeños */
+            }
+        }

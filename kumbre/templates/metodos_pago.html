@@ -1,11 +1,294 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <title>Métodos de Pago</title>
-</head>
-<body>
-    <h1>Métodos de Pago</h1>
-    <p>Esta es una página de placeholder para los métodos de pago.</p>
-</body>
-</html>
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Cabañas{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'styles/metodos_pago.css' %}">
+<!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">      -->
+
+<div class="container">
+    <div class="form-box login">
+        <form method="POST" action="{% url 'confirmar_compra' %}">
+            {% csrf_token %}
+            <h1>Confirmar Pedido y Seleccionar Método de Pago</h1>
+            <div class="input-box">
+                <label for="id_nombre">Nombre</label>
+                <input type="text" name="nombre" class="form-control" id="id_nombre" required><br><br>
+                <i class='bx bxs-user'></i>
+            </div>
+            <div class="input-box">
+                <label for="id_email">Correo</label>
+                <input type="email" name="email" class="form-control" id="id_email" required><br><br>
+                <i class='bx bxs-envelope' ></i>
+            </div>
+            <div class="input-box">
+                <label for="id_telefono">Teléfono</label>
+                <input type="text" name="telefono" class="form-control" id="id_telefono" required><br><br>
+                <i class='bx bxs-phone' ></i>
+            </div>
+            <div class="input-box2">
+                <label for="id_metodo_pago">Método de Pago</label>
+            <!-- Este campo puede mostrarse o quedar oculto según prefieras. Aquí lo dejamos oculto -->
+                <input type="hidden" name="metodo_pago" id="id_metodo_pago" value="{{ metodo }}">
+                <div id="selected-method-display">
+                    {% if metodo %}
+                        {% if metodo == "nequi" %}
+                            <img src="{% static 'img/wush1111.jpg' %}" alt="Nequi" class="payment-method-img">
+                        {% elif metodo == "daviplata" %}
+                            <img src="{% static 'img/codigonequi.jpg' %}" alt="Daviplata" class="payment-method-img">
+                        {% elif metodo == "bancolombia" %}
+                            <img src="{% static 'img/codigonequi.jpg' %}" alt="Bancolombia" class="payment-method-img">
+                        {% endif %}
+                    {% else %}
+                        <p><em>Ningún método seleccionado</em></p>
+                    {% endif %}
+                </div>
+            </div>
+            <button type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#paymentModal">
+                Seleccionar Método de Pago
+            </button><br><br><br>
+            <button type="submit" class="boton1">Confirmar Compra</button>
+        </form>
+       
+    </div> 
+    <div class="toggle-box3">
+        <div class="toggle-panel toggle-left">
+            <h3>Resumen del Carrito</h3>
+            <form method="POST" class="cart-form">
+                {% if productos or reservas %}
+                    <ul class="list-group">
+                        {% if productos %}
+                            {% for item in productos %}
+                                <li class="list-group-item" tabindex="0">
+                                    <div>
+                                        <strong>Producto:</strong> 
+                                        {{ item.producto.nombre }}
+                                    </div>
+                                    <div>
+                                        <strong>Cantidad:</strong> 
+                                        {{ item.cantidad }}
+                                    </div>
+                                    <div>
+                                        <strong>Precio:</strong> 
+                                        ${{ item.producto.precio }}
+                                    </div>
+                                </li>
+                            {% endfor %}
+                        {% endif %}
+                        
+                        {% if reservas %}
+                            {% for reserva in reservas %}
+                                <li class="list-group-item" tabindex="0">
+                                    <div>
+                                        <strong>Reserva:</strong> 
+                                        {{ reserva.cabana }}
+                                    </div>
+                                    <div>
+                                        <strong>Fecha:</strong> 
+                                        {{ reserva.fecha }}
+                                    </div>
+                                    <div>
+                                        <strong>Precio:</strong> 
+                                        ${{ reserva.precio }}
+                                    </div>
+                                </li>
+                            {% endfor %}
+                        {% endif %}
+                    </ul>
+                {% else %}
+                    <p>No hay artículos en el carrito.</p>
+                {% endif %}
+            </form>
+        </div>
+    </div>
+</div>
+    <!-- Resumen del carrito
+    <div class="cart-summary mb-4">
+        <p>Productos en carrito: {{ productos|length }}</p>
+        <p>Reservas pendientes: {{ reservas|length }}</p>
+
+        <h3>Resumen del Carrito</h3>
+        <form action="POST">
+        {% if productos or reservas %}
+            <ul class="list-group">
+                {% if productos %}
+                    {% for item in productos %}
+                        <li class="list-group-item">
+                            <strong>Producto:</strong> {{ item.producto.nombre }} -
+                            Cantidad: {{ item.cantidad }} -
+                            Precio unitario: ${{ item.producto.precio }}
+                        </li>
+                    {% endfor %}
+                {% endif %}
+                {% if reservas %}
+                    {% for reserva in reservas %}
+                        <li class="list-group-item">
+                            <strong>Reserva:</strong> {{ reserva.cabana }} -
+                            Fecha: {{ reserva.fecha }} -
+                            Precio: ${{ reserva.precio }}
+                        </li>
+                    {% endfor %}
+                {% endif %}
+            </ul>
+        {% else %}
+            <p>No hay artículos en el carrito.</p>
+        {% endif %}
+    </div>
+</form>
+   
+    <form method="post" action="{% url 'confirmar_compra' %}">
+        {% csrf_token %}
+      
+        <div class="form-group">
+            <label for="id_nombre">Nombre</label>
+            <input type="text" name="nombre" class="form-control" id="id_nombre" required>
+        </div>
+        <div class="form-group">
+            <label for="id_email">Correo</label>
+            <input type="email" name="email" class="form-control" id="id_email" required>
+        </div>
+        <div class="form-group">
+            <label for="id_telefono">Teléfono</label>
+            <input type="text" name="telefono" class="form-control" id="id_telefono" required>
+        </div>
+        <div class="form-group">
+            <label for="id_metodo_pago">Método de Pago</label>
+           
+            <input type="hidden" name="metodo_pago" id="id_metodo_pago" value="{{ metodo }}">
+            <div id="selected-method-display">
+                {% if metodo %}
+                    {% if metodo == "nequi" %}
+                        <img src="{% static 'img/codigonequi.jpg' %}" alt="Nequi" class="payment-method-img">
+                    {% elif metodo == "daviplata" %}
+                        <img src="{% static 'img/codigonequi.jpg' %}" alt="Daviplata" class="payment-method-img">
+                    {% elif metodo == "bancolombia" %}
+                        <img src="{% static 'img/codigonequi.jpg' %}" alt="Bancolombia" class="payment-method-img">
+                    {% endif %}
+                {% else %}
+                    <p><em>Ningún método seleccionado</em></p>
+                {% endif %}
+            </div>
+        </div>
+        
+      
+        <button type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#paymentModal">
+            Seleccionar Método de Pago
+        </button>
+        
+       
+        <button type="submit" class="btn btn-success">Continuar con el pago</button>
+    </form>
+</div> -->
+
+
+
+<!-- Modal de selección de método de pago -->
+<link rel="stylesheet" href="payment-methods.css">
+<div id="paymentModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5>Seleccione su Método de Pago</h5>
+            <button class="modal-close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+            <button class="payment-method-button select-method" data-method="nequi">Nequi</button>
+            <button class="payment-method-button select-method" data-method="daviplata">Daviplata</button>
+            <button class="payment-method-button select-method" data-method="bancolombia">Bancolombia</button>
+            <div id="modal-method-image"></div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<!-- Incluir jQuery y Bootstrap JS (necesario para el modal) -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+{% if not productos and not reservas %}
+    <div class="alert alert-warning">
+        No hay productos ni reservas en el carrito.
+        <script>
+            console.error('Carrito vacío');
+        </script>
+    </div>
+{% endif %}
+
+{% if productos or reservas %}
+    <div id="debug-info" style="display:none;">
+        Productos: {{ productos|length }}
+        Reservas: {{ reservas|length }}
+    </div>
+{% endif %}
+<script>
+
+document.addEventListener('DOMContentLoaded', function() {
+    const selectPaymentBtn = document.querySelector('.select-payment-btn');
+    const paymentModal = document.getElementById('paymentModal');
+    const selectMethodButtons = document.querySelectorAll('.select-method');
+    const paymentMethodInput = document.getElementById('id_metodo_pago');
+    const selectedMethodDisplay = document.getElementById('selected-method-display');
+    const modalMethodImage = document.getElementById('modal-method-image');
+    const modalCloseButtons = document.querySelectorAll('[data-dismiss="modal"]');
+
+    // Función para obtener la imagen - IMPORTANTE: ajusta estas rutas
+    function getImageForMethod(method) {
+        const images = {
+            'nequi': '/static/img/codigonequi.jpg',        // Prueba esta ruta
+            'daviplata': '/static/img/codigodaviplata.jpg',
+            'bancolombia': '/static/img/codigobancolombia.jpeg',
+            // Añade más variaciones de rutas si es necesario
+            // Ejemplo: 'nequi': '{% static "images/nequi.png" %}',
+        };
+        
+        const imageSrc = images[method];
+        
+        // Añadir console.log para debugging
+        console.log(`Método seleccionado: ${method}`);
+        console.log(`Ruta de imagen: ${imageSrc}`);
+        
+        return imageSrc || '';
+    }
+
+    // Resto del código similar al script anterior...
+
+    // Manejar selección de método de pago
+    selectMethodButtons.forEach(button => {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
+            const method = this.getAttribute('data-method');
+            
+            // Actualizar campo de método de pago
+            paymentMethodInput.value = method;
+
+            // Obtener URL de imagen
+            const imageSrc = getImageForMethod(method);
+
+            // Añadir más logging
+            console.log('Intentando cargar imagen:', imageSrc);
+
+            // Actualizar display de método seleccionado
+            if (selectedMethodDisplay) {
+                selectedMethodDisplay.innerHTML = `
+                    <img src="${imageSrc}" alt="${method}" class="payment-method-img" 
+                         onerror="console.error('Error cargando imagen:', this.src)">
+                `;
+            }
+
+            // Actualizar imagen en el modal
+            if (modalMethodImage) {
+                modalMethodImage.innerHTML = `
+                    <img src="${imageSrc}" alt="${method}" class="img-fluid"
+                         onerror="console.error('Error cargando imagen en modal:', this.src)">
+                `;
+            }
+
+            // Cerrar modal
+            $(paymentModal).modal('hide');
+        });
+    });
+});
+</script>
+{% endblock %}
