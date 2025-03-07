@@ -177,3 +177,145 @@ document.querySelector('.prev-button').addEventListener('click', () => {
     currentSlide = (currentSlide - 1 + slides.length) % slides.length;
     slides[currentSlide].classList.add('active');
 });
+
+
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Event listeners for opening modals
+    for (let i = 1; i <= 5; i++) {
+        const openBtn = document.getElementById(`openModalBtn${i}`);
+        if (openBtn) {
+            openBtn.addEventListener('click', function() {
+                const modal = document.getElementById(`modalCabaña${i}`);
+                if (modal) {
+                    modal.style.display = "block";
+                    
+                    // Reset slides to first slide when opening modal
+                    const slides = modal.querySelectorAll('.slide');
+                    slides.forEach((slide, index) => {
+                        slide.classList.remove('active');
+                        if (index === 0) slide.classList.add('active');
+                    });
+                    
+                    // Prevent body scrolling when modal is open
+                    document.body.style.overflow = 'hidden';
+                }
+            });
+        }
+    }
+
+    // Event listeners for closing modals
+    const closeButtons = document.querySelectorAll('.close');
+    closeButtons.forEach(function(closeBtn) {
+        closeBtn.addEventListener('click', function() {
+            const modal = this.closest('.modal');
+            if (modal) {
+                modal.style.display = "none";
+                // Re-enable body scrolling
+                document.body.style.overflow = 'auto';
+            }
+        });
+    });
+
+    // Close modal when clicking outside
+    window.addEventListener('click', function(event) {
+        if (event.target.classList.contains('modal')) {
+            event.target.style.display = "none";
+            // Re-enable body scrolling
+            document.body.style.overflow = 'auto';
+        }
+    });
+
+    // Setup slider functionality for each cabin
+    function setupSlider(cabinNumber) {
+        const modal = document.getElementById(`modalCabaña${cabinNumber}`);
+        if (!modal) return;
+        
+        const slides = modal.querySelectorAll('.slide');
+        let currentSlide = 0;
+        
+        // Initialize first slide
+        if (slides.length > 0) {
+            slides[currentSlide].classList.add('active');
+        }
+        
+        // Next slide button
+        const nextButton = modal.querySelector('.next-button');
+        if (nextButton) {
+            nextButton.addEventListener('click', () => {
+                slides[currentSlide].classList.remove('active');
+                currentSlide = (currentSlide + 1) % slides.length;
+                slides[currentSlide].classList.add('active');
+            });
+        }
+        
+        // Previous slide button
+        const prevButton = modal.querySelector('.prev-button');
+        if (prevButton) {
+            prevButton.addEventListener('click', () => {
+                slides[currentSlide].classList.remove('active');
+                currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+                slides[currentSlide].classList.add('active');
+            });
+        }
+        
+        // Touch swipe support for mobile devices
+        let touchStartX = 0;
+        let touchEndX = 0;
+        
+        const sliderContainer = modal.querySelector('.slider-container');
+        if (sliderContainer) {
+            sliderContainer.addEventListener('touchstart', (e) => {
+                touchStartX = e.changedTouches[0].screenX;
+            }, {passive: true});
+            
+            sliderContainer.addEventListener('touchend', (e) => {
+                touchEndX = e.changedTouches[0].screenX;
+                handleSwipe();
+            }, {passive: true});
+        }
+        
+        function handleSwipe() {
+            const swipeThreshold = 50;
+            if (touchEndX < touchStartX - swipeThreshold) {
+                // Swipe left - next slide
+                if (nextButton) nextButton.click();
+            } else if (touchEndX > touchStartX + swipeThreshold) {
+                // Swipe right - previous slide
+                if (prevButton) prevButton.click();
+            }
+        }
+    }
+
+    // Setup sliders for all 5 cabins
+    for (let i = 1; i <= 5; i++) {
+        setupSlider(i);
+    }
+    
+    // Handle window resize events to adjust layout
+    function handleResize() {
+        const windowWidth = window.innerWidth;
+        const galleryItems = document.querySelectorAll('.gallery-item');
+        
+        if (windowWidth <= 480) {
+            // For very small screens, show fewer gallery items
+            galleryItems.forEach((item, index) => {
+                if (index >= 2) {
+                    item.style.display = 'none';
+                } else {
+                    item.style.display = 'block';
+                }
+            });
+        } else {
+            // Show all gallery items
+            galleryItems.forEach(item => {
+                item.style.display = 'block';
+            });
+        }
+    }
+    
+    // Initial call and event listener for resize
+    handleResize();
+    window.addEventListener('resize', handleResize);
+});

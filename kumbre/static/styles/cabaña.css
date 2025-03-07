@@ -52,7 +52,7 @@ h1{
 /* Ajusta las imágenes dentro del carousel */
 .carousel {
     justify-content: center;
-    width: 200%; /* Ajusta el ancho para que ocupe todo el espacio disponible */
+    width: 100%; /* Ajusta el ancho para que ocupe todo el espacio disponible */
     height: 93%; /* Ajusta la altura para que ocupe todo el espacio disponible */
     overflow: hidden;
     position: relative;
@@ -68,7 +68,7 @@ h1{
 }
 
 .carousel-images img {
-    width: 50%; /* Ajusta el ancho para que las imágenes se muestren una al lado de la otra */
+    width: 100%; /* Ajusta el ancho para que las imágenes se muestren una al lado de la otra */
     height: 100%;
     object-fit: cover;
 }
@@ -86,7 +86,7 @@ h1{
 /* Mantén el estilo del título y botón igual */
 .titulo-imagen {
     font-family: 'Times New Roman', Times, serif;
-    background: rgba(0, 0, 0, 0.822);
+    background: rgba(2, 39, 27, 0.948);
     position: absolute;
     top: 100%;
     width: 100%; /* Ajusta el ancho para que ocupe todo el espacio disponible */
@@ -136,11 +136,11 @@ h1{
 }
 .dos{
     display: grid;
-    font-size: 1.4em;
+    font-size: 1.3em;
     grid-template-columns: repeat(2, 1fr); 
     align-items: center;
     gap: 30px;
-    margin: 30px 150px;
+    margin: 10px 150px;
 }
 .btntabi:hover {
     background-color: #4ea186;
@@ -273,21 +273,84 @@ h1{
 .slide.active {
     display: block;
 }
-.boton1{
-    font-family: 'Times New Roman', Times, serif;
-    width: 30%;
+.boton1 {
+    width: 25%;
     height: 48px;
-    margin-top:20px;
-    background: #5c8f7a;
-    border-radius: 8px;
+    margin-top: 20px;
+    background: linear-gradient(135deg, #80af9b, #3a7158);
+    border-radius: 12px;
     border: none;
     cursor: pointer;
-    font-size: 17px;
-    color: #000000;
-    font-weight: 600;
-    float: right;
+    font-size: 20px;
+    color: #ffffff; 
+    margin: 20px 35%;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(92, 143, 122, 0.4);
+    letter-spacing: 1px;
 }
 
+/* Efecto hover */
+.boton1:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(92, 143, 122, 0.6);
+    background: linear-gradient(135deg, #68a88e, #5c8f7a);
+}
+
+/* Efecto active (cuando se presiona) */
+.boton1:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 10px rgba(92, 143, 122, 0.4);
+}
+
+/* Efecto de brillo que se desplaza */
+.boton1:before {
+    content: '';
+    position: absolute;
+    top: -180px;
+    left: 0;
+    width: 30px;
+    height: 300px;
+    background: rgba(255, 255, 255, 0.3);
+    transform: rotate(45deg);
+    transition: 0.5s;
+    opacity: 0;
+}
+
+.boton1:hover:before {
+    left: 120%;
+    opacity: 1;
+    transition: 0.7s ease-in-out;
+}
+
+/* Animación de pulsación */
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(92, 143, 122, 0.7);
+    }
+    70% {
+        box-shadow: 0 0 0 10px rgba(92, 143, 122, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(92, 143, 122, 0);
+    }
+}
+
+.boton1:hover {
+    animation: pulse 1.5s infinite;
+}
+
+/* Para el texto dentro del botón o enlace */
+.boton1 a {
+    text-decoration: none;
+    color: #000000;
+    display: block;
+    width: 100%;
+    height: 100%;
+    line-height: 48px; /* Centra verticalmente el texto */
+    text-align: center;
+}
 
 .slide h2 {
     color: #0a423f;
@@ -387,4 +450,250 @@ h1{
         margin: 0; /* Remove any margin */
         padding: 0; /* Remove any padding */
     }
+}
+
+/* Existing styles remain unchanged */
+
+/* Enhanced responsive styles */
+@media (max-width: 1200px) {
+    .contenedor-galeria {
+        height: 400px;
+        margin: 60px auto;
+    }
+    
+    .gallery {
+        flex-wrap: wrap;
+        gap: 20px;
+        justify-content: center;
+    }
+    
+    .gallery-item {
+        width: 45%;
+        margin-bottom: 15px;
+    }
+    .modal{
+        margin-top: 300px;
+    }
+    .modal-content {
+        margin-top: 10%;
+        width: 90%;
+        height: auto;
+        max-height: 90vh;
+        overflow-y: auto;
+    }
+    
+    .slider-container {
+        height: auto;
+        min-height: 350px;
+    }
+    
+    .boton1 {
+        width: 50%;
+        margin: 20px 25%;
+    }
+}
+
+@media (max-width: 992px) {
+    h1 {
+        font-size: 2.5em;
+        margin-top: 40px;
+    }
+    
+    .bouncing-title {
+        font-size: 2.2rem;
+    }
+    
+    .contenedor-galeria {
+        height: auto;
+        overflow: visible;
+        display: block;
+    }
+    
+    .contenedor-galeria ul {
+        display: block;
+    }
+    
+    .contenedor-galeria li {
+        width: 80%;
+        margin: 20px auto;
+        box-shadow: 0 0 15px 5px rgba(0, 0, 0, 0.3);
+        height: 300px;
+        overflow: hidden;
+    }
+    
+    .contenedor-galeria ul:hover li {
+        width: 80%;
+        filter: brightness(100%);
+    }
+    
+    .contenedor-galeria ul li:hover {
+        width: 80%;
+    }
+    
+    .carousel {
+        width: 100%;
+        height: 85%;
+    }
+    
+    .titulo-imagen {
+        top: 85%;
+    }
+    
+    .btntabi {
+        width: 100%;
+        margin-top: 0;
+    }
+    
+    .slide p {
+        font-size: 1.2em;
+        padding: 0 15px;
+    }
+    
+    .dos {
+        grid-template-columns: 1fr;
+        margin: 10px 20px;
+        gap: 20px;
+        font-size: 1.1em;
+    }
+}
+
+@media (max-width: 768px) {
+    h1 {
+        font-size: 2em;
+        margin-top: 30px;
+    }
+    
+    .contenedor-galeria li {
+        width: 90%;
+        height: 250px;
+    }
+    
+    .gallery-item {
+        width: 80%;
+    }
+    
+    .gallery-item img {
+        height: 250px;
+    }
+    
+    .modal-content {
+        padding: 15px;
+        margin: 3% auto;
+        height: auto;
+    }
+    
+    .slider-container {
+        min-height: 300px;
+    }
+    
+    .bouncing-title {
+        font-size: 1.8rem;
+        margin-top: 15px;
+    }
+    
+    .slide p {
+        font-size: 1em;
+    }
+    
+    .prev-button, .next-button {
+        padding: 8px 15px;
+    }
+    
+    .boton1 {
+        width: 70%;
+        margin: 15px 15%;
+        height: 40px;
+        font-size: 18px;
+    }
+    
+    .boton1 a {
+        line-height: 40px;
+    }
+}
+
+@media (max-width: 480px) {
+    h1 {
+        font-size: 1.8em;
+    }
+    
+    .contenedor-galeria li {
+        width: 95%;
+        height: 200px;
+        margin: 15px auto;
+    }
+    
+    .titulo-imagen a {
+        padding: 10px;
+        font-size: 16px;
+    }
+    
+    .btntabi {
+        height: 40px;
+        font-size: 16px;
+        padding: 0 10px;
+    }
+    
+    .gallery {
+        gap: 10px;
+        margin: 10px auto;
+    }
+    
+    .gallery-item {
+        width: 95%;
+    }
+    
+    .gallery-item img {
+        height: 200px;
+    }
+    
+    .bouncing-title {
+        font-size: 1.5rem;
+    }
+    
+    .dos {
+        margin: 10px;
+        font-size: 0.9em;
+    }
+    
+    .prev-button, .next-button {
+        padding: 5px 10px;
+        font-size: 14px;
+    }
+    
+    .boton1 {
+        width: 90%;
+        margin: 10px 5%;
+        font-size: 16px;
+    }
+    
+    .close {
+        font-size: 24px;
+    }
+}
+
+/* Fix for slider heights */
+.slider-wrapper {
+    position: relative;
+    min-height: 400px;
+}
+
+@media (max-width: 768px) {
+    .slider-wrapper {
+        min-height: 350px;
+    }
+}
+
+@media (max-width: 480px) {
+    .slider-wrapper {
+        min-height: 300px;
+    }
+}
+
+/* Fix for modal scrolling issues */
+.modal {
+    overflow-y: auto;
+}
+
+.modal-content {
+    overflow-y: visible;
 }

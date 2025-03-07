@@ -18,33 +18,33 @@
             <div class="input-box">
                 <label for="cabana">Cabaña</label>
                 <input type="text" id="cabana" name="cabana" class="form-control" 
-                       value="{% if cabana %}{{ cabana.nombre }}{% endif %}" readonly>
-                <i class='bx bxs-user'></i>
+                       value="{% if cabana %}{{ cabana.nombre }}{% endif %}" readonly> <br><br>
+                     <i class='bx bxs-user'></i>
             </div>
             <div class="input-box">
                 <label for="precio">Precio</label>
                 <input type="text" id="precio" name="precio" class="form-control" 
-                       value="{% if cabana %}{{ cabana.precio }}{% endif %}" readonly>
+                       value="{% if cabana %}{{ cabana.precio }}{% endif %}" readonly> <br><br>
                 <i class='bx bxs-envelope' ></i>
             </div>
             <div class="input-box">
                 <label for="fecha">Fecha</label>
-                <input type="text" id="fecha" name="fecha" class="form-control" required>
+                <input type="text" id="fecha" name="fecha" class="form-control" required> <br> <br>
                 <i class='bx bxs-calendar' ></i> 
             </div>
             <div class="input-box">
                 <label for="telefono">Teléfono</label>
-                <input type="text" id="telefono" name="telefono" class="form-control" required>
+                <input type="text" id="telefono" name="telefono" class="form-control" required> <br> <br>
                 <i class='bx bxs-phone' ></i>
             </div>
             <div class="input-box">
                 <label for="numero_personas">Número de Personas</label>
-          <input type="number" id="numero_personas" name="numero_personas" class="form-control" required>
+          <input type="number" id="numero_personas" name="numero_personas" class="form-control" required> <br><br>
                 <i class='bx bxs-envelope' ></i>
             </div>
             <button type="submit" class="boton1">Añadir al carrito</button>
 
-            
+             
         </form>
     </div> 
     <div class="toggle-box">
@@ -54,65 +54,47 @@
     </div>
     
     
-
-<!-- <div class="container mt-5">
-  <h1>Hacer Reserva</h1>
-  <form method="post">
-      {% csrf_token %}
-    
-      <div class="form-group">
-          <label for="cabana">Cabaña</label>
-          <input type="text" id="cabana" name="cabana" class="form-control" 
-                 value="{% if cabana %}{{ cabana.nombre }}{% endif %}" readonly>
-      </div>
-    
-      <div class="form-group">
-          <label for="precio">Precio</label>
-          <input type="text" id="precio" name="precio" class="form-control" 
-                 value="{% if cabana %}{{ cabana.precio }}{% endif %}" readonly>
-      </div>
-      
-      <div class="form-group">
-          <label for="fecha">Fecha</label>
-          <input type="text" id="fecha" name="fecha" class="form-control" required>
-      </div>
-      
-      <div class="form-group">
-          <label for="telefono">Teléfono</label>
-          <input type="text" id="telefono" name="telefono" class="form-control" required>
-      </div>
-     
-      <div class="form-group">
-          <label for="numero_personas">Número de Personas</label>
-          <input type="number" id="numero_personas" name="numero_personas" class="form-control" required>
-      </div>
-      <button type="submit" class="btn btn-primary">Añadir al carrito</button>
-  </form>
-</div> -->
-
 <!-- Cargar jQuery y jQuery UI -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
 <script>
-$(document).ready(function(){
+    $(document).ready(function(){
   // Obtener el cabana_id de la URL
   const urlParams = new URLSearchParams(window.location.search);
   const cabanaId = urlParams.get('cabana_id');
   
+  // Obtener la fecha actual
+  const today = new Date();
+  
   // Inicializar el Datepicker en el campo "fecha"
   $("#fecha").datepicker({
       dateFormat: "yy-mm-dd",
+      minDate: new Date(), // Establece la fecha mínima como hoy
       beforeShowDay: function(date) {
+          // Formato de fecha para comparación
           let y = date.getFullYear();
           let m = ("0" + (date.getMonth() + 1)).slice(-2);
           let d = ("0" + date.getDate()).slice(-2);
           let dateString = y + '-' + m + '-' + d;
+          
           // Si existen fechas ocupadas, deshabilitarlas
           if(window.fechasOcupadas && window.fechasOcupadas.indexOf(dateString) !== -1){
               return [false, "ocupado", "Fecha ocupada"];
           }
+          
           return [true, "", ""];
-      }
+      },
+      // Mejora del diseño del calendario
+      showOtherMonths: true,
+      selectOtherMonths: true,
+      changeMonth: true,
+      changeYear: true,
+      showButtonPanel: true,
+      showOn: "both",
+      buttonText: "",  // Texto vacío para evitar el problema
+      dayNamesMin: ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"],
+      monthNamesShort: ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"],
+      monthNames: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]
   });
   
   // Si hay cabanaId, se hace una petición AJAX para obtener las fechas ocupadas
@@ -130,6 +112,11 @@ $(document).ready(function(){
           }
       });
   }
+  
+  // Reemplazar el contenido del botón con el icono después de la inicialización
+  setTimeout(function() {
+    $(".ui-datepicker-trigger").html;
+  }, 100);
 });
 </script>
 

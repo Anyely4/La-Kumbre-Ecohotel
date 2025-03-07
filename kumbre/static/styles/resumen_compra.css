@@ -5,13 +5,18 @@
     --light-bg: #f8f9fa;
     --border-radius: 12px;
 }
+body, .cart-container, .cart-item, .item-name, .item-info, .btn-cart, .empty-cart {
+    font-family: 'Times New Roman', Times, serif !important;
+}
 
 body {
-    font-family: 'Times New Roman', Times, serif;
     overflow-x: hidden;
+    font-family: 'Times New Roman', Times, serif;
 }
 .container{
-    height: 750px;
+    margin-top: 3em;
+    margin-bottom: 3em;
+    height: auto;
     width: 1500px;
 }
 .cart-container {
@@ -307,7 +312,7 @@ body {
 
 .empty-cart i {
     font-size: 4rem;
-    color: #ddd;
+    color: #575757; /* Cambiado de #ddd a #777 para un gris más oscuro */
     margin-bottom: 1rem;
     animation: swing 2s infinite;
 }
@@ -427,7 +432,6 @@ body {
     top: 15px;
     right: 15px;
     background-color: var(--accent-color);
-    color: white;
     border-radius: 50%;
     width: 24px;
     height: 24px;

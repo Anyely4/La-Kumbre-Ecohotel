@@ -130,34 +130,44 @@ def perfil(request):
 def manual(request):
     return render(request, 'manual.html')
 
+
+
 def registro(request):
     if request.method == "POST":
         username = request.POST['username']
         email = request.POST['email']
         password = request.POST['password']
         confirm_password = request.POST['confirm_password']
+        telefono = request.POST['telefono']
 
-        errores = []  # Lista para almacenar errores
-
+        # Validaciones
+        error = None
         if password != confirm_password:
-            errores.append('Las contraseñas no coinciden')
-        if User.objects.filter(email=email).exists():
-            errores.append('El correo ya está registrado')
-        if User.objects.filter(username=username).exists():
-            errores.append('El nombre de usuario ya está en uso')
+            error = 'Las contraseñas no coinciden'
+        elif User.objects.filter(email=email).exists():
+            error = 'El correo ya está registrado'
+        elif User.objects.filter(username=username).exists():
+            error = 'El nombre de usuario ya está en uso'
 
-        if errores:
+        if error:
+            messages.error(request, error)
+            # En lugar de redirigir, renderizamos la misma plantilla con los datos ingresados
             return render(request, 'iniciar_sesion.html', {
-                'register_mode': True,  # Indica que debe mostrar el formulario de registro
-                'errores': errores
+                'register_mode': True,
+                'datos_previos': {
+                    'username': username,
+                    'email': email,
+                    'telefono': telefono
+                }
             })
 
         # Si no hay errores, crear el usuario
         user = User.objects.create_user(username=username, email=email, password=password)
+        
         messages.success(request, "¡Registro Exitoso!, Ahora inicia sesión.")
         return redirect('iniciar_sesion')
 
-    return render(request, 'iniciar_sesion.html', {'register_mode': True})
+    return render(request, 'iniciar_sesion.html', {'register_mode': True})  
 
 
 from django.contrib.auth.forms import AuthenticationForm
