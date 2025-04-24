@@ -1,0 +1,60 @@
+
+.manual {
+    max-width: 1000px;
+    margin: 90px auto;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+.hotel-name {
+    color: #2e7d32;
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    text-align: center;
+  }
+  .manual-description {
+    width: 900px;
+    text-align: justify;
+    margin: auto;
+    font-size: 1.3rem;
+    line-height: 1.6;
+  }
+  
+.img2{
+    width: 250px;
+    height: 250px;
+    margin: 10px 35%;
+}
+.img3{
+    width: 750px;
+    height: 450px;
+    margin: 10px 10%;
+}
+.titulo2 {
+    background: #097964;
+    color: white;
+    padding: 15px;
+    margin: 5px 0;
+    cursor: pointer;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+.contenido {
+    display: none;
+    padding: 15px;
+    background: #ecf0f1;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+h3 {
+    color: #143b62;
+}
+
+img {
+    max-width: 100%;
+    border-radius: 5px;
+    margin-top: 10px;
+}

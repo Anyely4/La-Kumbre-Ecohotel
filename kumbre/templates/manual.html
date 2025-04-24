@@ -7,7 +7,7 @@
 
     <div class="manual">
         <h1 class="hotel-name">La Kumbre Eco Hotel</h1>
-      <p class="manual-description">
+        <p class="manual-description">
         Bienvenido al manual interactivo de La Kumbre Eco Hotel, su destino perfecto para conectar con la naturaleza.
         Esta guía le ayudará a navegar por nuestra plataforma de manera sencilla e intuitiva para disfrutar de todos nuestros servicios.
       </p>
@@ -17,7 +17,7 @@
             <h3>La Kumbre Eco Hotel</h3>
             <p>  Ubicado en el corazón de la naturaleza, nuestro eco hotel ofrece una experiencia única combinando confort y sostenibilidad,
                  con cabañas ecológicas diseñadas para minimizar el impacto ambiental mientras maximiza su conexión con el entorno natural.</p>
-                 <img src="{% static 'img/log1.png' %}" alt="Descripción de la imagen" class="img2">
+                 <img src="{% static 'img/log1.png' %}" alt="Descripción de la imagen" class="img3">
             
             <h3>Proposito del manual</h3>
             <p> Esta guía interactiva le ayudará a navegar por nuestra plataforma digital, facilitando la reserva de cabañas, compra de productos 
@@ -39,7 +39,7 @@
                 
                 <h3>Recuperación de Contraseña</h3>
                 <p>Si olvidaste tu contraseña, puedes restablecerla mediante un correo de recuperación.</p>
-                <img src="img/recuperar.jpg" alt="Recuperación de contraseña">
+                <img src="{% static 'img/recuperar.png' %}" alt="Descripción de la imagen" class="img3">
             </div>
         </div>
 
@@ -48,15 +48,15 @@
             <div class="contenido">
                 <h3>Visualización de perfil</h3>
                 <p>Desde aqui puedes ver tu informacion personal.</p>
-                <img src="img/perfil.jpg" alt="Edición de perfil">
+                <img src="{% static 'img/perfil.png' %}" alt="Descripción de la imagen" class="img3"> 
                 
                 <h3>Cambio de Contraseña</h3>
                 <p>Si deseas actualizar tu contraseña,pedes hacerlo aqui.</p>
-                <img src="img/cambiar_contraseña.jpg" alt="Cambio de contraseña">
+                <img src="{% static 'img/cambiocontrasena.png' %}" alt="Descripción de la imagen" class="img3">  
                 
                 <h3>Eliminación de Cuenta</h3>
                 <p>Si decides darte de baja, puedes eliminar tu cuenta de manera permanente.</p>
-                <img src="img/eliminar_cuenta.jpg" alt="Eliminar cuenta">
+                <img src="{% static 'img/eliminarcuenta.png' %}" alt="Descripción de la imagen" class="img3">
             </div>
         </div>
 
@@ -65,32 +65,28 @@
             <div class="contenido">
                 <h3>Visualización de Cabañas</h3>
                 <p>Puedes ver todas las cabañas disponibles y sus características.</p>
-                <img src="img/cabanas.jpg" alt="Cabañas disponibles">
+                <img src="{% static 'img/visualizarcabanas.png' %}" alt="Descripción de la imagen" class="img3">
                 
-                <h3>Selección de Fechas</h3>
+                <h3>LLenar Formulario</h3>
                 <p>Selecciona las fechas en el calendario interactivo.</p>
-                <img src="img/calendario.jpg" alt="Calendario interactivo">
+                <img src="{% static 'img/llenarformulario.png' %}" alt="Descripción de la imagen" class="img3">
                 
                 <h3>Añadir al Carrito</h3>
                 <p>Una vez seleccionada la fecha, añade la reserva al carrito.</p>
-                <img src="img/agregar_carrito.jpg" alt="Añadir al carrito">
+                <img src="{% static 'img/anadiralcarrito.png' %}" alt="Descripción de la imagen" class="img3">
             </div>
         </div>
 
         <div class="seccion">
             <div class="titulo2">Carrito de Compras ▼</div>
             <div class="contenido">
-                <h3>Agregar Reservas y Productos</h3>
+                <h3>ver Reservas y Productos</h3>
                 <p>Puedes agregar reservas y productos de la galería al carrito.</p>
-                <img src="img/carrito.jpg" alt="Carrito de compras">
-                
-                <h3>Ver y Modificar</h3>
-                <p>Consulta y edita los elementos antes de finalizar la compra.</p>
-                <img src="img/editar_carrito.jpg" alt="Editar carrito">
+                <img src="{% static 'img/verpedido.png' %}" alt="Descripción de la imagen" class="img3">
                 
                 <h3>Eliminar Elementos</h3>
                 <p>Si deseas, puedes eliminar productos o reservas antes de comprar.</p>
-                <img src="img/eliminar_carrito.jpg" alt="Eliminar productos">
+                <img src="{% static 'img/eliminar.png' %}" alt="Descripción de la imagen" class="img3">
             </div>
         </div>
 
@@ -99,15 +95,19 @@
             <div class="contenido">
                 <h3>Resumen de Compra</h3>
                 <p>Antes de confirmar, revisa el detalle de tu compra.</p>
-                <img src="img/resumen.jpg" alt="Resumen de compra">
+                <img src="{% static 'img/resumencompra.png' %}" alt="Descripción de la imagen" class="img3">
+                
+                <h3>Llenar datos personales</h3>
+                <p>Llena los ultimos datos para finalizar la compra</p>
+                <img src="{% static 'img/llenardatos.png' %}" alt="Descripción de la imagen" class="img3">
                 
                 <h3>Métodos de Pago</h3>
                 <p>Selecciona el método de pago disponible y finaliza la compra.</p>
-                <img src="img/metodos_pago.jpg" alt="Métodos de pago">
+                <img src="{% static 'img/metododepago.png' %}" alt="Descripción de la imagen" class="img3">
                 
                 <h3>Confirmación</h3>
-                <p>Recibirás un correo con los detalles de tu compra.</p>
-                <img src="img/confirmacion.jpg" alt="Confirmación de compra">
+                <p>Aqui se confirma que tu compra fue realizada</p>
+                <img src="{% static 'img/confirmacioncompra.png' %}" alt="Descripción de la imagen" class="img3">
             </div>
         </div>
 
@@ -116,15 +116,12 @@
             <div class="contenido">
                 <h3>Enviar Sugerencia</h3>
                 <p>Puedes enviar tus sugerencias sobre el servicio, instalaciones o comida.</p>
-                <img src="img/buzon.jpg" alt="Buzón de sugerencias">
+                <img src="{% static 'img/enviarsugerencia.png' %}" alt="Descripción de la imagen" class="img3">
                 
-                <h3>Categorías Disponibles</h3>
-                <p>Clasifica tu sugerencia según su categoría.</p>
-                <img src="img/categorias.jpg" alt="Categorías de sugerencias">
                 
                 <h3>Confirmación</h3>
                 <p>Una vez enviada, recibirás una notificación de confirmación.</p>
-                <img src="img/confirmacion_sugerencia.jpg" alt="Confirmación de sugerencia">
+                <img src="{% static 'img/sugerenciaenviada.png' %}" alt="Descripción de la imagen" class="img3">
             </div>
         </div>
     </div>

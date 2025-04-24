@@ -182,8 +182,7 @@ h2{
 
 @media screen and (max-width: 950px){
     .container{ 
-   
-    width: 50%; }
+         width: 90%; }
 
     .form-box{
         bottom: 0;
@@ -225,10 +224,4 @@ h2{
         }
 
             .container.active .toggle-panel.toggle-right{ bottom: 0; }
-}
-
-@media screen and (max-width: 1000px){
-    .form-box { padding: 20px; }
-
-    .toggle-panel h1{font-size: 30px; }
 }

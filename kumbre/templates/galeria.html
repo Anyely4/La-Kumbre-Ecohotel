@@ -1,47 +1,104 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block title %}CGaleria{% endblock %}
-
 {% block content %}
 <link rel="stylesheet" href="{% static 'styles/galeria.css' %}">
-
 <h2>Galeria de imagenes</h2>
   
 <div class="galeria">
   <div class="fila fila-superior">
-    <img src="{% static 'img/111.jpg' %}" alt="Imagen " class="imagen">
-    <img src="{% static 'img/salatabi.jpg' %}" alt="Imagen " class="imagen">
-    <img src="{% static 'img/fototabi2.jpg' %}" alt="Imagen " class="imagen">
-    <img src="{% static 'img/galeria333.jpg' %}" alt="Imagen " class="imagen">  
+    <div class="imagen-contenedor">
+      <img src="{% static 'img/111.jpg' %}" alt="Imagen" class="imagen">
+      <div class="overlay">Confort</div>
+    </div>
+    
+    <div class="imagen-contenedor">
+      <img src="{% static 'img/salatabi.jpg' %}" alt="Imagen" class="imagen">
+      <div class="overlay">Interior</div>
+    </div>
+    
+    <div class="imagen-contenedor">
+      <img src="{% static 'img/fototabi2.jpg' %}" alt="Imagen" class="imagen">
+      <div class="overlay">Diseño</div>
+    </div>
+    
+    <div class="imagen-contenedor">
+      <img src="{% static 'img/galeria333.jpg' %}" alt="Imagen" class="imagen">
+      <div class="overlay">Entrada</div>
+    </div>
   </div>
+  
   <div class="fila fila-central">
-    <img src="{% static 'img/any3.jpg' %}" alt="Imagen " class="imagen">
-    <img src="{% static 'img/444.jpg' %}" alt="Imagen " class="imagen">
-    <img src="{% static 'img/fotoprin.jpg' %}" alt="Imagen " class="central">
-    <img src="{% static 'img/any5.png' %}" alt="Imagen " class="imagen">
-    <img src="{% static 'img/geisha9.jpg' %}" alt="Imagen " class="imagen">
+    <div class="imagen-contenedor">
+      <img src="{% static 'img/any3.jpg' %}" alt="Imagen" class="imagen">
+      <div class="overlay">Cafeteal</div>
+    </div>
+    
+    <div class="imagen-contenedor">
+      <img src="{% static 'img/galeria666.jpg' %}" alt="Imagen" class="imagen">
+      <div class="overlay">Cultura</div>
+    </div>
+    <div class="imagen-contenedor">
+      <img src="{% static 'img/444.jpg' %}" alt="Imagen" class="imagen">
+      <div class="overlay">Estilo</div>
+    </div>
+    
+    <div class="imagen-contenedor">
+      <img src="{% static 'img/any5.png' %}" alt="Imagen" class="imagen">
+      <div class="overlay">Naturaleza</div>
+    </div>
+    
+    <div class="imagen-contenedor">
+      <img src="{% static 'img/geisha9.jpg' %}" alt="Imagen" class="imagen">
+      <div class="overlay">Geisha</div>
+    </div>
   </div>
+  
   <div class="fila fila-inferior">
-    <img src="{% static 'img/bourbon111.jpg' %}" alt="Imagen " class="imagen">
-    <img src="{% static 'img/comida4.jpg' %}" alt="Imagen " class="imagen">
-    <img src="{% static 'img/fon1.jpg' %}" alt="Imagen " class="imagen">
-    <img src="{% static 'img/fot3.jpg' %}" alt="Imagen " class="imagen">
-    <img src="{% static 'img/fot5.jpg' %}" alt="Imagen " class="imagen">
-    <img src="{% static 'img/galeria777.jpg' %}" alt="Imagen " class="imagen">
-  </div>
-  <div class="fila fila-central">
-    <img src="{% static 'img/wush5.jpg' %}" alt="Imagen " class="imagen">
-    <img src="{% static 'img/galeria888.jpg' %}" alt="Imagen " class="imagen">
-    <img src="{% static 'img/comida13.jpg' %}" alt="Imagen " class="imagen">
-    <img src="{% static 'img/geisha2.jpg' %}" alt="Imagen " class="imagen">
+    <div class="imagen-contenedor">
+      <img src="{% static 'img/bourbon111.jpg' %}" alt="Imagen" class="imagen">
+      <div class="overlay">Bourbon</div>
+    </div>
+    
+    <div class="imagen-contenedor">
+      <img src="{% static 'img/comida4.jpg' %}" alt="Imagen" class="imagen">
+      <div class="overlay">Gastronomía</div>
+    </div>
+    
+    <div class="imagen-contenedor">
+      <img src="{% static 'img/fon1.jpg' %}" alt="Imagen" class="imagen">
+      <div class="overlay">Paisaje</div>
+    </div>
+    
+    <div class="imagen-contenedor">
+      <img src="{% static 'img/fot3.jpg' %}" alt="Imagen" class="imagen">
+      <div class="overlay">Vistas</div>
+    </div>
+    
+    <div class="imagen-contenedor">
+      <img src="{% static 'img/fot5.jpg' %}" alt="Imagen" class="imagen">
+      <div class="overlay">Comodidad</div>
+    </div>
+    
+    <div class="imagen-contenedor">
+      <img src="{% static 'img/galeria777.jpg' %}" alt="Imagen" class="imagen">
+      <div class="overlay">Spot</div>
+    </div>
   </div>
 </div>
 
-
-
-<!-- <img src="{% static 'img/111.jpg' %}" alt="Imagen " class="imagen"> -->
-
-
-
-
+<script>
+  // Script opcional para la vista ampliada
+  document.addEventListener('DOMContentLoaded', function() {
+    const imagenes = document.querySelectorAll('.imagen-contenedor');
+    
+    imagenes.forEach(function(imagen) {
+      imagen.addEventListener('click', function(e) {
+        if (!e.target.classList.contains('overlay')) {
+          // Aquí puedes añadir código para mostrar la vista ampliada si lo deseas
+        }
+      });
+    });
+  });
+</script>
 {% endblock %}

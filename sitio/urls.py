@@ -35,11 +35,16 @@ urlpatterns = [
     path('atracciones/', views.atracciones, name='atracciones'),
     path('productos/', views.lista_productos, name='productos'),
     path('restricciones/', views.restricciones, name='restricciones'),
-    path('cabañas/', views.cabañas, name='cabañas'),
+    path('cabanas/', views.cabanas, name='cabanas'),
     path("iniciar_sesion/", views.iniciar_sesion, name="iniciar_sesion"),
     path("registro/", views.registro, name="registro"),
     path("logout/", views.logout_perfil, name="logout"),
     path('reservas/', views.hacer_reserva, name='reservas'),
+    path('cabanatabi/', views.cabanatabi, name='cabanatabi'),
+    path('cabanageisha/', views.cabanageisha, name='cabanageisha'),
+    path('cabanacafetal/', views.cabanacafetal, name='cabanacafetal'),
+    path('cabanabourbon/', views.cabanabourbon, name='cabanabourbon'),
+    path('cabanawush/', views.cabanawush, name='cabanawush'),
     path('resumen/', views.resumen_compra, name='resumen_compra'),
     path('metodos_pago/', views.metodo_pago, name='metodos_pago'),
     path('eliminar_reserva/<int:reserva_id>/', views.eliminar_reserva, name='eliminar_reserva'),
@@ -47,16 +52,24 @@ urlpatterns = [
     path('perfil/', views.perfil, name='perfil'),
     path('manual/', views.manual, name='manual'),
     path('eliminar_cuenta/', views.eliminar_cuenta, name='eliminar_cuenta'),
-    path('cambiar_contraseña/', views.cambiar_contrasena, name='cambiar_contraseña'),
+    path('cambiar_contrasena/', views.cambiar_contrasena, name='cambiar_contrasena'),
     path('restablecer/', views.restablecer, name='restablecer'),
     path('contrasena/<uidb64>/<token>/', views.contrasena, name='contrasena'),
     path('password_changed/', views.password_changed, name='password_changed'),
     path('agregar_producto/<int:producto_id>/', views.agregar_producto_carrito, name='agregar_producto_carrito'),
     path('eliminar_producto/<int:producto_id>/', views.eliminar_producto, name='eliminar_producto'),
-     path('confirmar_compra/', views.confirmar_compra, name='confirmar_compra'),
+    path('confirmar_compra/', views.confirmar_compra, name='confirmar_compra'),
     path('compra_confirmada/<int:compra_id>/', views.compra_confirmada, name='compra_confirmada'),
-
+    path('historial/', views.historial, name='historial'),
 ]
 
 if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    
+  if settings.DEBUG and settings.STATICFILES_DIRS:
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATICFILES_DIRS[0])
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    
+    
+    
+    
+    

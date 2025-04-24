@@ -7,50 +7,7 @@
 <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">      -->
 
 <div class="container">
-    <div class="form-box login">
-        <form method="POST" action="{% url 'confirmar_compra' %}">
-            {% csrf_token %}
-            <h1>Confirmar Pedido y Seleccionar Método de Pago</h1>
-            <div class="input-box">
-                <label for="id_nombre">Nombre</label>
-                <input type="text" name="nombre" class="form-control" id="id_nombre" required><br><br>
-                <i class='bx bxs-user'></i>
-            </div>
-            <div class="input-box">
-                <label for="id_email">Correo</label>
-                <input type="email" name="email" class="form-control" id="id_email" required><br><br>
-                <i class='bx bxs-envelope' ></i>
-            </div>
-            <div class="input-box">
-                <label for="id_telefono">Teléfono</label>
-                <input type="text" name="telefono" class="form-control" id="id_telefono" required><br><br>
-                <i class='bx bxs-phone' ></i>
-            </div>
-            <div class="input-box2">
-                <label for="id_metodo_pago">Método de Pago</label>
-            <!-- Este campo puede mostrarse o quedar oculto según prefieras. Aquí lo dejamos oculto -->
-                <input type="hidden" name="metodo_pago" id="id_metodo_pago" value="{{ metodo }}">
-                <div id="selected-method-display">
-                    {% if metodo %}
-                        {% if metodo == "nequi" %}
-                            <img src="{% static 'img/wush1111.jpg' %}" alt="Nequi" class="payment-method-img">
-                        {% elif metodo == "daviplata" %}
-                            <img src="{% static 'img/codigonequi.jpg' %}" alt="Daviplata" class="payment-method-img">
-                        {% elif metodo == "bancolombia" %}
-                            <img src="{% static 'img/codigonequi.jpg' %}" alt="Bancolombia" class="payment-method-img">
-                        {% endif %}
-                    {% else %}
-                        <p><em>Ningún método seleccionado</em></p>
-                    {% endif %}
-                </div>
-            </div>
-            <button type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#paymentModal">
-                Seleccionar Método de Pago
-            </button><br><br><br>
-            <button type="submit" class="boton1">Confirmar Compra</button>
-        </form>
-       
-    </div> 
+    
     <div class="toggle-box3">
         <div class="toggle-panel toggle-left">
             <h3>Resumen del Carrito</h3>
@@ -99,87 +56,67 @@
                     <p>No hay artículos en el carrito.</p>
                 {% endif %}
             </form>
+           <div class="cart-totals">
+    {% if productos %}
+        <div class="subtotal">
+            <strong>Subtotal Productos:</strong> ${{ total_productos }}
         </div>
+    {% endif %}
+    
+    {% if reservas %}
+        <div class="subtotal">
+            <strong>Subtotal Reservas:</strong> ${{ total_reservas }}
+        </div>
+    {% endif %}
+    
+    <div class="total">
+        <p class="para"><strong>Total:</strong> ${{ total_carrito }}</p>
     </div>
 </div>
-    <!-- Resumen del carrito
-    <div class="cart-summary mb-4">
-        <p>Productos en carrito: {{ productos|length }}</p>
-        <p>Reservas pendientes: {{ reservas|length }}</p>
-
-        <h3>Resumen del Carrito</h3>
-        <form action="POST">
-        {% if productos or reservas %}
-            <ul class="list-group">
-                {% if productos %}
-                    {% for item in productos %}
-                        <li class="list-group-item">
-                            <strong>Producto:</strong> {{ item.producto.nombre }} -
-                            Cantidad: {{ item.cantidad }} -
-                            Precio unitario: ${{ item.producto.precio }}
-                        </li>
-                    {% endfor %}
-                {% endif %}
-                {% if reservas %}
-                    {% for reserva in reservas %}
-                        <li class="list-group-item">
-                            <strong>Reserva:</strong> {{ reserva.cabana }} -
-                            Fecha: {{ reserva.fecha }} -
-                            Precio: ${{ reserva.precio }}
-                        </li>
-                    {% endfor %}
-                {% endif %}
-            </ul>
-        {% else %}
-            <p>No hay artículos en el carrito.</p>
-        {% endif %}
+        </div>
     </div>
-</form>
-   
-    <form method="post" action="{% url 'confirmar_compra' %}">
-        {% csrf_token %}
-      
-        <div class="form-group">
-            <label for="id_nombre">Nombre</label>
-            <input type="text" name="nombre" class="form-control" id="id_nombre" required>
-        </div>
-        <div class="form-group">
-            <label for="id_email">Correo</label>
-            <input type="email" name="email" class="form-control" id="id_email" required>
-        </div>
-        <div class="form-group">
-            <label for="id_telefono">Teléfono</label>
-            <input type="text" name="telefono" class="form-control" id="id_telefono" required>
-        </div>
-        <div class="form-group">
-            <label for="id_metodo_pago">Método de Pago</label>
-           
-            <input type="hidden" name="metodo_pago" id="id_metodo_pago" value="{{ metodo }}">
-            <div id="selected-method-display">
-                {% if metodo %}
-                    {% if metodo == "nequi" %}
-                        <img src="{% static 'img/codigonequi.jpg' %}" alt="Nequi" class="payment-method-img">
-                    {% elif metodo == "daviplata" %}
-                        <img src="{% static 'img/codigonequi.jpg' %}" alt="Daviplata" class="payment-method-img">
-                    {% elif metodo == "bancolombia" %}
-                        <img src="{% static 'img/codigonequi.jpg' %}" alt="Bancolombia" class="payment-method-img">
-                    {% endif %}
-                {% else %}
-                    <p><em>Ningún método seleccionado</em></p>
-                {% endif %}
+    <div class="form-box login">
+        <form method="POST" action="{% url 'confirmar_compra' %}">
+            {% csrf_token %}
+            <h2>Confirmar Pedido y Seleccionar Método de Pago</h2>
+                <div class="input-box">
+                <input type="text" name="nombre" class="form-control" placeholder="Nombre" id="id_nombre" required><br><br>
+                <i class='bx bxs-user'></i>
             </div>
-        </div>
-        
-      
-        <button type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#paymentModal">
-            Seleccionar Método de Pago
-        </button>
-        
+            <div class="input-box">
+                <input type="email" name="email" class="form-control" placeholder="correo" id="id_email" required><br><br>
+                <i class='bx bxs-envelope' ></i>
+            </div>
+            <div class="input-box">
+                <input type="text" name="telefono" class="form-control"  placeholder="Telefono" id="id_telefono" required><br><br>
+                <i class='bx bxs-phone' ></i>
+            </div>
+            <button type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#paymentModal">
+                Seleccionar Método de Pago
+                </button>
+            <div class="input-box2">
+            <!-- Este campo puede mostrarse o quedar oculto según prefieras. Aquí lo dejamos oculto -->
+                <input type="hidden" name="metodo_pago" id="id_metodo_pago" value="{{ metodo }}">
+                <div id="selected-method-display">
+                    {% if metodo %}
+                        {% if metodo == "nequi" %}
+                            <img src="{% static 'img/wush1111.jpg' %}" alt="Nequi" class="payment-method-img">
+                        {% elif metodo == "daviplata" %}
+                            <img src="{% static 'img/codigonequi.jpg' %}" alt="Daviplata" class="payment-method-img">
+                        {% elif metodo == "bancolombia" %}
+                            <img src="{% static 'img/codigonequi.jpg' %}" alt="Bancolombia" class="payment-method-img">
+                        {% endif %}
+                    {% else %}
+                        <p><em>Ningún método seleccionado</em></p>
+                    {% endif %}
+                </div>
+            </div>
+            <br><br><br>
+            <button type="submit" class="boton1">Confirmar Compra</button>
+        </form>
        
-        <button type="submit" class="btn btn-success">Continuar con el pago</button>
-    </form>
-</div> -->
-
+    </div> 
+</div>
 
 
 <!-- Modal de selección de método de pago -->
@@ -222,73 +159,332 @@
         Reservas: {{ reservas|length }}
     </div>
 {% endif %}
-<script>
 
+
+<script>
+// Enhance the payment methods page with animations and interactions
 document.addEventListener('DOMContentLoaded', function() {
-    const selectPaymentBtn = document.querySelector('.select-payment-btn');
+
+
+    // Hide loading after page loads
+    setTimeout(() => {
+        loadingDiv.classList.add('hide');
+        setTimeout(() => {
+            loadingDiv.remove();
+        }, 500);
+    }, 1000);
+
+    // Enhanced modal functionality
+    const selectPaymentBtn = document.querySelector('.btn[data-toggle="modal"]');
     const paymentModal = document.getElementById('paymentModal');
+    const modalContent = document.querySelector('.modal-content');
     const selectMethodButtons = document.querySelectorAll('.select-method');
     const paymentMethodInput = document.getElementById('id_metodo_pago');
     const selectedMethodDisplay = document.getElementById('selected-method-display');
     const modalMethodImage = document.getElementById('modal-method-image');
     const modalCloseButtons = document.querySelectorAll('[data-dismiss="modal"]');
 
-    // Función para obtener la imagen - IMPORTANTE: ajusta estas rutas
-    function getImageForMethod(method) {
-        const images = {
-            'nequi': '/static/img/codigonequi.jpg',        // Prueba esta ruta
-            'daviplata': '/static/img/codigodaviplata.jpg',
-            'bancolombia': '/static/img/codigobancolombia.jpeg',
-            // Añade más variaciones de rutas si es necesario
-            // Ejemplo: 'nequi': '{% static "images/nequi.png" %}',
-        };
-        
-        const imageSrc = images[method];
-        
-        // Añadir console.log para debugging
-        console.log(`Método seleccionado: ${method}`);
-        console.log(`Ruta de imagen: ${imageSrc}`);
-        
-        return imageSrc || '';
+    // Function to open modal with animation
+    function openModal() {
+        paymentModal.style.display = 'flex';
+        setTimeout(() => {
+            paymentModal.classList.add('show');
+        }, 10);
     }
 
-    // Resto del código similar al script anterior...
+    // Function to close modal with animation
+    function closeModal() {
+        paymentModal.classList.remove('show');
+        setTimeout(() => {
+            paymentModal.style.display = 'none';
+        }, 300);
+    }
 
-    // Manejar selección de método de pago
+    // Function to get image for selected payment method
+    function getImageForMethod(method) {
+        const images = {
+            'nequi': '/static/img/codigonequi.jpg',
+            'daviplata': '/static/img/codigodaviplata.jpg',
+            'bancolombia': '/static/img/codigobancolombia.jpeg',
+        };
+        
+        return images[method] || '';
+    }
+
+    // Add icons to payment methods
+    function getIconForMethod(method) {
+        const icons = {
+            'nequi': '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="24" height="24" rx="5" fill="#A1045A"/><text x="50%" y="50%" text-anchor="middle" dy=".3em" fill="white" font-size="12" font-weight="bold">N</text></svg>',
+            'daviplata': '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="24" height="24" rx="5" fill="#E30613"/><text x="50%" y="50%" text-anchor="middle" dy=".3em" fill="white" font-size="10" font-weight="bold">Davi</text></svg>',
+            'bancolombia': `
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="24" height="24" rx="5" fill="white" stroke="black"/>
+  <path d="M4 10 C8 6, 16 6, 20 10" stroke="black" stroke-width="2" fill="none"/>
+  <path d="M6 14 C10 10, 14 10, 18 14" stroke="black" stroke-width="2" fill="none"/>
+</svg>
+`
+        };
+        
+        return icons[method] || '';
+    }
+
+    // Initialize payment method buttons with icons
+    selectMethodButtons.forEach(button => {
+        const method = button.getAttribute('data-method');
+        const icon = getIconForMethod(method);
+        button.innerHTML = icon + ' ' + button.textContent;
+    });
+
+    // Event listener for opening modal
+    if (selectPaymentBtn) {
+        selectPaymentBtn.addEventListener('click', openModal);
+    }
+
+    // Event listeners for closing modal
+    modalCloseButtons.forEach(button => {
+        button.addEventListener('click', closeModal);
+    });
+
+    // Click outside to close
+    paymentModal.addEventListener('click', function(e) {
+        if (e.target === paymentModal) {
+            closeModal();
+        }
+    });
+
+    // Handle payment method selection
     selectMethodButtons.forEach(button => {
         button.addEventListener('click', function(e) {
             e.preventDefault();
+            
+            // Remove active class from all buttons
+            selectMethodButtons.forEach(btn => btn.classList.remove('active'));
+            
+            // Add active class to clicked button
+            this.classList.add('active');
+            
             const method = this.getAttribute('data-method');
             
-            // Actualizar campo de método de pago
+            // Update hidden input
             paymentMethodInput.value = method;
 
-            // Obtener URL de imagen
+            // Get image URL
             const imageSrc = getImageForMethod(method);
 
-            // Añadir más logging
-            console.log('Intentando cargar imagen:', imageSrc);
-
-            // Actualizar display de método seleccionado
+            // Update selected method display
             if (selectedMethodDisplay) {
                 selectedMethodDisplay.innerHTML = `
-                    <img src="${imageSrc}" alt="${method}" class="payment-method-img" 
-                         onerror="console.error('Error cargando imagen:', this.src)">
+                    <div class="selected-payment-animation">
+                        <img src="${imageSrc}" alt="${method}" class="payment-method-img" 
+                             onerror="this.src='/static/img/payment-placeholder.png'">
+                    </div>
                 `;
             }
 
-            // Actualizar imagen en el modal
+            // Show image in modal
             if (modalMethodImage) {
                 modalMethodImage.innerHTML = `
-                    <img src="${imageSrc}" alt="${method}" class="img-fluid"
-                         onerror="console.error('Error cargando imagen en modal:', this.src)">
+                    <img src="${imageSrc}" alt="${method}" class="payment-method-img" 
+                         onerror="this.src='/static/img/payment-placeholder.png'">
+                    <p class="mt-2">Método seleccionado: ${method}</p>
                 `;
             }
 
-            // Cerrar modal
-            $(paymentModal).modal('hide');
+            // Close modal with slight delay to show selection
+            setTimeout(closeModal, 800);
         });
     });
+
+    // Add hover effects to list items
+    const listItems = document.querySelectorAll('.list-group-item');
+    listItems.forEach(item => {
+        item.addEventListener('mouseenter', function() {
+            this.style.transform = 'translateY(-5px)';
+            this.style.boxShadow = '0 8px 15px rgba(0, 0, 0, 0.1)';
+        });
+        
+        item.addEventListener('mouseleave', function() {
+            this.style.transform = 'translateY(0)';
+            this.style.boxShadow = '0 4px 10px rgba(0, 0, 0, 0.1)';
+        });
+    });
+
+    // Add ripple effect to buttons
+    const buttons = document.querySelectorAll('.btn, .boton1, .payment-method-button');
+    buttons.forEach(button => {
+        button.addEventListener('click', function(e) {
+            const x = e.clientX - e.target.getBoundingClientRect().left;
+            const y = e.clientY - e.target.getBoundingClientRect().top;
+            
+            const ripple = document.createElement('span');
+            ripple.className = 'ripple';
+            ripple.style.left = `${x}px`;
+            ripple.style.top = `${y}px`;
+            
+            this.appendChild(ripple);
+            
+            setTimeout(() => {
+                ripple.remove();
+            }, 600);
+        });
+    });
+
+    // Add form validation with nice animations
+    const form = document.querySelector('form');
+    if (form) {
+        form.addEventListener('submit', function(e) {
+            let isValid = true;
+            const inputs = form.querySelectorAll('input[required]');
+            
+            inputs.forEach(input => {
+                if (!input.value.trim()) {
+                    isValid = false;
+                    input.classList.add('invalid');
+                    
+                    // Add shake animation
+                    input.classList.add('shake');
+                    setTimeout(() => {
+                        input.classList.remove('shake');
+                    }, 600);
+                } else {
+                    input.classList.remove('invalid');
+                }
+            });
+            
+            if (!isValid) {
+                e.preventDefault();
+            } else {
+                // Show success animation before submitting
+                const successOverlay = document.createElement('div');
+                successOverlay.className = 'success-overlay';
+                successOverlay.innerHTML = '<div class="success-checkmark"></div><p>¡Procesando su compra!</p>';
+                document.body.appendChild(successOverlay);
+                
+                setTimeout(() => {
+                    form.submit();
+                }, 1500);
+                
+                e.preventDefault();
+            }
+        });
+        
+        // Live validation
+        const inputs = form.querySelectorAll('input[required]');
+        inputs.forEach(input => {
+            input.addEventListener('blur', function() {
+                if (!this.value.trim()) {
+                    this.classList.add('invalid');
+                } else {
+                    this.classList.remove('invalid');
+                }
+            });
+            
+            input.addEventListener('input', function() {
+                if (this.value.trim()) {
+                    this.classList.remove('invalid');
+                }
+            });
+        });
+    }
+});
+
+// Add these CSS classes to enhance the JS functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const style = document.createElement('style');
+    style.textContent = `
+        .ripple {
+            position: absolute;
+            background-color: rgba(255, 255, 255, 0.4);
+            border-radius: 50%;
+            transform: scale(0);
+            animation: ripple 0.6s linear;
+            pointer-events: none;
+        }
+        
+        @keyframes ripple {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+        
+        .shake {
+            animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
+        }
+        
+        @keyframes shake {
+            10%, 90% { transform: translateX(-1px); }
+            20%, 80% { transform: translateX(2px); }
+            30%, 50%, 70% { transform: translateX(-4px); }
+            40%, 60% { transform: translateX(4px); }
+        }
+        
+        .invalid {
+            border-color: #ff6b6b !important;
+            background-color: rgba(255, 107, 107, 0.05) !important;
+        }
+        
+        .success-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.9);
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .success-checkmark {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: block;
+            stroke-width: 2;
+            stroke: #4bb71b;
+            stroke-miterlimit: 10;
+            box-shadow: inset 0px 0px 0px #4bb71b;
+            animation: fill .4s ease-in-out .4s forwards, scale .3s ease-in-out .9s both;
+            position: relative;
+            margin: 0 auto 15px;
+        }
+        
+        .success-checkmark:before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(45deg);
+            width: 30px;
+            height: 60px;
+            border-bottom: 6px solid #4bb71b;
+            border-right: 6px solid #4bb71b;
+        }
+        
+        @keyframes fill {
+            100% { box-shadow: inset 0px 0px 0px 30px #4bb71b; }
+        }
+        
+        @keyframes scale {
+            0%, 100% { transform: none; }
+            50% { transform: scale(1.1); }
+        }
+        
+        .selected-payment-animation {
+            animation: bounce 0.5s ease;
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-20px); }
+            60% { transform: translateY(-10px); }
+        }
+    `;
+    document.head.appendChild(style);
 });
 </script>
 {% endblock %}

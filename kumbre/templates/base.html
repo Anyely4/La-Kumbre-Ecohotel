@@ -18,17 +18,16 @@
         <div class="arriba">
             <div class="arriba">
                 <a href="{% url 'inicio'%}">
-                    <img src="{% static 'img/icino.png' %}" alt="Descripción de la imagen">
+                    <img src="{% static 'img/logotipo.webp' %}" alt="Descripción de la imagen">
                 </a>
             </div>
-            <h1 class="titulo"><strong>La Kumbre</strong></h1>
         </div>
         <nav>
             <input type="checkbox" id="menu-toggle" class="menu-checkbox">
         <label for="menu-toggle" class="menu-icon">&#9776;</label>
         <ul class="menu">  
             <li class="links"><a href="{% url 'nosotros' %}">Nosotros</a></li>
-            <li class="links"><a href="{% url 'cabañas' %}">Cabañas</a></li>
+            <li class="links"><a href="{% url 'cabanas' %}">Cabañas</a></li>
             <li class="links"><a href="{% url 'productos' %}">Gastronomia</a></li>
             <li class="links"><a href="{% url 'galeria' %}">Galeria</a></li>
             <li class="links"><a href="{% url 'manual' %}">Ayuda</a></li>
@@ -42,6 +41,10 @@
                     <a href="{% url 'perfil' %}">
                         <i class="ri-user-line"></i>
                         Perfil de usuario
+                    </a>
+                    <a href="{% url 'historial' %}">
+                        <i class="ri-shopping-cart-line"></i> 
+                        Historial de Compras
                     </a>
                     <a href="{% url 'logout' %}">
                         <i class="ri-logout-box-line"></i>
@@ -62,15 +65,6 @@
 </nav>
 
 </header>
-{% if messages %}
-<div class="messages">
-    {% for message in messages %}
-        <div class="message {{ message.tags }}">
-            {{ message }}
-        </div>
-    {% endfor %}
-</div>
-{% endif %}
 <main>
     {% block content %}
     
@@ -78,13 +72,12 @@
     {% endblock %}
 </main>
 
-
 <footer>
     <div class="footer-container">
         <!-- Apartado 1: Contactenos -->
         <div class="footer-item contactenos">
             <h3>Contactenos</h3>
-            <p><strong>Teléfono:</strong></p> 
+            <p><strong>Teléfono:</strong></p>
             <p><a href="tel:+573107998890">3107998890</a></p>
             <p><strong>Correo:</strong></p>
             <p><a href="mailto:reservas@lakumbredelhuila.com">reservas@lakumbredelhuila.com</a></p>
@@ -92,15 +85,16 @@
         
         <!-- Apartado 2: Redes sociales -->
         <div class="footer-item redes-sociales">
+            <h3>Síguenos</h3>
             <div class="social-icons">
                 <a href="https://wa.link/v9jyhb" target="_blank">
-                    <img src="{% static 'img/whatsapp.png' %}" alt="WhatsApp" width="40">
+                    <img src="{% static 'img/whatsapp.webp' %}" alt="WhatsApp" width="40">
                 </a>
                 <a href="https://www.facebook.com/lakumbredelhuila/?_rdc=2&_rdr#" target="_blank">
-                    <img src="{% static 'img/facebook.png' %}" alt="Facebook" width="40">
+                    <img src="{% static 'img/facebook.webp' %}" alt="Facebook" width="40">
                 </a>
                 <a href="https://www.instagram.com/lakumbredelhuila?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank">
-                    <img src="{% static 'img/instagram.png' %}" alt="Instagram" width="40">
+                    <img src="{% static 'img/instagram.webp' %}" alt="Instagram" width="40">
                 </a>
             </div>
         </div>
@@ -117,12 +111,13 @@
             <ul>
                 <li><a href="{% url 'nosotros' %}">Nosotros</a></li>
                 <li><a href="{% url 'sugerencias' %}">Sugerencias</a></li>
-                <li><a href="{% url 'cabañas' %}">Cabañas</a></li>
+                <li><a href="{% url 'cabanas' %}">Cabañas</a></li>
                 <li><a href="{% url 'restricciones' %}">Restricciones</a></li>
             </ul>
         </div>
     </div>
 </footer>
+
 <script src="{% static 'js/base.js' %}"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
@@ -134,6 +129,26 @@
       once: true // La animación ocurre solo una vez
     });
   </script>
+  <script>
+    AOS.init({
+      delay: 200,  // Agrega un retraso de 200ms a todas las animaciones
+      duration: 1000, // Duración de 1s en todas las animaciones
+      once: true // La animación ocurre solo una vez
+    });
+  </script>
+
+<style>
+    @media (max-width: 768px) {
+      .swal-mobile-container {
+        z-index: 9999;
+        margin-top: 0 !important;
+      }
+      .swal2-popup {
+        font-size: 0.8rem !important;
+        max-width: 90vw;
+      }
+    }
+  </style>
   
 {% if messages %}
 {% for m in messages %}

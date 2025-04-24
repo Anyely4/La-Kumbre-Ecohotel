@@ -266,6 +266,40 @@ h2{
     font-size: 20px;
 }
 
+/* Nuevos estilos responsivos para 1000px */
+@media screen and (max-width: 1000px){
+    .container {
+        width: 90%;
+        height: 600px;
+        margin: 40px auto;
+    }
+    
+    .container h1{
+        font-size: 32px;
+    }
+    
+    h2{
+        font-size: 2.5em;
+    }
+    
+    .toggle-panel p{
+        font-size: 18px;
+    }
+    
+    .toggle-panel .btn {
+        width: 160px;
+        font-size: 18px;
+    }
+    
+    .input-box input {
+        font-size: 15px;
+    }
+    
+    .forgot-password {
+        font-size: 17px;
+    }
+}
+
 @media screen and (max-width: 650px){
     .container{ height: calc(100vh - 40px); }
 
@@ -309,10 +343,41 @@ h2{
         }
 
             .container.active .toggle-panel.toggle-right{ bottom: 0; }
+            
+    h2 {
+        font-size: 2.2em;
+    }
+    
+    .container h1 {
+        font-size: 28px;
+    }
 }
 
 @media screen and (max-width: 400px){
     .form-box { padding: 20px; }
 
     .toggle-panel h1{font-size: 30px; }
+    
+    h2 {
+        font-size: 1.8em;
+    }
+    
+    .container h1 {
+        font-size: 24px;
+    }
+    
+    .toggle-panel .btn {
+        width: 140px;
+        height: 42px;
+        font-size: 16px;
+    }
+    
+    .btn {
+        font-size: 15px;
+        height: 44px;
+    }
+    
+    .input-box {
+        margin: 25px 0;
+    }
 }

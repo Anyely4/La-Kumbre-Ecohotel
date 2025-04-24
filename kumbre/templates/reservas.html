@@ -19,13 +19,13 @@
                 <label for="cabana">Cabaña</label>
                 <input type="text" id="cabana" name="cabana" class="form-control" 
                        value="{% if cabana %}{{ cabana.nombre }}{% endif %}" readonly> <br><br>
-                     <i class='bx bxs-user'></i>
+                     <i class='bx bxs-home'></i>
             </div>
             <div class="input-box">
                 <label for="precio">Precio</label>
                 <input type="text" id="precio" name="precio" class="form-control" 
                        value="{% if cabana %}{{ cabana.precio }}{% endif %}" readonly> <br><br>
-                <i class='bx bxs-envelope' ></i>
+                <i class='bx bx-money'></i> 
             </div>
             <div class="input-box">
                 <label for="fecha">Fecha</label>
@@ -39,12 +39,10 @@
             </div>
             <div class="input-box">
                 <label for="numero_personas">Número de Personas</label>
-          <input type="number" id="numero_personas" name="numero_personas" class="form-control" required> <br><br>
+                <input type="number" id="numero_personas" name="numero_personas" class="form-control" required> <br><br>
                 <i class='bx bxs-envelope' ></i>
             </div>
             <button type="submit" class="boton1">Añadir al carrito</button>
-
-             
         </form>
     </div> 
     <div class="toggle-box">
@@ -52,7 +50,7 @@
                 <img class="logotipo" src="{% static 'img/logotipo.png' %}" alt="Descripción de la imagen">
             </div>
     </div>
-    
+</div>
     
 <!-- Cargar jQuery y jQuery UI -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -121,4 +119,3 @@
 </script>
 
 {% endblock %}
-`

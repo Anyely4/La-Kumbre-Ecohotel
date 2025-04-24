@@ -184,7 +184,7 @@ h2{
 @media screen and (max-width: 950px){
     .container{ 
    
-    width: 50%; }
+    width: 90%; }
 
     .form-box{
         bottom: 0;
@@ -233,3 +233,192 @@ h2{
 
     .toggle-panel h1{font-size: 30px; }
 }
+
+
+
+
+/* Estilos para el historial de reservas */
+/* Modificación del contenedor de reservas para que ocupe toda la pantalla */
+.reservas-container {
+    margin-top: 50px;
+    margin-bottom: 50px;
+    background-color: rgba(255, 255, 255, 0)
+    ;/* Mismo ancho que el contenedor superior */
+}
+
+.reservas-section {
+    background: rgba(11, 11, 11, 0.5);
+    width: 1000px;
+    border-radius: 30px; /* Mismo border-radius que el contenedor superior */
+    box-shadow: 0 0 30px rgba(0, 0, 0, .2); /* Mismo box-shadow que el contenedor superior */
+    padding: 25px;
+    backdrop-filter: blur(10px);
+    
+    height: auto; /* Mismo alto que el contenedor superior */
+    overflow-y: auto; /* Para permitir scroll si hay muchas reservas */
+}
+
+/* Mantener el estilo pero ajustar para que ocupe más espacio */
+.reservas-historial {
+    margin-top: 20px;
+    height: calc(100% - 80px); /* Altura total menos el espacio del título */
+    display: flex;
+    flex-direction: column;
+}
+
+/* Hacer que cada reserva-item ocupe más espacio */
+.reserva-item {
+    background-color: rgba(255, 255, 255, 0.535);
+    border-radius: 10px;
+    width: 800px;
+    padding: 20px;
+    margin-bottom: 15px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: all 0.3s ease;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+/* Mantener el resto de los estilos igual */
+.reserva-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.reserva-cabana {
+    font-weight: bold;
+    font-size: 1.1em;
+}
+
+.reserva-estado {
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 0.9em;
+}
+
+.reserva-estado.confirmada {
+    background-color: rgba(46, 204, 112, 0.612);
+    color: #000000;
+}
+
+.reserva-estado.pendiente {
+    background-color: rgba(243, 156, 18, 0.2);
+    color: #f39c12;
+}
+
+/* Ajustar el grid para que ocupe más espacio */
+.reserva-detalles {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    padding: 15px 0;
+}
+
+.reserva-dato {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 1.1em;
+}
+
+.reserva-dato i {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 1.2em;
+}
+
+/* Mensaje cuando no hay reservas */
+.no-reservas {
+    text-align: center;
+    padding: 40px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    margin-top: 15px;
+    height: calc(100% - 80px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.no-reservas p {
+    margin-bottom: 25px;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 1.2em;
+}
+.reserva-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.reserva-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.reserva-cabana {
+    font-weight: bold;
+    font-size: 1.1em;
+}
+
+.reserva-estado {
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 0.9em;
+}
+
+.reserva-estado.confirmada {
+
+
+    
+    background-color: rgba(46, 204, 112, 0.65);
+    color: #000000;
+}
+
+.reserva-estado.pendiente {
+    background-color: rgba(243, 156, 18, 0.2);
+    color: #f39c12;
+}
+
+.reserva-detalles {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
+
+.reserva-dato {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.reserva-dato i {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.no-reservas {
+    text-align: center;
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    margin-top: 15px;
+}
+
+.no-reservas p {
+    margin-bottom: 15px;
+    color: rgba(255, 255, 255, 0.7);
+   
+}
+
+
+

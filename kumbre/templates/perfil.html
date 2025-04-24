@@ -5,6 +5,7 @@
 {% block content %}
 <link rel="stylesheet" href="{% static 'styles/perfil.css' %}">
 <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     
     <div class="container">
         <div class="form-box login">
@@ -24,7 +25,7 @@
            <br><br>
             <div class="d-flex flex-row justify-content-between">
                 <div class="mt-4">
-                    <a href="{% url 'cambiar_contraseña' %}" class="boton1">
+                    <a href="{% url 'cambiar_contrasena' %}" class="boton1">
                          Cambiar Contraseña
                     </a> 
                 </div>
@@ -43,8 +44,6 @@
                 <img class="logotipo" src="{% static 'img/logotipo.png' %}" alt="Descripción de la imagen">
             </div>
         </div>
-         
-        
     </div>
 
 {% endblock %}

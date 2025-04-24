@@ -103,29 +103,42 @@ def lista_productos(request):
 def restricciones(request):
     return render(request, 'restricciones.html')
 
-def cabañas(request):
-    return render(request, 'cabañas.html')
+def cabanas(request):
+    return render(request, 'cabanas.html')
 
-def caba_tabi(request):
-    return render(request, 'caba_tabi.html')
+def cabanatabi(request):
+    return render(request, 'cabanatabi.html')
 
-def caba_geisha(request):
-    return render(request, 'caba_geisha.html')
+def cabanageisha(request):
+    return render(request, 'cabanageisha.html')
 
-def caba_bourbon(request):
-    return render(request, 'caba_bourbon.html')
+def cabanacafetal(request):
+    return render(request, 'cabanacafetal.html')
 
-def caba_cafetal(request):
-    return render(request, 'caba_cafetal.html')
+def cabanabourbon(request):
+    return render(request, 'cabanabourbon.html')
 
-def caba_wush(request):
-    return render(request, 'caba_wush.html')
-
-def gracias(request):
-    return render(request, 'gracias.html')
+def cabanawush(request):
+    return render(request, 'cabanawush.html')
 
 def perfil(request):
     return render(request, 'perfil.html')
+    
+
+
+@login_required
+def historial(request):
+    # Obtener todas las reservas del usuario (tanto confirmadas como pendientes)
+    reservas = Reserva.objects.filter(usuario=request.user).order_by('-fecha')
+    
+    # Obtener todas las compras del usuario
+    compras = Compra.objects.filter(usuario=request.user).order_by('-fecha_creacion')
+    
+    return render(request, 'historial.html', {
+        'reservas': reservas,
+        'compras': compras
+    })
+    
 
 def manual(request):
     return render(request, 'manual.html')
@@ -232,7 +245,7 @@ def hacer_reserva(request):
             messages.error(request, "La cabaña ya está reservada para esa fecha.")
             # Puedes re-renderizar el formulario con algún contexto adicional si lo deseas.
             context = {"error": "La cabaña ya está reservada para esa fecha.", "cabana": cabana_valor}
-            return render(request, "reservas.html", context)
+            return render(request, "cabanas.html", context)
     
     else:
         # GET: precargar los datos de la cabaña si se recibe cabana_id en la URL
@@ -418,14 +431,24 @@ def eliminar_producto(request, producto_id):
 
     
 
-
 @login_required
 def metodo_pago(request):
     metodo = request.GET.get('metodo', '')
     
-    # Obtener productos y reservas de manera explícita
+    # Obtener productos y reservas de manera expl��cita
     productos = CarritoProducto.objects.filter(usuario=request.user)
     reservas = Reserva.objects.filter(usuario=request.user, confirmada=False)
+    
+    # Calcular total de productos
+    total_productos = productos.aggregate(
+        total=Sum(F('cantidad') * F('producto__precio'))
+    )['total'] or 0
+    
+    # Calcular total de reservas
+    total_reservas = reservas.aggregate(total=Sum('precio'))['total'] or 0
+    
+    # Total general
+    total_carrito = total_productos + total_reservas
     
     # Crear el formulario con datos iniciales
     form = CompraForm(initial={
@@ -434,15 +457,14 @@ def metodo_pago(request):
         'email': request.user.email
     })
     
-    # Imprimir información de depuración
-    print("Productos en carrito:", list(productos.values('producto__nombre', 'cantidad')))
-    print("Reservas pendientes:", list(reservas.values('cabana', 'precio')))
-
     context = {
         'form': form,
         'metodo': metodo,
         'productos': productos,
         'reservas': reservas,
+        'total_productos': total_productos,
+        'total_reservas': total_reservas,
+        'total_carrito': total_carrito,
     }
     return render(request, 'metodos_pago.html', context)
 
@@ -600,3 +622,6 @@ def compra_confirmada(request, compra_id):
         'image_url': image_url,
     }
     return render(request, 'compra_confirmada.html', context)
+    
+    
+    

@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Cabañas{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'styles/cabana.css' %}">
+<link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap" rel="stylesheet">
+
+  
+<h5>Conoce Nuestras Hermosas Cabañas</h5>
+	<div class="contenedor-galeria">
+		<ul> 
+			<li>
+				<div class="carousel">
+                    <div class="carousel-images">
+                        <img src="/static/img/cabatabi111.webp" alt="Imagen 1">
+                        <img src="/static/img/salatabi.jpg" alt="Imagen 2">
+                    </div>
+                </div>
+                <div class="titulo-imagen">
+					<a href="#">Cabaña Tabi</a>
+				</div>
+                <a href="{% url 'cabanatabi'%}">
+                    <button class="btntabi">Conoce la Cabaña Tabi</button>
+                </a>
+               
+
+			</li>
+			<li>
+				<div class="carousel">
+                    <div class="carousel-images">
+                        <img src="/static/img/geisha9.jpg" alt="Imagen 1">
+                        <img src="/static/img/geisha5.jpg" alt="Imagen 2">
+                    </div>
+                </div>
+                <div class="titulo-imagen">
+					<a href="#">Cabaña Geisha</a>
+				</div>
+                <a href="{% url 'cabanageisha'%}">
+                    <button class="btntabi">Conoce la Cabaña Geisha</button>
+                </a>
+			</li>
+			<li>
+				<div class="carousel">
+                    <div class="carousel-images">
+                        <img src="/static/img/cafetalbuena.jpg" alt="Imagen 1">
+                        <img src="/static/img/camacafetal.jpg" alt="Imagen 2">
+                    </div>
+                </div>
+                <div class="titulo-imagen">
+					<a href="#">Cabaña Cafetal</a>
+				</div>
+                <a href="{% url 'cabanacafetal'%}">
+                    <button class="btntabi">Conoce la Cabaña Cafetal</button>
+                </a>
+			</li>
+			<li>
+				<div class="carousel">
+                    <div class="carousel-images">
+                        <img src="/static/img/cabour.jpg" alt="Imagen 1">
+                        <img src="/static/img/bourbon111.jpg" alt="Imagen 2">
+                    </div>
+                </div>
+                <div class="titulo-imagen">
+					<a href="#">Cabaña Bourbon</a>
+				</div>
+                <a href="{% url 'cabanabourbon'%}">
+                    <button class="btntabi">Conoce la Cabaña Bourbon</button>
+                </a>
+			</li>
+			<li> 
+				<div class="carousel">
+                    <div class="carousel-images">
+                        <img src="/static/img/wushwush.jpg" alt="Imagen 1">
+                        <img src="/static/img/wush4.jpg" alt="Imagen 2">
+                    </div>
+                </div>
+                <div class="titulo-imagen">
+					<a href="#">Cabaña Wush</a>
+				</div>
+                <a href="{% url 'cabanawush'%}">
+                    <button class="btntabi">Conoce la Cabaña Wush-Wush</button>
+                </a>
+			</li>
+		</ul>
+	</div>
+
+
+<script src="{% static 'js/cabana.js' %}"></script>
+
+
+
+{% endblock %}

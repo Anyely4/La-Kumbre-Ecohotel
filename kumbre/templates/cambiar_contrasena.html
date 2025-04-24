@@ -3,7 +3,7 @@
 {% block title %}Cambiar Contraseña{% endblock %}
 
 {% block content %}
-<link rel="stylesheet" href="{% static 'styles/cambiar_contraseña.css' %}">
+<link rel="stylesheet" href="{% static 'styles/cambiar_contrasena.css' %}">
 
 <div class="container">
     <div class="form-box login">
@@ -12,7 +12,9 @@
             <h1>Cambiar Contraseña</h1>
             <div class="input-box">
                 <label for="id_old_password">Contraseña actual</label>
-                <input type="password" name="old_password" id="id_old_password" class="form-control" required>
+                <input type="password" name="old_password" id="id_old_password" class="form-control" required><br><br>
+
+                <i class='bx bxs-key'></i> 
                 {% if form.old_password.errors %}
                     <div class="error text-danger">
                         {{ form.old_password.errors }}
@@ -21,7 +23,8 @@
             </div>
             <div class="input-box">
                 <label for="id_new_password1">Nueva Contraseña</label>
-                <input type="password" name="new_password1" id="id_new_password1" class="form-control" required>
+                <input type="password" name="new_password1" id="id_new_password1" class="form-control" required><br><br>
+                <i class='bx bx-lock-open'></i> 
                 {% if form.new_password1.errors %}
                     <div class="error text-danger">
                         {{ form.new_password1.errors }}
@@ -30,7 +33,8 @@
             </div>
             <div class="input-box">
                 <label for="id_new_password2">Confirmar Nueva Contraseña</label>
-                <input type="password" name="new_password2" id="id_new_password2" class="form-control" required>
+                <input type="password" name="new_password2" id="id_new_password2" class="form-control" required><br><br>
+                <i class='bx bx-lock'></i> 
                 {% if form.new_password2.errors %}
                     <div class="error text-danger">
                         {{ form.new_password2.errors }}

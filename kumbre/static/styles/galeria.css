@@ -4,17 +4,28 @@
   padding: 20px;
 }
 
-h2 {
-  font-size: 3rem;
-  margin: 20px;
-  text-align: center;
-  margin-bottom: 30px;
-  color: #b1ffea;
-  transition: color 0.3s ease;
+        /* Título */
+       h2 {
+    margin: 10px auto 10px auto;
+    font-size: 3em;
+    text-align: center;
+    color: #9bf5cc;
+    text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.3);
+    position: relative;
+    letter-spacing: 2px;
+    padding-bottom: 15px;
 }
 
-h2:hover {
-  color: #64b3ab;
+h2::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 200px;
+    height: 4px;
+    background: linear-gradient(to right, #80af9b, #3a7158);
+    border-radius: 2px;
 }
 
 
@@ -165,7 +176,9 @@ h2:hover {
     width: 150px;
     height: 120px;
   }
-  
+  h2 {
+            font-size: 2em;
+  }
   .fila-central .imagen {
     width: 120px;
     height: 100px;
@@ -210,4 +223,150 @@ h2:hover {
     font-weight: bold;
     text-align: center;
     padding: 20px;
+}
+
+/* Contenedor para el efecto hover */
+.imagen-contenedor {
+  position: relative;
+  overflow: hidden;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+/* Heredar dimensiones de las imágenes originales */
+.fila-superior .imagen-contenedor {
+  width: 400px;
+  height: 300px;
+  border-bottom: 3px solid #3498db;
+}
+
+.fila-central .imagen-contenedor {
+  width: 300px;
+  height: 260px;
+  border-bottom: 3px solid #66df9cce;
+}
+
+.central-contenedor {
+  width: 400px !important;
+  height: 290px !important;
+  border-radius: 20px;
+  border-bottom: 3px solid #66df9cce;
+}
+
+.fila-inferior .imagen-contenedor {
+  width: 250px;
+  height: 300px;
+  border-bottom: 3px solid #d4b03a;
+}
+
+.fila-central:last-of-type .imagen-contenedor {
+  width: 400px;
+  height: 300px;
+  border-bottom: 3px solid #9b59b6;
+}
+
+/* Estilo para la imagen dentro del contenedor */
+.imagen-contenedor img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: all 0.5s ease;
+  border-radius: inherit;
+}
+
+/* Capa oscura y texto */
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-align: center;
+  padding: 20px;
+  box-sizing: border-box;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
+}
+
+/* Efecto al pasar el cursor */
+.imagen-contenedor:hover .overlay {
+  opacity: 1;
+}
+
+.imagen-contenedor:hover {
+  transform: scale(1.05);
+  z-index: 10;
+  box-shadow: 0 12px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* Para que la transición sea más suave al dejar de hacer hover */
+.imagen-contenedor:not(:hover) {
+  transition: transform 0.5s ease-out;
+}
+
+/* Ajustes responsivos */
+@media (max-width: 768px) {
+  .fila-superior .imagen-contenedor,
+  .fila-central:last-of-type .imagen-contenedor {
+    width: 200px;
+    height: 150px;
+  }
+  
+  .fila-central .imagen-contenedor {
+    width: 150px;
+    height: 130px;
+  }
+  
+  .central-contenedor {
+    width: 180px !important;
+    height: 160px !important;
+  }
+  
+  .fila-inferior .imagen-contenedor {
+    width: 140px;
+    height: 120px;
+  }
+  
+  .overlay {
+    font-size: 1rem;
+    padding: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .fila-superior .imagen-contenedor,
+  .fila-central:last-of-type .imagen-contenedor {
+    width: 150px;
+    height: 120px;
+  }
+  
+  .fila-central .imagen-contenedor {
+    width: 120px;
+    height: 100px;
+  }
+  
+  .central-contenedor {
+    width: 140px !important;
+    height: 120px !important;
+  }
+  
+  .fila-inferior .imagen-contenedor {
+    width: 100px;
+    height: 90px;
+  }
+  
+  .overlay {
+    font-size: 0.8rem;
+    padding: 5px;
+  }
 }
