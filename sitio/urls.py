@@ -61,6 +61,7 @@ urlpatterns = [
     path('confirmar_compra/', views.confirmar_compra, name='confirmar_compra'),
     path('compra_confirmada/<int:compra_id>/', views.compra_confirmada, name='compra_confirmada'),
     path('historial/', views.historial, name='historial'),
+    path('calcular-precio/', views.calcular_precio, name='calcular_precio'), 
 ]
 
 if settings.DEBUG:

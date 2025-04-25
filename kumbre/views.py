@@ -216,45 +216,95 @@ def logout_perfil(request):
 
 
 
+
+
+
+
+
 @login_required
 def hacer_reserva(request):
     if request.method == "POST":
-        # Obtener los datos del formulario manual
-        cabana_valor = request.POST.get("cabana")
+        cabana_id = request.POST.get("cabana_id")
+        cabana_nombre = request.POST.get("cabana")
         precio = request.POST.get("precio")
-        fecha = request.POST.get("fecha")
+        fecha_str = request.POST.get("fecha")
         telefono = request.POST.get("telefono")
         numero_personas = request.POST.get("numero_personas")
         
-        # Crear la reserva
-        reserva = Reserva(
-            usuario=request.user,
-            cabana=cabana_valor,  # Asegúrate de que en tu modelo el campo se llama "cabana"
-            precio=precio,
-            fecha=fecha,
-            telefono=telefono,
-            numero_personas=numero_personas,
-            confirmada=False
-        )
+        # Validaciones de seguridad
         try:
+            # Verificar que la cabaña existe
+            cabana = get_object_or_404(Cabana, nombre=cabana_nombre)
+            if cabana_id and int(cabana_id) != cabana.id:
+                messages.error(request, "Datos de cabaña inconsistentes.")
+                return redirect('cabanas')
+            
+            # Convertir fecha
+            fecha = datetime.strptime(fecha_str, '%Y-%m-%d').date()
+            
+            # Verificar que la fecha no es pasada
+            if fecha < datetime.now().date():
+                messages.error(request, "No se puede reservar en fechas pasadas.")
+                return redirect('cabanas')
+                
+            # Verificar que la fecha no está ocupada
+            if Reserva.objects.filter(cabana=cabana_nombre, fecha=fecha).exists():
+                messages.error(request, "La cabaña ya está reservada para esa fecha.")
+                return redirect('cabanas')
+                
+            # Calcular el precio correcto en el servidor
+            precios = get_object_or_404(PrecioCabana, cabana=cabana)
+            es_festivo = Festivo.objects.filter(fecha=fecha).exists()
+            es_fin_semana = fecha.weekday() == 5
+            
+            if es_festivo:
+                precio_correcto = precios.precio_festivo
+            elif es_fin_semana:
+                precio_correcto = precios.precio_fin_semana
+            else:
+                precio_correcto = precios.precio_entre_semana
+                
+            # Verificar que el precio enviado coincide con el calculado (seguridad adicional)
+            if abs(float(precio) - float(precio_correcto)) > 0.01:  # Pequeña tolerancia para errores de redondeo
+                messages.error(request, "El precio ha sido modificado. Por favor, inténtelo de nuevo.")
+                return redirect('cabanas')
+            
+            # Crear la reserva
+            reserva = Reserva(
+                usuario=request.user,
+                cabana=cabana_nombre,
+                precio=precio_correcto,  # Usar el precio calculado en el servidor
+                fecha=fecha,
+                telefono=telefono,
+                numero_personas=numero_personas,
+                estado='Pendiente',
+                confirmada=False
+            )
+            
             reserva.save()
-            messages.success(request, "Reserva añadida al carrito, Deseas algo mas?")
+            messages.success(request, "Reserva añadida al carrito, ¿Deseas algo más?")
             return redirect('productos')
-        except IntegrityError:
-            # Si se produce un IntegrityError, significa que ya existe una reserva para esa cabaña en esa fecha.
-            messages.error(request, "La cabaña ya está reservada para esa fecha.")
-            # Puedes re-renderizar el formulario con algún contexto adicional si lo deseas.
-            context = {"error": "La cabaña ya está reservada para esa fecha.", "cabana": cabana_valor}
-            return render(request, "cabanas.html", context)
+            
+        except Exception as e:
+            messages.error(request, f"Error al procesar la reserva: {str(e)}")
+            return redirect('cabanas')
     
     else:
-        # GET: precargar los datos de la cabaña si se recibe cabana_id en la URL
+        # Mostrar el formulario con datos precargados si se proporciona una cabaña
         cabana_id = request.GET.get("cabana_id")
         context = {}
         if cabana_id:
             cabana = get_object_or_404(Cabana, id=cabana_id)
-            context["cabana"] = cabana  # Enviamos la cabaña para precargar el nombre y precio
+            context["cabana"] = cabana
+            context["cabana_id"] = cabana_id  # Agregar el ID para usarlo en JavaScript
         return render(request, "reservas.html", context)
+    
+
+
+
+
+
+
         
 @login_required
 def resumen_compra(request):
@@ -278,10 +328,11 @@ def eliminar_reserva(request, reserva_id):
     return redirect('resumen_compra')
 
 def obtener_fechas_ocupadas(request, cabana_id):
-    reservas = Reserva.objects.filter(cabana__id=cabana_id).values_list('fecha', flat=True)
+    # Buscar todas las reservas para esta cabaña
+    cabana = get_object_or_404(Cabana, id=cabana_id)
+    reservas = Reserva.objects.filter(cabana=cabana.nombre).values_list('fecha', flat=True)
     fechas_ocupadas = [fecha.strftime("%Y-%m-%d") for fecha in reservas]
     return JsonResponse({'fechas_ocupadas': fechas_ocupadas})
-
 
 
 from django.contrib.auth import get_user_model
@@ -624,4 +675,61 @@ def compra_confirmada(request, compra_id):
     return render(request, 'compra_confirmada.html', context)
     
     
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Añadir a views.py
+from django.http import JsonResponse
+from datetime import datetime
+from .models import Cabana, PrecioCabana, Festivo
+
+def calcular_precio(request):
+    if request.method == "GET":
+        cabana_id = request.GET.get('cabana_id')
+        fecha_str = request.GET.get('fecha')
+        
+        try:
+            cabana = Cabana.objects.get(id=cabana_id)
+            precios = PrecioCabana.objects.get(cabana=cabana)
+            
+            # Convertir la fecha de string a objeto date
+            fecha = datetime.strptime(fecha_str, '%Y-%m-%d').date()
+            
+            # Verificar si es un día festivo
+            es_festivo = Festivo.objects.filter(fecha=fecha).exists()
+            
+            # Verificar si es fin de semana (5=Sábado, 6=Domingo)
+            es_fin_semana = fecha.weekday() == 5
+            
+            # Determinar el precio según el tipo de día
+            if es_festivo:
+                precio = precios.precio_festivo
+            elif es_fin_semana:
+                precio = precios.precio_fin_semana
+            else:
+                precio = precios.precio_entre_semana
+                
+            return JsonResponse({
+                'success': True, 
+                'precio': float(precio),
+                'tipo_dia': 'festivo' if es_festivo else ('fin_semana' if es_fin_semana else 'entre_semana')
+            })
+            
+        except (Cabana.DoesNotExist, PrecioCabana.DoesNotExist, ValueError) as e:
+            return JsonResponse({'success': False, 'error': str(e)}, status=400)
     
+    return JsonResponse({'success': False, 'error': 'Método no permitido'}, status=405)

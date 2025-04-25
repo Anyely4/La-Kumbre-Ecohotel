@@ -35,3 +35,20 @@ admin.site.register(Producto)
 
 admin.site.register(Compra)
 admin.site.register(DetalleCompra)
+
+
+
+from django.contrib import admin
+from .models import Cabana, PrecioCabana, Festivo, Reserva
+
+class PrecioCabanaAdmin(admin.ModelAdmin):
+    list_display = ('cabana', 'precio_entre_semana', 'precio_fin_semana', 'precio_festivo')
+    search_fields = ('cabana__nombre',)
+
+class FestivoAdmin(admin.ModelAdmin):
+    list_display = ('fecha', 'descripcion')
+    list_filter = ('fecha',)
+    search_fields = ('descripcion',)
+
+admin.site.register(PrecioCabana, PrecioCabanaAdmin)
+admin.site.register(Festivo, FestivoAdmin)

@@ -114,3 +114,22 @@ class DetalleCompra(models.Model):
         elif self.reserva:
             return f"Reserva: {self.reserva.cabana} para {self.reserva.fecha}"
         return "Detalle sin asignar"
+
+
+
+# Añadir a models.py
+class PrecioCabana(models.Model):
+    cabana = models.ForeignKey(Cabana, on_delete=models.CASCADE, related_name='precios')
+    precio_entre_semana = models.DecimalField(max_digits=10, decimal_places=2)
+    precio_fin_semana = models.DecimalField(max_digits=10, decimal_places=2)
+    precio_festivo = models.DecimalField(max_digits=10, decimal_places=2)
+    
+    def __str__(self):
+        return f"Precios para {self.cabana.nombre}"
+
+class Festivo(models.Model):
+    fecha = models.DateField(unique=True)
+    descripcion = models.CharField(max_length=100)
+    
+    def __str__(self):
+        return f"{self.fecha.strftime('%Y-%m-%d')} - {self.descripcion}"
