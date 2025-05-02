@@ -33,8 +33,55 @@ admin.site.register(Producto)
 
 
 
-admin.site.register(Compra)
-admin.site.register(DetalleCompra)
+from django.contrib import admin
+from django.utils.html import format_html
+from .models import Compra, DetalleCompra, Reserva, Cabana, Producto, CarritoProducto, Sugerencia, Usuario, PrecioCabana, Festivo
+
+class DetalleCompraInline(admin.TabularInline):
+    model = DetalleCompra
+    extra = 0
+    readonly_fields = ['producto', 'reserva', 'precio_unitario', 'cantidad', 'precio_total']
+    can_delete = False
+
+@admin.register(Compra)
+class CompraAdmin(admin.ModelAdmin):
+    list_display = ['id', 'usuario', 'nombre', 'email', 'total', 'metodo_pago', 'pagado', 'fecha_creacion', 'mostrar_comprobante']
+    list_filter = ['pagado', 'fecha_creacion', 'metodo_pago']
+    search_fields = ['nombre', 'email', 'usuario__username']
+    readonly_fields = ['mostrar_comprobante_grande']
+    inlines = [DetalleCompraInline]
+    
+    def mostrar_comprobante(self, obj):
+        if obj.comprobante_pago:
+            if obj.comprobante_pago.url.lower().endswith('.pdf'):
+                return format_html('<a href="{}" target="_blank" class="button">Ver PDF</a>', obj.comprobante_pago.url)
+            else:
+                return format_html('<a href="{}" target="_blank"><img src="{}" height="50" /></a>', 
+                                 obj.comprobante_pago.url, obj.comprobante_pago.url)
+        return "No adjuntado"
+    mostrar_comprobante.short_description = 'Comprobante'
+    
+    def mostrar_comprobante_grande(self, obj):
+        if obj.comprobante_pago:
+            if obj.comprobante_pago.url.lower().endswith('.pdf'):
+                return format_html('<a href="{}" target="_blank" class="button">Ver PDF</a>', obj.comprobante_pago.url)
+            else:
+                return format_html('<img src="{}" style="max-width:100%; max-height:500px;" />', obj.comprobante_pago.url)
+        return "No hay comprobante adjunto."
+    mostrar_comprobante_grande.short_description = 'Comprobante de Pago'
+    
+    fieldsets = (
+        ('Información del Cliente', {
+            'fields': ('usuario', 'nombre', 'email', 'telefono')
+        }),
+        ('Información de Pago', {
+            'fields': ('total', 'metodo_pago', 'pagado', 'horario_comida')
+        }),
+        ('Comprobante de Pago', {
+            'fields': ('comprobante_pago', 'mostrar_comprobante_grande')
+        }),
+    )
+
 
 
 

@@ -7,17 +7,38 @@
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="{% static 'styles/compra_confirmada.css' %}">
 
-    <div class="container1">
-        <h1>"¡La espera ha terminado! 🕰️ Tu compra está confirmada 📝. </h1> <br>
-        <p class="para">"¡Gracias por tu compra! 🎉</p>
+<div class="container1">
+    <h1>¡La espera ha terminado! 🕰️ Tu compra está confirmada 📝</h1>
+    <p class="para">¡Gracias por tu compra! 🎉</p>
 
+    <!-- Comprobante de pago section -->
+    {% if compra.comprobante_pago %}
+    <div class="comprobante-card">
+        <div class="card-header">
+            <h5 class="card-title"><i class="fas fa-check-circle"></i> Comprobante de Pago</h5>
+        </div>
+        <div class="card-body">
+            <p class="comprobante-text">Tu comprobante de pago ha sido recibido correctamente.</p>
+            
+            {% if compra.comprobante_pago.url|lower|slice:"-4:" == ".pdf" %}
+                <a href="{{ compra.comprobante_pago.url }}" class="comprobante-btn" target="_blank">
+                    <i class="fas fa-file-pdf"></i> Ver comprobante PDF
+                </a>
+            {% else %}
+                <img src="{{ compra.comprobante_pago.url }}" alt="Comprobante de pago" class="comprobante-img">
+            {% endif %}
+        </div>
+    </div>
+    {% endif %}
 
+    <div class="payment-info">
         <p class="para"><strong>Método de pago:</strong> {{ compra.metodo_pago|upper }}</p>
-        <p class="para"><strong>Total:</strong> ${{ compra.total }}</p>
+        <p class="para total-amount"><strong>Total:</strong> ${{ compra.total }}</p>
         <p class="para">Se le ha enviado un correo de confirmación a {{ compra.email }}.</p>
-
-        <button class="boton1"><a href="{% url 'inicio' %}" class="boton1">Regresar al inicio</a></button>
     </div>
 
-    <script src="{% static 'js/confirmar_compra.js' %}"></script>
+    <button class="boton1"><a href="{% url 'inicio' %}">Regresar al inicio</a></button>
+</div>
+
+<script src="{% static 'js/confirmar_compra.js' %}"></script>
 {% endblock %}

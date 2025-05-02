@@ -6,14 +6,6 @@
 <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     
-    <!-- Sección de pestañas para navegar entre reservas y compras -->
-    <div class="container tabs-container">
-        <div class="tabs">
-            <button class="tab-btn active" onclick="openTab('reservas')">Reservas</button>
-            <button class="tab-btn" onclick="openTab('compras')">Compras</button>
-        </div>
-    </div>
-    
     <!-- Sección de historial de reservas -->
     <div id="reservas" class="tab-content active">
         <div class="container reservas-container">
@@ -60,62 +52,7 @@
         </div>
     </div>
     
-    <!-- Sección de historial de compras -->
-    <div id="compras" class="tab-content">
-        <div class="container reservas-container">
-            <div class="reservas-section">
-                <h1>Historial de Compras</h1>
-                {% if compras %}
-                    <div class="reservas-historial">
-                        {% for compra in compras %}
-                            <div class="reserva-item compra-item">
-                                <div class="reserva-header">
-                                    <span class="reserva-estado confirmada">
-                                        <i class="fas fa-check-circle"></i> Pagada
-                                    </span>
-                                </div>
-                                <div class="compra-info">
-                                    <div class="reserva-dato">
-                                        <i class="fas fa-calendar"></i> Fecha: {{ compra.fecha_creacion|date:"d/m/Y H:i" }}
-                                    </div>
-                                    <div class="reserva-dato">
-                                        <i class="fas fa-money-bill-wave"></i> Total: ${{ compra.total }}
-                                    </div>
-                                    <div class="reserva-dato">
-                                        <i class="fas fa-credit-card"></i> Método: {{ compra.metodo_pago|title }}
-                                    </div>
-                                </div>
-                                
-                                <!--<div class="compra-detalles">-->
-                                <!--    <h3><i class="fas fa-shopping-cart"></i> Detalles de la compra</h3>-->
-                                <!--    <div class="detalles-lista">-->
-                                <!--        {% for detalle in compra.detallecompra_set.all %}-->
-                                <!--            <div class="detalle-item">-->
-                                <!--                {% if detalle.producto %}-->
-                                <!--                    <div class="detalle-nombre">{{ detalle.producto.nombre }}</div>-->
-                                <!--                    <div class="detalle-cantidad">x{{ detalle.cantidad }}</div>-->
-                                <!--                    <div class="detalle-precio">${{ detalle.precio_total }}</div>-->
-                                <!--                {% elif detalle.reserva %}-->
-                                <!--                    <div class="detalle-nombre">Reserva: {{ detalle.reserva.cabana }}</div>-->
-                                <!--                    <div class="detalle-cantidad">{{ detalle.reserva.fecha }}</div>-->
-                                <!--                    <div class="detalle-precio">${{ detalle.precio_total }}</div>-->
-                                <!--                {% endif %}-->
-                                <!--            </div>-->
-                                <!--        {% endfor %}-->
-                                <!--    </div>-->
-                                <!--</div>-->
-                            </div>
-                        {% endfor %}
-                    </div>
-                {% else %}
-                    <div class="no-reservas">
-                        <p>No tienes compras actualmente.</p>
-                        <a href="{% url 'productos' %}" class="boton1">Ver productos</a>
-                    </div>
-                {% endif %}
-            </div>
-        </div>
-    </div>
+    
 
     <script>
         function openTab(tabName) {

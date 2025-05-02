@@ -22,7 +22,7 @@ header{
     display: flex;
     height: 80px;
     color: rgb(0, 0, 0);
-    padding: 10px;
+    padding: 10px;  
     text-align: center;
     z-index: 1000;
     position: fixed;
@@ -1173,6 +1173,10 @@ nav {
     
     .service-title {
         font-size: 1.5rem;
+    }
+    .arriba img{
+        width: 160px;
+        height: 70px;
     }
 }
 

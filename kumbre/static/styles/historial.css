@@ -73,7 +73,7 @@
 
 /* Reservation Container Styles */
 .reservas-container {
-    margin auto
+    margin: auto;
     width: 70%;
     height: auto;
     display: flex;

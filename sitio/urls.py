@@ -51,6 +51,8 @@ urlpatterns = [
     path('fechas_ocupadas/<int:cabana_id>/', views.obtener_fechas_ocupadas, name='fechas_ocupadas'),
     path('perfil/', views.perfil, name='perfil'),
     path('manual/', views.manual, name='manual'),
+    path('spots/', views.spots, name='spots'),
+    path('columpio/', views.columpio, name='columpio'),
     path('eliminar_cuenta/', views.eliminar_cuenta, name='eliminar_cuenta'),
     path('cambiar_contrasena/', views.cambiar_contrasena, name='cambiar_contrasena'),
     path('restablecer/', views.restablecer, name='restablecer'),
@@ -61,7 +63,9 @@ urlpatterns = [
     path('confirmar_compra/', views.confirmar_compra, name='confirmar_compra'),
     path('compra_confirmada/<int:compra_id>/', views.compra_confirmada, name='compra_confirmada'),
     path('historial/', views.historial, name='historial'),
-    path('calcular-precio/', views.calcular_precio, name='calcular_precio'), 
+    path('calcular-precio/', views.calcular_precio, name='calcular_precio'),
+    path('nueva_compra_admin/', views.nueva_compra_admin, name='nueva_compra_admin'),
+    path('confirmacion_compra_usuario/', views.confirmacion_compra_usuario, name='confirmacion_compra_usuario'),  
 ]
 
 if settings.DEBUG:

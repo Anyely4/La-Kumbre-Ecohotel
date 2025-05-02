@@ -40,6 +40,8 @@ class Reserva(models.Model):
     precio = models.DecimalField(max_digits=10, decimal_places=2, default=0.0) # Precio de la cabaña
     telefono = models.CharField(max_length=15)  # Teléfono del usuario
     numero_personas = models.PositiveIntegerField()  # Número de personas en la reserva
+    personas_adicionales = models.PositiveIntegerField(default=0)  # Número de personas adicionales
+    precio_personas_adicionales = models.DecimalField(max_digits=10, decimal_places=2, default=0.0)  # Precio por personas adicionales
     estado = models.CharField(max_length=50, choices=[('Pendiente', 'Pendiente'), ('Aprobada', 'Aprobada')])
     confirmada = models.BooleanField(default=False)  
 
@@ -91,8 +93,12 @@ class Compra(models.Model):
     telefono = models.CharField(max_length=20)
     total = models.DecimalField(max_digits=10, decimal_places=2)
     metodo_pago = models.CharField(max_length=20, choices=METODO_PAGO_CHOICES)
+    fecha_entrega = models.DateField(null=True, blank=True)
+    horario_comida = models.TimeField(null=True, blank=True)
     pagado = models.BooleanField(default=False)
     fecha_creacion = models.DateTimeField(auto_now_add=True)
+    # Añadir al modelo Compra en models.py
+    comprobante_pago = models.ImageField(upload_to='comprobantes_pago/', null=True, blank=True)
     
     def __str__(self):
         return f"Compra #{self.id} de {self.usuario.username}"
@@ -123,7 +129,9 @@ class PrecioCabana(models.Model):
     precio_entre_semana = models.DecimalField(max_digits=10, decimal_places=2)
     precio_fin_semana = models.DecimalField(max_digits=10, decimal_places=2)
     precio_festivo = models.DecimalField(max_digits=10, decimal_places=2)
-    
+    precio_persona_adicional_entre_semana = models.DecimalField(max_digits=10, decimal_places=2, default=60000.00)
+    precio_persona_adicional_finde_festivo = models.DecimalField(max_digits=10, decimal_places=2, default=80000.00)
+
     def __str__(self):
         return f"Precios para {self.cabana.nombre}"
 

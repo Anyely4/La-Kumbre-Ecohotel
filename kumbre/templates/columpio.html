@@ -1,0 +1,562 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Columpio{% endblock %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'styles/galeria.css' %}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/css/lightbox.min.css">
+
+<style>
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        height: auto;
+        flex-direction: column;
+        margin-bottom: 30px;
+    }
+
+    .header1 {
+        margin-top: 30px;
+        text-align: center;
+        margin-bottom: 3rem;
+        animation: fadeIn 1s ease-in-out;
+    }
+    .header1 p {
+        font-size: 1.3rem;
+        color: #ffffff;
+        margin-top: 10px;
+    }
+
+    h1 {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+        background: linear-gradient(to right, #4facfe, #00f2fe);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        text-shadow: 0 0 10px rgba(79, 172, 254, 0.5);
+    }
+
+    .gallery {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 90px;
+    }
+
+    .gallery-item {
+        position: relative;
+        overflow: hidden;
+        border-radius: 15px;
+        height: 300px;
+        cursor: pointer;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        background: #0a0a1a;
+    }
+
+    .gallery-item:hover {
+        transform: translateY(-10px) scale(1.02);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+    }
+
+    .gallery-item img,
+    .gallery-item video {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+    }
+
+    .gallery-item:hover img,
+    .gallery-item:hover video {
+        transform: scale(1.1);
+    }
+
+    .overlay {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+        padding: 20px;
+        color: white;
+        opacity: 0;
+        transform: translateY(20px);
+        transition: all 0.3s ease;
+    }
+
+    .gallery-item:hover .overlay {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    .overlay h3 {
+        font-size: 1.4rem;
+        margin-bottom: 5px;
+    }
+
+    .overlay p {
+        font-size: 0.9rem;
+        opacity: 0.7;
+    }
+
+    /* Lightbox styles */
+    .lightbox {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.9);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s ease;
+        z-index: 1000;
+        flex-direction: column;
+    }
+
+    .lightbox.active {
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+    .lightbox-content {
+        max-width: 90%;
+        max-height: 80%;
+        transform: scale(0.8);
+        transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+    }
+
+    .lightbox.active .lightbox-content {
+        transform: scale(1);
+    }
+
+    .lightbox-content img,
+    .lightbox-content video {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+    }
+
+    .lightbox-close {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        color: white;
+        font-size: 2rem;
+        cursor: pointer;
+        transition: transform 0.3s ease;
+    }
+
+    .lightbox-close:hover {
+        transform: rotate(90deg);
+        color: #4facfe;
+    }
+
+    .lightbox-caption {
+        color: white;
+        margin-top: 20px;
+        text-align: center;
+        max-width: 80%;
+    }
+
+    .lightbox-nav {
+        position: absolute;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        padding: 0 30px;
+    }
+
+    .lightbox-nav button {
+        background: rgba(0, 0, 0, 0.5);
+        border: none;
+        color: white;
+        padding: 10px 15px;
+        font-size: 1.5rem;
+        cursor: pointer;
+        border-radius: 50%;
+        height: 50px;
+        width: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background 0.3s ease;
+    }
+
+    .lightbox-nav button:hover {
+        background: rgba(79, 172, 254, 0.7);
+    }
+
+    /* Botón reproducir para videos */
+    .play-button {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: rgba(79, 172, 254, 0.7);
+        color: white;
+        border-radius: 50%;
+        width: 60px;
+        height: 60px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0.8;
+        transition: all 0.3s ease;
+    }
+
+    .play-button:hover {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1.1);
+    }
+
+    .play-icon {
+        font-size: 24px;
+        margin-left: 5px;
+    }
+
+    /* Animaciones */
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .gallery-item {
+        animation: fadeIn 0.6s ease-out;
+        animation-fill-mode: both;
+    }
+
+    .gallery-item:nth-child(1) { animation-delay: 0.1s; }
+    .gallery-item:nth-child(2) { animation-delay: 0.2s; }
+    .gallery-item:nth-child(3) { animation-delay: 0.3s; }
+    .gallery-item:nth-child(4) { animation-delay: 0.4s; }
+    .gallery-item:nth-child(5) { animation-delay: 0.5s; }
+    .gallery-item:nth-child(6) { animation-delay: 0.6s; }
+
+    /* Responsivo */
+    @media (max-width: 768px) {
+        .gallery {
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        }
+    }
+</style>
+
+<div class="container">
+    <div class="header1">
+        <h1>Columpio Extremo</h1>
+        <p>"Balancéate entre cielo y tierra en nuestro columpio panorámico. Una experiencia elevada para quienes buscan emociones y vistas inolvidables."</p>
+    </div>
+        
+    <div class="gallery">
+        <!-- Primer video -->
+        <div class="gallery-item" data-type="video" data-src="{% static 'videos/columpio1.mp4' %}" data-title="Columpio en acción">
+            <video preload="metadata">
+                <source src="{% static 'videos/columpio1.mp4' %}" type="video/mp4">
+            </video>
+            <div class="play-button">
+                <span class="play-icon">▶</span>
+            </div>
+            <div class="overlay">
+                <h3>Columpio en acción</h3>
+                <p>Haz clic para reproducir</p>
+            </div>
+        </div>
+        
+        <!-- Primera imagen -->
+        <div class="gallery-item" data-type="image" data-src="{% static 'img/imgcolumpio3.webp' %}" data-title="Emociones al máximo">
+            <img src="{% static 'img/imgcolumpio3.webp' %}" alt="Imagen 2">
+            <div class="overlay">
+                <h3>Emociones al máximo</h3>
+                <p>Haz clic para ampliar</p>
+            </div>
+        </div>
+
+        <!-- Segundo video -->
+        <div class="gallery-item" data-type="video" data-src="{% static 'videos/columpio2.mp4' %}" data-title="Experiencia única">
+            <video preload="metadata">
+                <source src="{% static 'videos/columpio2.mp4' %}" type="video/mp4">
+            </video>
+            <div class="play-button">
+                <span class="play-icon">▶</span>
+            </div>
+            <div class="overlay">
+                <h3>Experiencia única</h3>
+                <p>Haz clic para reproducir</p>
+            </div>
+        </div>
+
+        <!-- Segunda imagen -->
+        <div class="gallery-item" data-type="image" data-src="{% static 'img/imgcolumpio2.webp' %}" data-title="Libertad total absoluta">
+            <img src="{% static 'img/imgcolumpio2.webp' %}" alt="Imagen 3">
+            <div class="overlay">
+                <h3>Libertad total absoluta</h3>
+                <p>Haz clic para ampliar</p>
+            </div>
+        </div>
+
+        <!-- Tercer video (PROBLEMA) -->
+        <div class="gallery-item" data-type="video" data-src="{% static 'videos/columpio3.mp4' %}" data-title="Aventura extrema">
+            <!-- Solución: Usando un enfoque más directo para el tercer video -->
+            <video id="thirdVideo" preload="metadata">
+                <source src="{% static 'videos/columpio3.mp4' %}" type="video/mp4">
+            </video>
+            <div class="play-button">
+                <span class="play-icon">▶</span>
+            </div>
+            <div class="overlay">
+                <h3>Aventura extrema</h3>
+                <p>Haz clic para reproducir</p>
+            </div>
+        </div>
+
+        <!-- Tercera imagen -->
+        <div class="gallery-item" data-type="image" data-src="{% static 'img/imgcolumpio1.webp' %}" data-title="Adrenalina pura ahora">
+            <img src="{% static 'img/imgcolumpio1.webp' %}" alt="Imagen 4">
+            <div class="overlay">
+                <h3>Adrenalina pura ahora</h3>
+                <p>Haz clic para ampliar</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Lightbox -->
+<div class="lightbox">
+    <div class="lightbox-content">
+        <!-- El contenido se insertará dinámicamente con JavaScript -->
+    </div>
+    <div class="lightbox-close">×</div>
+    <div class="lightbox-caption">
+        <h3></h3>
+        <p></p>
+    </div>
+    <div class="lightbox-nav">
+        <button class="prev-btn">❮</button>
+        <button class="next-btn">❯</button>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Seleccionar elementos
+        const galleryItems = document.querySelectorAll('.gallery-item');
+        const lightbox = document.querySelector('.lightbox');
+        const lightboxContent = document.querySelector('.lightbox-content');
+        const lightboxClose = document.querySelector('.lightbox-close');
+        const lightboxCaption = document.querySelector('.lightbox-caption');
+        const prevBtn = document.querySelector('.prev-btn');
+        const nextBtn = document.querySelector('.next-btn');
+        
+        // Inicializar videos al hover
+        document.querySelectorAll('.gallery-item[data-type="video"] video').forEach(video => {
+            const galleryItem = video.closest('.gallery-item');
+            
+            galleryItem.addEventListener('mouseenter', () => {
+                try {
+                    video.play().catch(e => console.log("Video play error:", e));
+                } catch(err) {
+                    console.log("Error playing video:", err);
+                }
+            });
+            
+            galleryItem.addEventListener('mouseleave', () => {
+                try {
+                    video.pause();
+                    video.currentTime = 0;
+                } catch(err) {
+                    console.log("Error pausing video:", err);
+                }
+            });
+        });
+
+        // Variables para el lightbox
+        let currentIndex = 0;
+        const mediaItems = [];
+        
+        // Obtener información de los elementos de la galería
+        galleryItems.forEach(item => {
+            const type = item.dataset.type;
+            const src = item.dataset.src;
+            const title = item.dataset.title || '';
+            const description = item.dataset.description || '';
+            
+            // Para debugging
+            console.log(`Item: type=${type}, src=${src}, title=${title}`);
+            
+            mediaItems.push({
+                type: type,
+                src: src,
+                title: title,
+                description: description
+            });
+        });
+
+        // Abrir lightbox al hacer clic en un elemento
+        galleryItems.forEach((item, index) => {
+            item.addEventListener('click', () => {
+                console.log(`Clicked item ${index}: ${mediaItems[index].type} - ${mediaItems[index].src}`);
+                openLightbox(index);
+            });
+
+            // Añadir animación con delay
+            item.style.animationDelay = `${index * 0.1}s`;
+        });
+
+        // Cerrar lightbox
+        lightboxClose.addEventListener('click', closeLightbox);
+        lightbox.addEventListener('click', function(e) {
+            if (e.target === lightbox) {
+                closeLightbox();
+            }
+        });
+
+        // Navegación por teclado
+        document.addEventListener('keydown', function(e) {
+            if (!lightbox.classList.contains('active')) return;
+            
+            if (e.key === 'Escape') closeLightbox();
+            if (e.key === 'ArrowLeft') navigateMedia('prev');
+            if (e.key === 'ArrowRight') navigateMedia('next');
+        });
+
+        // Botones de navegación
+        prevBtn.addEventListener('click', () => navigateMedia('prev'));
+        nextBtn.addEventListener('click', () => navigateMedia('next'));
+
+        // Abrir lightbox
+        function openLightbox(index) {
+            currentIndex = index;
+            updateLightboxContent();
+            lightbox.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Cerrar lightbox
+        function closeLightbox() {
+            lightbox.classList.remove('active');
+            document.body.style.overflow = '';
+            
+            // Detener video si está reproduciéndose
+            const video = lightboxContent.querySelector('video');
+            if (video) {
+                try {
+                    video.pause();
+                } catch(err) {
+                    console.log("Error closing video:", err);
+                }
+            }
+        }
+
+        // Actualizar contenido del lightbox
+        function updateLightboxContent() {
+            const item = mediaItems[currentIndex];
+            console.log("Updating lightbox with:", item);
+            
+            // Limpiar contenido anterior
+            lightboxContent.innerHTML = '';
+            
+            if (item.type === 'image') {
+                const img = document.createElement('img');
+                img.src = item.src;
+                img.alt = item.title || '';
+                lightboxContent.appendChild(img);
+            } else if (item.type === 'video') {
+                console.log(`Creating video element with src: ${item.src}`);
+                const video = document.createElement('video');
+                video.src = item.src;
+                video.controls = true;
+                video.autoplay = true;
+                
+                // Manejo especial para el tercer video (índice 4)
+                if (currentIndex === 4) {
+                    console.log("Handling special case for third video");
+                    video.addEventListener('error', function(e) {
+                        console.error("Video error:", e);
+                    });
+                    
+                    // Intento directo para cargar el video
+                    const sourceEl = document.createElement('source');
+                    sourceEl.src = item.src;
+                    sourceEl.type = 'video/mp4';
+                    video.appendChild(sourceEl);
+                }
+                
+                lightboxContent.appendChild(video);
+                
+                // Intentar reproducir el video
+                setTimeout(() => {
+                    try {
+                        video.load();
+                        const playPromise = video.play();
+                        if (playPromise !== undefined) {
+                            playPromise.catch(error => {
+                                console.log('Error al reproducir el video:', error);
+                            });
+                        }
+                    } catch(err) {
+                        console.log("Error playing video in lightbox:", err);
+                    }
+                }, 100);
+            }
+            
+            // Actualizar el título y descripción
+            lightboxCaption.querySelector('h3').textContent = item.title || '';
+            lightboxCaption.querySelector('p').textContent = item.description || '';
+        }
+
+        // Navegar entre elementos
+        function navigateMedia(direction) {
+            if (direction === 'next') {
+                currentIndex = (currentIndex + 1) % mediaItems.length;
+            } else {
+                currentIndex = (currentIndex - 1 + mediaItems.length) % mediaItems.length;
+            }
+            
+            // Añadir efecto de transición
+            lightboxContent.style.opacity = 0;
+            setTimeout(() => {
+                updateLightboxContent();
+                lightboxContent.style.opacity = 1;
+            }, 300);
+        }
+
+        // Cargar videos para preview (mejorado)
+        document.querySelectorAll('.gallery-item[data-type="video"]').forEach(item => {
+            const video = item.querySelector('video');
+            
+            // Configurar frames para miniatura
+            video.addEventListener('loadeddata', function() {
+                try {
+                    video.currentTime = 1; // Establecer un frame para la miniatura
+                } catch(err) {
+                    console.log("Error setting video currentTime:", err);
+                }
+            });
+            
+            // Cargar el video
+            try {
+                video.load();
+            } catch(err) {
+                console.log("Error loading video:", err);
+            }
+        });
+        
+        // Manejo especial para el tercer video
+        const thirdVideo = document.getElementById('thirdVideo');
+        if (thirdVideo) {
+            console.log("Initializing third video specifically");
+            try {
+                thirdVideo.load();
+            } catch(err) {
+                console.log("Error preloading third video:", err);
+            }
+        }
+    });
+</script>
+
+{% endblock %}

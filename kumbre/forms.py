@@ -82,7 +82,8 @@ from .models import Compra
 class CompraForm(forms.ModelForm):
     class Meta:
         model = Compra
-        fields = ['nombre', 'email', 'telefono', 'metodo_pago']
+        fields = ['nombre', 'email', 'telefono','horario_comida', 'metodo_pago','comprobante_pago', 'fecha_entrega']
         widgets = {
             'metodo_pago': forms.HiddenInput(),
+            'horario_comida': forms.TimeInput(attrs={'type': 'time', 'class': 'form-control'}),
         }

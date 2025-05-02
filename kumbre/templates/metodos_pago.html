@@ -72,31 +72,58 @@
     <div class="total">
         <p class="para"><strong>Total:</strong> ${{ total_carrito }}</p>
     </div>
+
+   
+    <div class="reservation-note">
+        <p>Para hacer válida su reserva debe cancelar el 70% del precio total.</p>
+        <p class="advance-payment"><strong>Valor a cancelar:</strong> $<span id="advance-payment-amount">{{ total_carrito }}</span></p>
+    </div>
+    
 </div>
         </div>
     </div>
     <div class="form-box login">
-        <form method="POST" action="{% url 'confirmar_compra' %}">
+        <form method="post" action="{% url 'confirmar_compra' %}" enctype="multipart/form-data">
             {% csrf_token %}
             <h2>Confirmar Pedido y Seleccionar Método de Pago</h2>
-                <div class="input-box">
-                <input type="text" name="nombre" class="form-control" placeholder="Nombre" id="id_nombre" required><br><br>
+                
+            <div class="input-box">
+                <input type="text" name="nombre" class="form-control" placeholder="Nombre" id="id_nombre" required><br>
                 <i class='bx bxs-user'></i>
             </div>
             <div class="input-box">
-                <input type="email" name="email" class="form-control" placeholder="correo" id="id_email" required><br><br>
+                <input type="email" name="email" class="form-control" placeholder="correo" id="id_email" required><br>
                 <i class='bx bxs-envelope' ></i>
             </div>
             <div class="input-box">
-                <input type="text" name="telefono" class="form-control"  placeholder="Telefono" id="id_telefono" required><br><br>
+                <input type="text" name="telefono" class="form-control"  placeholder="Telefono" id="id_telefono" required><br>
                 <i class='bx bxs-phone' ></i>
             </div>
-            <button type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#paymentModal">
-                Seleccionar Método de Pago
-                </button>
+            
+            <!-- Calendario para fecha de entrega (solo cuando no hay reservas) -->
+            {% if productos and not reservas %}
             <div class="input-box2">
-            <!-- Este campo puede mostrarse o quedar oculto según prefieras. Aquí lo dejamos oculto -->
+                <label for="id_fecha_entrega">Fecha de Reserva del Restaurante:</label>
+                <input type="date" name="fecha_entrega" class="form-control" id="id_fecha_entrega" required>
+                <small class="form-text text-muted">Seleccione la fecha en que desea recibir sus productos</small>
+            </div>
+            {% endif %}
+
+            {% if productos %}
+            <div class="input-box2">
+                <label for="id_horario_comida">Horario de entrega de comida</label>
+                <input type="time" name="horario_comida" class="form-control" id="id_horario_comida" required>
+            </div>
+            {% endif %}
+
+            <!-- Selección de método de pago -->
+            <div class="form-group">
                 <input type="hidden" name="metodo_pago" id="id_metodo_pago" value="{{ metodo }}">
+                
+                <button type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#paymentModal">
+                    Seleccionar Método de Pago
+                </button>
+                
                 <div id="selected-method-display">
                     {% if metodo %}
                         {% if metodo == "nequi" %}
@@ -111,13 +138,22 @@
                     {% endif %}
                 </div>
             </div>
-            <br><br><br>
+
+            
+
+            <p>Suba el comprobante real de su pago para asegurar la confirmación oficial de su reserva.</p>
+            <div class="form-group">
+                <label for="id_comprobante_pago" class="form-label">Comprobante de pago <span class="text-danger">*</span></label>
+                <div class="custom-file">
+                    <input type="file" class="custom-file-input form-control" id="id_comprobante_pago" name="comprobante_pago" accept="image/jpeg,image/png,application/pdf" required>
+                    <small class="form-text text-muted">Sube una imagen del comprobante de pago (máximo 5MB)</small>
+                </div>
+            </div>
+            
             <button type="submit" class="boton1">Confirmar Compra</button>
         </form>
-       
     </div> 
 </div>
-
 
 <!-- Modal de selección de método de pago -->
 <link rel="stylesheet" href="payment-methods.css">
@@ -128,9 +164,18 @@
             <button class="modal-close" data-dismiss="modal">&times;</button>
         </div>
         <div class="modal-body">
-            <button class="payment-method-button select-method" data-method="nequi">Nequi</button>
-            <button class="payment-method-button select-method" data-method="daviplata">Daviplata</button>
-            <button class="payment-method-button select-method" data-method="bancolombia">Bancolombia</button>
+            <div class="payment-option">
+                <button class="payment-method-button select-method" data-method="nequi">Nequi</button>
+                <button class="open-app-btn" onclick="abrirDeeplink('nequi')">Abrir app Nequi</button>
+            </div>
+            <div class="payment-option">
+                <button class="payment-method-button select-method" data-method="daviplata">Daviplata</button>
+                <button class="open-app-btn" onclick="abrirDeeplink('daviplata')">Abrir app Daviplata</button>
+            </div>
+            <div class="payment-option">
+                <button class="payment-method-button select-method" data-method="bancolombia">Bancolombia</button>
+                <button class="open-app-btn" onclick="abrirDeeplink('bancolombia')">Abrir app Bancolombia</button>
+            </div>
             <div id="modal-method-image"></div>
         </div>
     </div>
@@ -162,17 +207,10 @@
 
 
 <script>
-// Enhance the payment methods page with animations and interactions
+// Enhanced payment methods page with animations and interactions
 document.addEventListener('DOMContentLoaded', function() {
-
-
-    // Hide loading after page loads
-    setTimeout(() => {
-        loadingDiv.classList.add('hide');
-        setTimeout(() => {
-            loadingDiv.remove();
-        }, 500);
-    }, 1000);
+    // Remove loading animation code that was causing an error
+    // The loadingDiv variable wasn't defined anywhere
 
     // Enhanced modal functionality
     const selectPaymentBtn = document.querySelector('.btn[data-toggle="modal"]');
@@ -183,6 +221,164 @@ document.addEventListener('DOMContentLoaded', function() {
     const selectedMethodDisplay = document.getElementById('selected-method-display');
     const modalMethodImage = document.getElementById('modal-method-image');
     const modalCloseButtons = document.querySelectorAll('[data-dismiss="modal"]');
+
+   // Fecha entrega validación
+const fechaEntregaInput = document.getElementById('id_fecha_entrega');
+if (fechaEntregaInput) {
+    // Establecer fecha mínima como hoy
+    const today = new Date();
+    const formattedToday = today.toISOString().split('T')[0];
+    fechaEntregaInput.setAttribute('min', formattedToday);
+    
+    // Eliminar la fecha máxima (permitir cualquier fecha futura)
+    fechaEntregaInput.removeAttribute('max');
+    
+    // Establecer valor predeterminado (mañana)
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    const formattedTomorrow = tomorrow.toISOString().split('T')[0];
+    fechaEntregaInput.value = formattedTomorrow;
+    
+    // Validar al cambiar
+    fechaEntregaInput.addEventListener('change', function() {
+        const selectedDate = new Date(this.value);
+        const today = new Date();
+        today.setHours(0,0,0,0); // Establecer a medianoche para comparación de fechas
+        
+        if (selectedDate < today) {
+            alert('Por favor seleccione una fecha futura para la entrega.');
+            this.value = formattedTomorrow;
+        }
+    });
+}
+
+
+
+
+
+
+
+
+
+// Función para manejar deeplinks de apps bancarias con número y monto
+function abrirDeeplink(app) {
+    // Obtener el monto a pagar
+    const montoTexto = document.getElementById('advance-payment-amount').textContent.trim();
+    const monto = montoTexto.replace(/,/g, ''); // Eliminar comas si las hay
+    
+    // Información de cuentas (reemplaza estos valores con tus números reales)
+    const cuentas = {
+        'nequi': '3124458705', // Reemplaza con tu número de Nequi
+        'daviplata': '3124458705', // Reemplaza con tu número de Daviplata
+        'bancolombia': '03209119961' // Reemplaza con tu número de cuenta Bancolombia
+    };
+    
+    const deeplinks = {
+        'nequi': {
+            android: `nequi://send?phone=${cuentas.nequi}&value=${monto}`, 
+            ios: `nequi://send?phone=${cuentas.nequi}&value=${monto}`,
+            fallback: 'https://nequi.com.co/descarga/'
+        },
+        'daviplata': {
+            android: `daviplata://app/enviar?numero=${cuentas.daviplata}&valor=${monto}`,
+            ios: `daviplata://app/enviar?numero=${cuentas.daviplata}&valor=${monto}`,
+            fallback: 'https://daviplata.com/descarga'
+        },
+        'bancolombia': {
+            // Bancolombia generalmente no acepta parámetros de monto en deeplinks públicos
+            android: `bancolombiapp://transferencias?cuenta=${cuentas.bancolombia}`,
+            ios: `bancolombia://transferencias?cuenta=${cuentas.bancolombia}`,
+            fallback: 'https://www.bancolombia.com/personas/apps/bancolombia-app'
+        }
+    };
+    
+    const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+    let link;
+    
+    // Detectar dispositivo
+    if (/android/i.test(userAgent)) {
+        link = deeplinks[app].android;
+    } else if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+        link = deeplinks[app].ios;
+    } else {
+        link = deeplinks[app].fallback;
+    }
+    
+    // Mostrar información sobre el pago
+    mostrarInfoPago(app, cuentas[app], monto);
+    
+    // Abrir deeplink con fallback
+    const start = Date.now();
+    
+    // Intentar abrir la app
+    window.location.href = link;
+    
+    // Fallback si la app no se abre
+    setTimeout(function() {
+        if (Date.now() - start < 2000) {
+            window.location.href = deeplinks[app].fallback;
+        }
+    }, 1000);
+}
+
+// Función para mostrar información del pago
+function mostrarInfoPago(app, numero, monto) {
+    // Crear elemento para mostrar detalles de la transferencia
+    const infoDiv = document.createElement('div');
+    infoDiv.className = 'payment-info-alert';
+    
+    const appNames = {
+        'nequi': 'Nequi',
+        'daviplata': 'Daviplata',
+        'bancolombia': 'Bancolombia'
+    };
+    
+    infoDiv.innerHTML = `
+        <p><strong>Detalles para transferencia por ${appNames[app]}:</strong></p>
+        <p>Número: <strong>${numero}</strong></p>
+        <p>Valor: <strong>$${monto}</strong></p>
+        <p><small>Si la app no se abre automáticamente, copia estos datos e ingresa manualmente.</small></p>
+        <button class="copy-btn" onclick="copiarAlPortapapeles('${numero}')">Copiar Número</button>
+    `;
+    
+    // Eliminar alerta anterior si existe
+    const oldAlert = document.querySelector('.payment-info-alert');
+    if (oldAlert) {
+        oldAlert.remove();
+    }
+    
+    // Añadir al DOM después del modal-method-image
+    const targetElement = document.getElementById('modal-method-image');
+    targetElement.after(infoDiv);
+}
+
+// Función para copiar al portapapeles
+function copiarAlPortapapeles(texto) {
+    navigator.clipboard.writeText(texto).then(() => {
+        alert('Número copiado al portapapeles');
+    }).catch(err => {
+        console.error('Error al copiar: ', err);
+    });
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     // Function to open modal with animation
     function openModal() {
@@ -329,13 +525,16 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Add form validation with nice animations
-    const form = document.querySelector('form');
+    // Fix form validation with more reliable approach
+    const form = document.querySelector('form[action*="confirmar_compra"]');
     if (form) {
         form.addEventListener('submit', function(e) {
+            e.preventDefault(); // Always prevent default to handle validation
+            
             let isValid = true;
             const inputs = form.querySelectorAll('input[required]');
             
+            // Check each required input
             inputs.forEach(input => {
                 if (!input.value.trim()) {
                     isValid = false;
@@ -351,20 +550,32 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             });
             
-            if (!isValid) {
-                e.preventDefault();
-            } else {
+            // Check if payment method is selected
+            if (!paymentMethodInput.value) {
+                isValid = false;
+                // Show alert
+                alert('Por favor seleccione un método de pago');
+                // Highlight payment button
+                if (selectPaymentBtn) {
+                    selectPaymentBtn.classList.add('shake');
+                    setTimeout(() => {
+                        selectPaymentBtn.classList.remove('shake');
+                    }, 600);
+                }
+            }
+            
+            if (isValid) {
                 // Show success animation before submitting
                 const successOverlay = document.createElement('div');
                 successOverlay.className = 'success-overlay';
                 successOverlay.innerHTML = '<div class="success-checkmark"></div><p>¡Procesando su compra!</p>';
                 document.body.appendChild(successOverlay);
                 
+                // Submit the form after animation completes
                 setTimeout(() => {
+                    form.removeEventListener('submit', arguments.callee);
                     form.submit();
                 }, 1500);
-                
-                e.preventDefault();
             }
         });
         
@@ -386,12 +597,149 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
     }
-});
 
-// Add these CSS classes to enhance the JS functionality
+    // Check if there are food products in the cart
+    const hasProducts = document.getElementById('debug-info') && 
+                       document.getElementById('debug-info').textContent.includes('Productos:') &&
+                       !document.getElementById('debug-info').textContent.includes('Productos: 0');
+    
+    const timeContainer = document.querySelector('.food-time-container');
+    
+    if (timeContainer) {
+        if (hasProducts) {
+            timeContainer.style.display = 'block';
+        } else {
+            timeContainer.style.display = 'none';
+        }
+    }
+    
+    // Validation for time input
+    const timeInput = document.getElementById('id_horario_comida');
+    if (timeInput && hasProducts) {
+        timeInput.addEventListener('change', function() {
+            const now = new Date();
+            const selectedTime = this.value;
+            const [hours, minutes] = selectedTime.split(':').map(Number);
+            const selectedDate = new Date();
+            selectedDate.setHours(hours, minutes, 0);
+            
+            // If time is in the past, show warning
+            if (selectedDate < now) {
+                alert('Por favor selecciona una hora válida para la entrega de tu comida.');
+                this.value = '';
+            }
+        });
+    }
+
+    // Calculate 70% of the total for reservations
+    if (document.querySelector('.reservation-note')) {
+        const totalText = document.querySelector('.total .para').textContent;
+        const totalMatch = totalText.match(/\$\s*([0-9,]+(\.[0-9]+)?)/);
+        
+        if (totalMatch && totalMatch[1]) {
+            const totalAmount = parseFloat(totalMatch[1].replace(/,/g, ''));
+            const advancePayment = Math.round(totalAmount * 0.7);
+            
+            // Update the advance payment amount
+            const advancePaymentElement = document.getElementById('advance-payment-amount');
+            if (advancePaymentElement) {
+                advancePaymentElement.textContent = advancePayment.toLocaleString();
+            }
+        }
+    }
+});
+// Add necessary CSS styles for animations and effects
 document.addEventListener('DOMContentLoaded', function() {
     const style = document.createElement('style');
     style.textContent = `
+        /* Modal styles */
+        #paymentModal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        #paymentModal.show {
+            opacity: 1;
+        }
+        
+        .modal-content {
+            background-color: white;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+        }
+        
+        #paymentModal.show .modal-content {
+            transform: scale(1);
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+        }
+        
+        .modal-body {
+            padding: 20px;
+        }
+        
+        /* Button styles */
+        .payment-method-button {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 10px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            background-color: white;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+            overflow: hidden;
+            text-align: left;
+            display: flex;
+            align-items: center;
+        }
+        
+        .payment-method-button:hover {
+            border-color: #7e57c2;
+            background-color: #f5f2ff;
+        }
+        
+        .payment-method-button.active {
+            border-color: #5e35b1;
+            background-color: #ede7f6;
+        }
+        
+        .payment-method-button svg {
+            margin-right: 10px;
+        }
+        
+        /* Ripple effect */
         .ripple {
             position: absolute;
             background-color: rgba(255, 255, 255, 0.4);
@@ -399,15 +747,18 @@ document.addEventListener('DOMContentLoaded', function() {
             transform: scale(0);
             animation: ripple 0.6s linear;
             pointer-events: none;
+            width: 10px;
+            height: 10px;
         }
         
         @keyframes ripple {
             to {
-                transform: scale(4);
+                transform: scale(20);
                 opacity: 0;
             }
         }
         
+        /* Animation styles */
         .shake {
             animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
         }
@@ -437,6 +788,11 @@ document.addEventListener('DOMContentLoaded', function() {
             justify-content: center;
             align-items: center;
             animation: fadeIn 0.3s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
         
         .success-checkmark {
@@ -483,8 +839,71 @@ document.addEventListener('DOMContentLoaded', function() {
             40% { transform: translateY(-20px); }
             60% { transform: translateY(-10px); }
         }
+        
+        /* Payment method image styles */
+        .payment-method-img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        
+        #modal-method-image {
+            margin-top: 20px;
+            text-align: center;
+        }
+        
+        #selected-method-display {
+            margin-top: 10px;
+            text-align: center;
+        }
+        
+        /* Estilos para el calendario */
+        .fecha-entrega-container {
+            margin: 15px 0;
+            transition: all 0.3s ease;
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        
+        .fecha-entrega-container:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            transform: translateY(-2px);
+        }
+        
+        #id_fecha_entrega {
+            font-size: 16px;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            width: 100%;
+            color: #333;
+            background-color: white;
+            transition: border-color 0.2s ease;
+        }
+        
+        #id_fecha_entrega:hover, #id_fecha_entrega:focus {
+            border-color: #7e57c2;
+            outline: none;
+        }
+        
+        .fecha-entrega-container label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #444;
+        }
+        
+        .fecha-entrega-container small {
+            display: block;
+            margin-top: 5px;
+            color: #666;
+        }
     `;
     document.head.appendChild(style);
 });
+
 </script>
 {% endblock %}

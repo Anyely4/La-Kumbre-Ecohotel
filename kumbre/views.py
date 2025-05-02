@@ -29,6 +29,7 @@ from .forms import MetodoPagoForm
 from .models import Compra, DetalleCompra
 from .forms import CompraForm
 from django.db import IntegrityError
+from django.core.exceptions import ValidationError
 
 
 def sugerencias(request):
@@ -123,8 +124,19 @@ def cabanawush(request):
 
 def perfil(request):
     return render(request, 'perfil.html')
-    
 
+def spots(request):
+    return render(request, 'spots.html')
+
+def columpio(request):
+    return render(request, 'columpio.html')
+    
+    
+def confirmacion_compra_usuario(request):
+    return render(request, 'confirmacion_compra_usuario.html')
+
+def nueva_compra_admin(request):
+    return render(request, 'nueva_compra_admin.html')
 
 @login_required
 def historial(request):
@@ -218,65 +230,69 @@ def logout_perfil(request):
 
 
 
-
-
-
 @login_required
 def hacer_reserva(request):
     if request.method == "POST":
         cabana_id = request.POST.get("cabana_id")
-        cabana_nombre = request.POST.get("cabana")
-        precio = request.POST.get("precio")
         fecha_str = request.POST.get("fecha")
         telefono = request.POST.get("telefono")
-        numero_personas = request.POST.get("numero_personas")
+        tiene_personas_adicionales = request.POST.get("tiene_personas_adicionales", "no")
+        personas_adicionales = int(request.POST.get("personas_adicionales", 0)) if tiene_personas_adicionales == "si" else 0
         
         # Validaciones de seguridad
         try:
             # Verificar que la cabaña existe
-            cabana = get_object_or_404(Cabana, nombre=cabana_nombre)
-            if cabana_id and int(cabana_id) != cabana.id:
-                messages.error(request, "Datos de cabaña inconsistentes.")
-                return redirect('cabanas')
+            cabana = get_object_or_404(Cabana, id=cabana_id)
             
             # Convertir fecha
-            fecha = datetime.strptime(fecha_str, '%Y-%m-%d').date()
+            try:
+                fecha = datetime.strptime(fecha_str, '%Y-%m-%d').date()
+            except ValueError:
+                messages.error(request, "Formato de fecha inválido.")
+                return redirect('cabanas')
             
             # Verificar que la fecha no es pasada
             if fecha < datetime.now().date():
                 messages.error(request, "No se puede reservar en fechas pasadas.")
                 return redirect('cabanas')
                 
-            # Verificar que la fecha no está ocupada
-            if Reserva.objects.filter(cabana=cabana_nombre, fecha=fecha).exists():
+            # Verificar que la fecha no está ocupada (doble verificación)
+            if Reserva.objects.filter(cabana=cabana.nombre, fecha=fecha, confirmada=True).exists():
                 messages.error(request, "La cabaña ya está reservada para esa fecha.")
                 return redirect('cabanas')
-                
-            # Calcular el precio correcto en el servidor
+            
+            # RECALCULAR el precio en el servidor (ignorando cualquier precio enviado por el cliente)
             precios = get_object_or_404(PrecioCabana, cabana=cabana)
             es_festivo = Festivo.objects.filter(fecha=fecha).exists()
-            es_fin_semana = fecha.weekday() == 5
+            es_fin_semana = fecha.weekday() in [4, 5]  # 5=Sábado, 6=Domingo
             
             if es_festivo:
-                precio_correcto = precios.precio_festivo
+                precio_base = precios.precio_festivo
+                precio_persona_adicional = precios.precio_persona_adicional_finde_festivo
+                tipo_dia = 'festivo'
             elif es_fin_semana:
-                precio_correcto = precios.precio_fin_semana
+                precio_base = precios.precio_fin_semana
+                precio_persona_adicional = precios.precio_persona_adicional_finde_festivo
+                tipo_dia = 'fin_semana'
             else:
-                precio_correcto = precios.precio_entre_semana
-                
-            # Verificar que el precio enviado coincide con el calculado (seguridad adicional)
-            if abs(float(precio) - float(precio_correcto)) > 0.01:  # Pequeña tolerancia para errores de redondeo
-                messages.error(request, "El precio ha sido modificado. Por favor, inténtelo de nuevo.")
-                return redirect('cabanas')
+                precio_base = precios.precio_entre_semana
+                precio_persona_adicional = precios.precio_persona_adicional_entre_semana
+                tipo_dia = 'entre_semana'
             
-            # Crear la reserva
+            # Calcular precio adicional y total
+            precio_adicional = personas_adicionales * float(precio_persona_adicional)
+            precio_total = float(precio_base) + precio_adicional
+            
+            # Crear la reserva con los precios calculados por el servidor
             reserva = Reserva(
                 usuario=request.user,
-                cabana=cabana_nombre,
-                precio=precio_correcto,  # Usar el precio calculado en el servidor
+                cabana=cabana.nombre,
+                precio=precio_total,  # Precio total calculado en el servidor
                 fecha=fecha,
-                telefono=telefono,
-                numero_personas=numero_personas,
+                telefono=telefono, 
+                numero_personas="2",  # Base siempre es 2
+                personas_adicionales=personas_adicionales,
+                precio_personas_adicionales=precio_adicional,
                 estado='Pendiente',
                 confirmada=False
             )
@@ -294,14 +310,13 @@ def hacer_reserva(request):
         cabana_id = request.GET.get("cabana_id")
         context = {}
         if cabana_id:
-            cabana = get_object_or_404(Cabana, id=cabana_id)
-            context["cabana"] = cabana
-            context["cabana_id"] = cabana_id  # Agregar el ID para usarlo en JavaScript
+            try:
+                cabana = get_object_or_404(Cabana, id=cabana_id)
+                context["cabana"] = cabana
+            except:
+                messages.error(request, "Cabaña no encontrada.")
+                return redirect('cabanas')
         return render(request, "reservas.html", context)
-    
-
-
-
 
 
 
@@ -519,135 +534,383 @@ def metodo_pago(request):
     }
     return render(request, 'metodos_pago.html', context)
 
+
+
+
+
+
+
+
+
+from decimal import Decimal
+from django.core.mail import send_mail
+from django.template.loader import render_to_string
+from django.conf import settings
+from decimal import Decimal
+import html
+from .models import PrecioCabana, Festivo
 @login_required
 def confirmar_compra(request):
-    """
-    Procesa el formulario de compra:
-      - Recoge los datos del comprador y el método de pago.
-      - Calcula el total sumando los productos en el carrito y las reservas pendientes.
-      - Crea la compra y los detalles (DetalleCompra) correspondientes.
-      - Confirma las reservas y vacía el carrito.
-      - Envía dos correos, uno al usuario y otro al administrador.
-      - Redirige a la página de confirmación.
-    """
     if request.method == "POST":
-        form = CompraForm(request.POST)
+        # Añadir esta línea para depuración
+        print("Método POST recibido en confirmar_compra")
+        print("Datos del formulario:", request.POST)
+        print("Archivos:", request.FILES)
+
+        if 'comprobante_pago' not in request.FILES:
+            print("⚠️ No se encontró archivo de comprobante_pago en la solicitud")
+        
+        form = CompraForm(request.POST, request.FILES)
         if form.is_valid():
-            # Datos del comprador
-            nombre_usuario = form.cleaned_data['nombre']
-            email_usuario = form.cleaned_data['email']
-            telefono_usuario = form.cleaned_data['telefono']
-            metodo_pago = form.cleaned_data['metodo_pago']
-            
-            # Mapeo de método de pago a código
-            METHOD_CODES = {
-                'nequi': 'NEQ001',
-                'daviplata': 'DAV001',
-                'bancolombia': 'BAN001'
-            }
-            codigo_metodo = METHOD_CODES.get(metodo_pago, 'UNKNOWN')
-            
-            # Total de productos en el carrito
-            productos = CarritoProducto.objects.filter(usuario=request.user)
-            print("Productos en carrito:", productos.count())
-            total_productos = productos.aggregate(
-                total=Sum(F('cantidad') * F('producto__precio'))
-            )['total'] or 0
-            
-            # Total de reservas pendientes
-            reservas = Reserva.objects.filter(usuario=request.user, confirmada=False)
-            print("Reservas pendientes:", reservas.count())
-            total_reservas = reservas.aggregate(total=Sum('precio'))['total'] or 0
-            
-            # Total general
-            total = total_productos + total_reservas
-            
-            # Crear la compra y marcarla como pagada
-            compra = Compra.objects.create(
-                usuario=request.user,
-                nombre=nombre_usuario,
-                email=email_usuario,
-                telefono=telefono_usuario,
-                total=total,
-                metodo_pago=metodo_pago,
-                pagado=True
-            )
-            
-            detalles_compra = []
-            # Registrar cada producto del carrito en DetalleCompra
-            for item in productos:
-                DetalleCompra.objects.create(
-                    compra=compra,
-                    producto=item.producto,
-                    precio_unitario=item.producto.precio,
-                    cantidad=item.cantidad,
-                    precio_total=item.cantidad * item.producto.precio
-                )
-                detalles_compra.append(f"- {item.cantidad}x {item.producto.nombre} - ${item.cantidad * item.producto.precio}")
-            
-            # Registrar cada reserva y confirmarla
-            for reserva in reservas:
-                DetalleCompra.objects.create(
-                    compra=compra,
-                    reserva=reserva,
-                    precio_unitario=reserva.precio,
-                    cantidad=1,
-                    precio_total=reserva.precio
-                )
-                reserva.confirmada = True
-                reserva.save()
-                # Dado que 'cabana' es un CharField, usamos el valor directamente
-                detalles_compra.append(f"- Reserva en {reserva.cabana} - ${reserva.precio}")
-            
-            # Vaciar el carrito
-            productos.delete()
-            
-            # Preparar el mensaje de correo para el usuario
-            detalles_texto = "\n".join(detalles_compra)
-            mensaje_usuario = f"""
-Hola {nombre_usuario},
+            print("✅ Formulario válido")
+            try:
+                # Importar módulo os si no está ya importado en la parte superior del archivo
+                import os
+                
+                # Datos del comprador
+                nombre_usuario = form.cleaned_data['nombre']
+                email_usuario = form.cleaned_data['email']
+                telefono_usuario = form.cleaned_data['telefono']
+                metodo_pago = form.cleaned_data['metodo_pago']
+                horario_comida = form.cleaned_data.get('horario_comida')
+                fecha_entrega = form.cleaned_data.get('fecha_entrega')  # Añadir esta línea para obtener la fecha de entrega
+                comprobante_pago = form.cleaned_data.get('comprobante_pago')
+                
+                # Validar que el método de pago es válido
+                metodos_validos = ['nequi', 'daviplata', 'bancolombia']
+                if metodo_pago not in metodos_validos:
+                    messages.error(request, "Método de pago no válido.")
+                    return redirect('metodo_pago')
+                
+                # Validar el comprobante de pago - MODIFICADO: hacerlo opcional si es necesario
+                # o mejorar el mensaje de error para ser más claro
+                if not comprobante_pago:
+                    messages.error(request, "Por favor, sube el comprobante de pago. Esto es obligatorio para confirmar tu compra.")
+                    return redirect('metodo_pago')
+                
+                # Validar el formato del archivo
+                if comprobante_pago:
+                    valid_extensions = ['.jpg', '.jpeg', '.png', '.pdf']
+                    ext = os.path.splitext(comprobante_pago.name)[1].lower()
+                    if ext not in valid_extensions:
+                        messages.error(request, f"Formato de archivo no válido: {ext}. Por favor usa JPG, PNG o PDF.")
+                        return redirect('metodo_pago')
+                    
+                    # Validar tamaño (máximo 5MB)
+                    if comprobante_pago.size > 5 * 1024 * 1024:  # 5MB en bytes
+                        messages.error(request, f"El archivo es demasiado grande ({comprobante_pago.size/1024/1024:.1f}MB). Máximo 5MB.")
+                        return redirect('metodo_pago')
+                
+                # Mapeo de método de pago a código y nombre legible
+                METHOD_CODES = {
+                    'nequi': 'NEQ001',
+                    'daviplata': 'DAV001',
+                    'bancolombia': 'BAN001'
+                }
+                METHOD_NAMES = {
+                    'nequi': 'Nequi',
+                    'daviplata': 'Daviplata',
+                    'bancolombia': 'Bancolombia'
+                }
+                codigo_metodo = METHOD_CODES.get(metodo_pago, 'UNKNOWN')
+                nombre_metodo = METHOD_NAMES.get(metodo_pago, 'Desconocido')
+                
+                # Recalcular totales en el servidor - No confiar en datos del cliente
+                productos = CarritoProducto.objects.filter(usuario=request.user)
+                reservas = Reserva.objects.filter(usuario=request.user, confirmada=False)
+                
+                # Verificación adicional de seguridad: comprobar si aún hay elementos en el carrito
+                if not productos.exists() and not reservas.exists():
+                    messages.error(request, "No hay productos ni reservas en el carrito para procesar.")
+                    return redirect('resumen_compra')
+                
+                # Total de productos recalculado
+                total_productos = 0
+                for item in productos:
+                    # Obtener el precio actual del producto (por si hubiera cambios)
+                    try:
+                        producto_actual = get_object_or_404(Producto, id=item.producto.id)
+                        total_productos += producto_actual.precio * item.cantidad
+                    except Exception as e:
+                        messages.error(request, f"Error con el producto {item.producto}: {str(e)}")
+                        return redirect('metodo_pago')
+                
+                # Total de reservas recalculado (validando cada reserva)
+                total_reservas = 0
+                reservas_validas = []
+                
+                for reserva in reservas:
+                    # Verificar que la cabaña existe
+                    try:
+                        cabana = Cabana.objects.get(nombre=reserva.cabana)
+                        
+                        # Verificar que la fecha no esté ocupada por otra reserva confirmada
+                        if Reserva.objects.filter(cabana=reserva.cabana, fecha=reserva.fecha, confirmada=True).exists():
+                            messages.error(request, f"La cabaña {reserva.cabana} ya no está disponible para el {reserva.fecha}.")
+                            continue  # Saltar esta reserva
+                            
+                        # Recalcular el precio (para evitar manipulaciones)
+                        try:
+                            precios = PrecioCabana.objects.get(cabana=cabana)
+                            es_festivo = Festivo.objects.filter(fecha=reserva.fecha).exists()
+                            es_fin_semana = reserva.fecha.weekday() in [5, 6]
+                            
+                            if es_festivo:
+                                precio_base = precios.precio_festivo
+                                precio_persona_adicional = precios.precio_persona_adicional_finde_festivo
+                            elif es_fin_semana:
+                                precio_base = precios.precio_fin_semana
+                                precio_persona_adicional = precios.precio_persona_adicional_finde_festivo
+                            else:
+                                precio_base = precios.precio_entre_semana
+                                precio_persona_adicional = precios.precio_persona_adicional_entre_semana
+                            
+                            precio_adicional = reserva.personas_adicionales * Decimal(str(precio_persona_adicional))
+                            precio_total_calculado = Decimal(str(precio_base)) + precio_adicional
+                            
+                            # Actualizar precio en la reserva (si hubo manipulación)
+                            if abs(reserva.precio - precio_total_calculado) > Decimal('0.01'):
+                                reserva.precio = precio_total_calculado
+                                reserva.save()
+                            
+                            total_reservas += precio_total_calculado
+                            reservas_validas.append(reserva)
+                        except PrecioCabana.DoesNotExist:
+                            messages.error(request, f"No se encontraron precios para la cabaña {reserva.cabana}.")
+                            return redirect('metodo_pago')
+                    
+                    except Cabana.DoesNotExist:
+                        messages.error(request, f"No se encontró la cabaña {reserva.cabana} en la base de datos.")
+                        return redirect('metodo_pago')
+                    except Exception as e:
+                        messages.error(request, f"Error con la reserva de la cabaña {reserva.cabana}: {str(e)}")
+                        return redirect('metodo_pago')
+                
+                # Si no quedan reservas válidas ni productos, redirigir
+                if not reservas_validas and not productos.exists():
+                    messages.error(request, "No hay productos o reservas válidas para procesar.")
+                    return redirect('resumen_compra')
+                
+                # Total general recalculado
+                total = total_productos + total_reservas
+                
+                # Crear la compra y marcarla como pagada
+                try:
+                    compra = Compra.objects.create(
+                        usuario=request.user,
+                        nombre=nombre_usuario,
+                        email=email_usuario,
+                        telefono=telefono_usuario,
+                        total=total,
+                        metodo_pago=metodo_pago,
+                        horario_comida=horario_comida,
+                        fecha_entrega=fecha_entrega,  # Añadir fecha de entrega al objeto compra
+                        comprobante_pago=comprobante_pago,
+                        pagado=True
+                    )
+                except Exception as e:
+                    messages.error(request, f"Error al crear la compra en la base de datos: {str(e)}")
+                    return redirect('metodo_pago')
+                
+                detalles_compra = []
+                productos_compra = []
+                
+                # Registrar cada producto del carrito en DetalleCompra
+                for item in productos:
+                    try:
+                        producto_actual = get_object_or_404(Producto, id=item.producto.id)
+                        DetalleCompra.objects.create(
+                            compra=compra,
+                            producto=item.producto,
+                            precio_unitario=producto_actual.precio,
+                            cantidad=item.cantidad,
+                            precio_total=item.cantidad * producto_actual.precio
+                        )
+                        producto_info = {
+                            'nombre': item.producto.nombre,
+                            'cantidad': item.cantidad,
+                            'precio_unitario': producto_actual.precio,
+                            'precio_total': item.cantidad * producto_actual.precio
+                        }
+                        productos_compra.append(producto_info)
+                        detalles_compra.append(f"- {item.cantidad}x {item.producto.nombre} - ${item.cantidad * producto_actual.precio}")
+                    except Exception as e:
+                        # En caso de error, registrar pero continuar con otros productos
+                        print(f"Error al procesar producto {item.producto.id}: {str(e)}")
+                
+                # Registrar cada reserva válida y confirmarla
+                reservas_compra = []
+                for reserva in reservas_validas:
+                    try:
+                        DetalleCompra.objects.create(
+                            compra=compra,
+                            reserva=reserva,
+                            precio_unitario=reserva.precio,
+                            cantidad=1,
+                            precio_total=reserva.precio
+                        )
+                        reserva.confirmada = True
+                        reserva.save()
+                        
+                        reserva_info = {
+                            'cabana': reserva.cabana,
+                            'fecha': reserva.fecha,
+                            'personas': reserva.numero_personas,
+                            'personas_adicionales': reserva.personas_adicionales,
+                            'precio': reserva.precio
+                        }
+                        reservas_compra.append(reserva_info)
+                        detalles_compra.append(f"- Reserva en {reserva.cabana} para {reserva.fecha} - ${reserva.precio}")
+                    except Exception as e:
+                        print(f"Error al procesar reserva {reserva.id}: {str(e)}")
+                
+                # Vaciar el carrito
+                try:
+                    productos.delete()
+                except Exception as e:
+                    print(f"Error al vaciar el carrito: {str(e)}")
+                
+                # ENVÍO DE CORREOS ELECTRÓNICOS - Manejo de errores mejorado
+                try:
+                    # 1. Correo al usuario
+                    subject_usuario = f'Confirmación de tu compra'
+                    
+                    # Contexto para el correo del usuario
+                    context_usuario = {
+                        'nombre': nombre_usuario,
+                        'compra_id': compra.id,
+                        'productos': productos_compra,
+                        'reservas': reservas_compra,
+                        'total_productos': total_productos,
+                        'total_reservas': total_reservas,
+                        'total_general': total,
+                        'metodo_pago': nombre_metodo,
+                        'codigo_pago': codigo_metodo,
+                        'fecha_entrega': fecha_entrega.strftime('%d/%m/%Y') if fecha_entrega else None  # Añadir fecha formateada
+                    }
+                    if productos_compra and horario_comida:
+                        context_usuario['horario_comida'] = horario_comida.strftime('%I:%M %p') if horario_comida else None
+                        
+                    # Renderizar el HTML del correo del usuario
+                    html_message_usuario = render_to_string('emails/confirmacion_compra_usuario.html', context_usuario)
+                    plain_message_usuario = f"""
+    ¡Hola {nombre_usuario}!
 
-Su compra ha sido recibida y confirmada. A continuación, los detalles:
+    Gracias por tu compra.
 
-{detalles_texto}
+    Detalles de tu pedido:
+    {''.join(detalles_compra)}
 
-Total: ${total}
-Método de pago: {metodo_pago.upper()} (Código: {codigo_metodo})
+    Total: ${total}
+    Método de pago: {nombre_metodo} (Código: {codigo_metodo})
+    {f"Fecha de entrega: {fecha_entrega.strftime('%d/%m/%Y')}" if fecha_entrega else ""}
+    {f"Horario de comida: {horario_comida.strftime('%I:%M %p')}" if horario_comida else ""}
 
-Gracias por confiar en nosotros.
+    Si tienes alguna pregunta, no dudes en contactarnos.
 
-Saludos,
-La Kumbre.
-            """.strip()
-            
-            from_email = settings.DEFAULT_FROM_EMAIL
-            send_mail("Confirmación de Compra - La Kumbre", mensaje_usuario, from_email, [email_usuario])
-            
-            # Enviar correo al administrador (en un correo separado)
-            admin_email = getattr(settings, "ADMIN_EMAIL", None)
-            if admin_email:
-                mensaje_admin = f"""
-Nueva compra realizada en La Kumbre:
+    Saludos,
+    El equipo de Cabañas
+    """
+                    
+                    # Enviar correo al usuario
+                    send_mail(
+                        subject=subject_usuario,
+                        message=plain_message_usuario,
+                        from_email=settings.EMAIL_HOST_USER,
+                        recipient_list=[email_usuario],
+                        html_message=html_message_usuario,
+                        fail_silently=True,  # Cambiado a True para que no falle la compra si hay error de correo
+                    )
+                    
+                    # 2. Correo al administrador
+                    admin_email = settings.ADMIN_EMAIL if hasattr(settings, 'ADMIN_EMAIL') else settings.EMAIL_HOST_USER
+                    subject_admin = f'Nueva compra: #{compra.id} - {nombre_usuario}'
+                    
+                    comprobante_url = None
+                    if compra.comprobante_pago:
+                        comprobante_url = request.build_absolute_uri(compra.comprobante_pago.url)
 
-Cliente: {nombre_usuario}
-Correo: {email_usuario}
-Teléfono: {telefono_usuario}
+                    # Contexto para el correo del administrador
+                    context_admin = {
+                        'compra_id': compra.id,
+                        'nombre_cliente': nombre_usuario,
+                        'email_cliente': email_usuario,
+                        'telefono_cliente': telefono_usuario,
+                        'productos': productos_compra,
+                        'reservas': reservas_compra,
+                        'total_productos': total_productos, 
+                        'total_reservas': total_reservas,
+                        'total_general': total,
+                        'metodo_pago': nombre_metodo,
+                        'horario_comida': horario_comida.strftime('%I:%M %p') if horario_comida else None,
+                        'fecha_entrega': fecha_entrega.strftime('%d/%m/%Y') if fecha_entrega else None,  # Añadir fecha formateada
+                        'fecha_actual': datetime.now().strftime('%d/%m/%Y %H:%M'),
+                        'comprobante_url': comprobante_url 
+                    }
+                    
+                    # Renderizar el HTML del correo del administrador
+                    html_message_admin = render_to_string('emails/nueva_compra_admin.html', context_admin)
+                    plain_message_admin = f"""
+    NUEVA COMPRA - #{compra.id}
 
-Detalles de la compra:
-{detalles_texto}
+    DATOS DEL CLIENTE:
+    Nombre: {nombre_usuario}
+    Email: {email_usuario}
+    Teléfono: {telefono_usuario}
 
-Total: ${total}
-Método de pago: {metodo_pago.upper()} (Código: {codigo_metodo})
+    DETALLES DE LA COMPRA:
+    {''.join(detalles_compra)}
 
-Por favor, revise el panel de administración para más detalles.
-                """.strip()
-                send_mail("Nueva Compra Realizada - La Kumbre", mensaje_admin, from_email, [admin_email])
-            
-            return redirect('compra_confirmada', compra_id=compra.id)
-    else:
-        form = CompraForm()
-    return render(request, 'metodos_pago.html', {'form': form})
+    Total: ${total}
+    Método de pago: {nombre_metodo}
+    {f"Fecha de entrega: {fecha_entrega.strftime('%d/%m/%Y')}" if fecha_entrega else ""}
+    {f"Horario de comida: {horario_comida.strftime('%I:%M %p')}" if horario_comida else ""}
+    Comprobante de pago: {'Adjunto' if comprobante_pago else 'No adjuntado'}
+
+    Esta notificación ha sido generada automáticamente.
+    """
+                    
+                    # Enviar correo al administrador
+                    send_mail(
+                        subject=subject_admin,
+                        message=plain_message_admin,
+                        from_email=settings.EMAIL_HOST_USER,
+                        recipient_list=[admin_email],
+                        html_message=html_message_admin,
+                        fail_silently=True,  # Cambiado a True para que no falle la compra si hay error de correo
+                    )
+                except Exception as e:
+                    # Si hay error en los correos, solo registrar pero no detener la compra
+                    print(f"Error al enviar correos electrónicos: {str(e)}")
+                
+                # Redireccionar a página de confirmación
+                return redirect('compra_confirmada', compra_id=compra.id)
+                
+            except Exception as e:
+                messages.error(request, f"Error al procesar la compra: {str(e)}")
+                print("Error detallado:", str(e))  # Para depuración en el servidor
+                return redirect('metodos_pago')
+        else:
+            # Mostrar errores específicos del formulario
+            for field, errors in form.errors.items():
+                for error in errors:
+                    messages.error(request, f"Error en {field}: {error}")
+            return redirect('metodos_pago')
     
+    return redirect('metodos_pago')
+
+
+
+
+
+
+
+
+
+
+
+
+
 @login_required
 def compra_confirmada(request, compra_id):
     """
@@ -697,39 +960,79 @@ from django.http import JsonResponse
 from datetime import datetime
 from .models import Cabana, PrecioCabana, Festivo
 
+
 def calcular_precio(request):
     if request.method == "GET":
-        cabana_id = request.GET.get('cabana_id')
-        fecha_str = request.GET.get('fecha')
-        
         try:
-            cabana = Cabana.objects.get(id=cabana_id)
-            precios = PrecioCabana.objects.get(cabana=cabana)
+            cabana_id = request.GET.get('cabana_id')
+            fecha_str = request.GET.get('fecha')
+            personas_adicionales = int(request.GET.get('personas_adicionales', 0))
             
-            # Convertir la fecha de string a objeto date
-            fecha = datetime.strptime(fecha_str, '%Y-%m-%d').date()
-            
-            # Verificar si es un día festivo
-            es_festivo = Festivo.objects.filter(fecha=fecha).exists()
-            
-            # Verificar si es fin de semana (5=Sábado, 6=Domingo)
-            es_fin_semana = fecha.weekday() == 5
-            
-            # Determinar el precio según el tipo de día
-            if es_festivo:
-                precio = precios.precio_festivo
-            elif es_fin_semana:
-                precio = precios.precio_fin_semana
-            else:
-                precio = precios.precio_entre_semana
+            # Validar datos de entrada
+            if not cabana_id or not fecha_str:
+                return JsonResponse({'success': False, 'error': 'Parámetros incompletos'}, status=400)
                 
+            # Validar que la cabaña existe
+            try:
+                cabana = Cabana.objects.get(id=cabana_id)
+                precios = PrecioCabana.objects.get(cabana=cabana)
+            except Cabana.DoesNotExist:
+                return JsonResponse({'success': False, 'error': 'Cabaña no encontrada'}, status=404)
+            except PrecioCabana.DoesNotExist:
+                return JsonResponse({'success': False, 'error': 'Precios no configurados'}, status=404)
+            
+            # Validar y convertir la fecha
+            try:
+                fecha = datetime.strptime(fecha_str, '%Y-%m-%d').date()
+                
+                # Verificar que no es una fecha pasada
+                if fecha < datetime.now().date():
+                    return JsonResponse({'success': False, 'error': 'No se permite fecha pasada'}, status=400)
+                    
+                # Verificar que la fecha no está ocupada
+                if Reserva.objects.filter(cabana=cabana.nombre, fecha=fecha, confirmada=True).exists():
+                    return JsonResponse({'success': False, 'error': 'Fecha no disponible'}, status=400)
+            except ValueError:
+                return JsonResponse({'success': False, 'error': 'Formato de fecha inválido'}, status=400)
+            
+            # Validar personas adicionales
+            if personas_adicionales < 0:
+                return JsonResponse({'success': False, 'error': 'Valor inválido para personas adicionales'}, status=400)
+            
+            # Determinar tipo de día y precios correspondientes
+            es_festivo = Festivo.objects.filter(fecha=fecha).exists()
+            es_fin_semana = fecha.weekday() in [4, 5]  # 5=Sábado, 6=Domingo
+            
+            if es_festivo:
+                precio_base = precios.precio_festivo
+                precio_persona_adicional = precios.precio_persona_adicional_finde_festivo
+                tipo_dia = 'festivo'
+            elif es_fin_semana:
+                precio_base = precios.precio_fin_semana
+                precio_persona_adicional = precios.precio_persona_adicional_finde_festivo
+                tipo_dia = 'fin_semana'
+            else:
+                precio_base = precios.precio_entre_semana
+                precio_persona_adicional = precios.precio_persona_adicional_entre_semana
+                tipo_dia = 'entre_semana'
+            
+            # Calcular precio total
+            precio_adicional = personas_adicionales * float(precio_persona_adicional)
+            precio_total = float(precio_base) + precio_adicional
+                
+            # Devolver la información calculada en el servidor
             return JsonResponse({
                 'success': True, 
-                'precio': float(precio),
-                'tipo_dia': 'festivo' if es_festivo else ('fin_semana' if es_fin_semana else 'entre_semana')
+                'precio_base': float(precio_base),
+                'precio_total': float(precio_total),
+                'precio_persona_adicional_entre_semana': float(precios.precio_persona_adicional_entre_semana),
+                'precio_persona_adicional_finde_festivo': float(precios.precio_persona_adicional_finde_festivo),
+                'tipo_dia': tipo_dia
             })
             
-        except (Cabana.DoesNotExist, PrecioCabana.DoesNotExist, ValueError) as e:
-            return JsonResponse({'success': False, 'error': str(e)}, status=400)
+        except Exception as e:
+            # Log del error para el administrador
+            print(f"Error en calcular_precio: {str(e)}")
+            return JsonResponse({'success': False, 'error': 'Error al calcular el precio'}, status=500)
     
     return JsonResponse({'success': False, 'error': 'Método no permitido'}, status=405)
